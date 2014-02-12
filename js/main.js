@@ -1,6 +1,7 @@
 var sp1 = new sp();
+loadData();
+/*
 
-/* Knockout setup */
 var viewModel = {
 	foo : ko.observable("observer")
 };
@@ -20,9 +21,7 @@ function ViewModel(){
 		self.rects.push(new Rect(self));
 	};
 };
- /*----------------------------------------------------------------------- */
 
- /* D3 linker */
  var rects = d3.select("#svg")
  	.selectAll(rect)
  	.data(d, function (d){ return d.name(); });
@@ -30,4 +29,22 @@ function ViewModel(){
  rects.enter()
  	.append("rect")
  	.attr("id", function (d) {return d.name();});
+*/
+var dataTable = {};
 
+function loadData() {
+
+	d3.csv("data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv", function(error, data) {
+		mergeData(data);
+	});
+}
+
+function mergeData(data) { 
+	for(var i=0; i<data.length; i++){
+		dataTable[i]["Country"] = data[i]["Country"];
+		console.log(data[i]["Country"]);
+	}
+
+	console.log(dataTable);
+	dataTable = data;
+}

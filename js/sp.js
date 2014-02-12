@@ -33,7 +33,6 @@ function sp(){
     // Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv
     d3.csv("data/Total_Oil_Supply_(Thousand_Barrels_Per_Day).csv", function(error, data) {
         self.data = data;
-        console.log(data);
         //define the domain of the scatter plot axes
         x.domain([-200, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
         y.domain([-200, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
@@ -65,9 +64,10 @@ function sp(){
             .attr("dy", ".71em");
             
         // Add the scatter dots.
-        svg.selectAll(".dot")
-            .data(self.data)
-            .enter()
+         var p = svg.selectAll(".dot")
+            .data(self.data, function(d) { return d["Country"]; });
+
+            p.enter()
             .append("circle")
             .filter(function(d){ 
 		    	var bool = true;
@@ -90,6 +90,10 @@ function sp(){
                 return +y(d[ykey]);
             })
             .attr("r", 3);
+
+            p
+                .exit()
+                .remove();
 
         // How do you change font size? 
         svg.append("text")
