@@ -1,50 +1,36 @@
 var sp1 = new sp();
-loadData();
-/*
 
 var viewModel = {
 	foo : ko.observable("observer")
 };
 
-function Rect(){
-	var self = this;
-	self.x = ko.observable(0);
-	self.y = ko.observable(0);
-	self.w = ko.observable(100);
-	self.h = ko.observable(100);
-	self.name = ko.observable(makeName());
-};
-function ViewModel(){
-	var self = this;
-	self.rects = ko.observableArray([]);
-	self.addRect = function(){
-		self.rects.push(new Rect(self));
-	};
+var DataFile = function (datatype, url){
+	this.datatype = datatype;
+	this.url = url; 
 };
 
- var rects = d3.select("#svg")
- 	.selectAll(rect)
- 	.data(d, function (d){ return d.name(); });
+var dataViewModel = {
+		//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
+		availableData : [
+		new DataFile("oil","data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
+		new DataFile("coal","data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day)")
+	],
+	selectedChoice: ko.observable() // Inget valt från början
+};
 
- rects.enter()
- 	.append("rect")
- 	.attr("id", function (d) {return d.name();});
+/*
+		Suscribe on selected data change
 */
-var dataTable = {};
-
-function loadData() {
-
-	d3.csv("data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv", function(error, data) {
-		mergeData(data);
-	});
-}
-
-function mergeData(data) { 
-	for(var i=0; i<data.length; i++){
-		dataTable[i]["Country"] = data[i]["Country"];
-		console.log(data[i]["Country"]);
+dataViewModel.selectedChoice.subscribe(function (data){
+	if(typeof data !== 'undefined'){
+		sp1.defineAxis();
+		sp1.loadData(data.url);
 	}
+});
 
-	console.log(dataTable);
-	dataTable = data;
+function analyzeChosenData(){
+
 }
+
+ /*----------------------------------------------------------------------- */
+ko.applyBindings(dataViewModel);
