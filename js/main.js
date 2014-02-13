@@ -55,10 +55,12 @@ $(document).ready(function () {
     $('.menu, .close').click(function () {
         $('#menu').toggleClass('open');
         if ($('#menu').hasClass("open")) {
+        	$('#energy-sources').show();
             $('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
 
             
         } else {
+        	$('#energy-sources').hide();
             $('#menu .close').html("Show <span class='glyphicon glyphicon-resize-vertical'></span>");
         }
     })
