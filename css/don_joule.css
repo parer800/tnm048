@@ -1,0 +1,27 @@
+#menu{
+    position: relative;
+    background-color: #3f4642;
+    width: 100%;
+    color:white;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    border: 1px solid black;
+}
+#menu.open{
+    height: 20em;
+}
+
+.close{
+    position: absolute;
+    bottom:0px;
+    right:0px;
+    position-bottom:0px;
+}
+
+#container{
+    width: 100%;
+    border: 1px solid black;
+}

@@ -44,3 +44,22 @@ function analyzeChosenData(){
 ko.applyBindings(dataViewModel);
 
 
+
+
+
+// Should probably be located in other file
+
+$(document).ready(function () {
+	$('#menu').toggleClass('open');
+	$('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
+    $('.menu, .close').click(function () {
+        $('#menu').toggleClass('open');
+        if ($('#menu').hasClass("open")) {
+            $('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
+
+            
+        } else {
+            $('#menu .close').html("Show <span class='glyphicon glyphicon-resize-vertical'></span>");
+        }
+    })
+});
