@@ -23,19 +23,32 @@ function ld(){
             .orient("left");
     }
 
-    var svg = d3.select("body").append("svg")
-        .attr("id","ld")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+    var svg = d3.select("#ld")
+    	.append("svg")
+	        .attr("width", width + margin.left + margin.right)
+	        .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	function findMax() {
+		return d3.max(self.data, function(d) { 
+
+	    	var max = -Infinity;
+	    	for(key in d)
+	    		if(key != "Country" && +d[key] > max)
+	    			max = +d[key];
+
+	    	return max;
+		})
+	}
 
     this.loadData = function (url){
         d3.csv(url+".csv", function(error, data) {
             self.data = data;
 
+            // Change the coding of the x domain
             x.domain([2000, 2012]);
-            y.domain([0, 9000]);
+            y.domain([0, findMax()]);
 
             //remove old axis otherwise they will be duplicated
             svg.select(".x.axis").remove(xAxis);
@@ -47,51 +60,59 @@ function ld(){
 
     this.draw = function()
     { 
-		// create a line function that can convert data[] into x and y points
-		var line = d3.svg.line()
-			.x(function(d) { 
-				return x(+d["key"]); 
-			})
-			.y(function(d) { 
-				console.log(+d["value"]);
-				return y(+d["value"]);
-			})
-
-			// Add an SVG element with the desired dimensions and margin.
-			var graph = d3.select("#ld")
-			     
 			// Add x axis and title.
-	        graph.append("g")
+	        svg
+	        .append("g")
 	            .attr("class", "x axis")
 	            .attr("transform", "translate(0," + height + ")")
 	            .call(xAxis)
-	            .append("text")
+	        .append("text")
 	            .attr("class", "label")
 	            .attr("x", width)
 	            .attr("y", -6);
 	            
 	        // Add y axis and title.
-	        graph.append("g")
+	        svg
+	        .append("g")
 	            .attr("class", "y axis")
 	            .call(yAxis)
-	           .append("text")
+	        .append("text")
 	            .attr("class", "label")
 	            .attr("transform", "rotate(-90)")
 	            .attr("y", 6)
 	            .attr("dy", ".71em");
 			
-  			for(var i=0; i<self.data.length; i++){
-	  			graph.append("svg:path")
-		  			.attr("d", line(
-		  				d3.entries(self.data[i]).filter(function(d) {
-			  				if(isNaN(d["key"]) || isNaN(d["value"]))
-			  					return false;
-			  				else
-			  					return true;
-		  				}))
+		    var line = d3.svg.line()
+				.x(function(d) { 
+					return x(+d["key"]); 
+				})
+				.y(function(d) { 
+					return y(+d["value"]);
+				})
+
+			svg.selectAll("path").remove();
+
+		    svg
+	        	.selectAll("path")
+	  				.data(self.data)
+	  				.enter()
+	  			.append("path")
+	  				.attr("d", function(dd) { 	
+	  					return line(
+			  				d3.entries(dd).filter(function(d) {
+				  				if(isNaN(d["key"]) || isNaN(d["value"]))
+				  					return false;
+				  				else
+				  					return true;
+			  				}));}
 		  			)
-		  			.attr("stroke", "black")
+		  			.attr("stroke", function() {
+		  				return "rgb(" + 
+		  						Math.floor(Math.random() * 254) + "," +
+		  				        Math.floor(Math.random() * 254) + "," +
+		  				        Math.floor(Math.random() * 254) + ")";
+		  			})
+		  			// Maby dissable in .css
 		  			.attr("fill", "none");
-  			}
     };
 }

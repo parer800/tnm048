@@ -1,4 +1,4 @@
-var sp1 = new sp();
+var sp = new sp();
 var ld = new ld();
 
 var viewModel = {
@@ -24,12 +24,12 @@ var dataViewModel = {
 */
 dataViewModel.selectedChoice.subscribe(function (data){
 	if(typeof data !== 'undefined'){
-		sp1.loadData(data.url);
+		sp.loadData(data.url);
 		ld.loadData(data.url);
 	}
 });
 
-sp1.defineAxis();
+sp.defineAxis();
 ld.defineAxis();
 
 function analyzeChosenData(){
@@ -38,3 +38,19 @@ function analyzeChosenData(){
 
  /*----------------------------------------------------------------------- */
 ko.applyBindings(dataViewModel);
+
+// Should probably be located in other file
+$(document).ready(function () {
+	$('#menu').toggleClass('open');
+	$('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
+    $('.menu, .close').click(function () {
+        $('#menu').toggleClass('open');
+        if ($('#menu').hasClass("open")) {
+            $('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
+
+            
+        } else {
+            $('#menu .close').html("Show <span class='glyphicon glyphicon-resize-vertical'></span>");
+        }
+    })
+});

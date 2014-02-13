@@ -25,19 +25,19 @@ function sp(){
             .orient("left");
     }
 
-    var svg = d3.select("body").append("svg")
-        .attr("id","sp")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+    var svg = d3.select("#sp")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
         .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     this.loadData = function (url){
         d3.csv(url+".csv", function(error, data) {
             self.data = data;
 
-            x.domain([-200, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
-            y.domain([-200, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
+            x.domain([0, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
+            y.domain([0, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
 
             //remove old axis otherwise they will be duplicated
             svg.select(".x.axis").remove(xAxis);
@@ -50,20 +50,22 @@ function sp(){
     this.draw = function()
     { 
         // Add x axis and title.
-        svg.append("g")
+        svg
+        .append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis)
-            .append("text")
+        .append("text")
             .attr("class", "label")
             .attr("x", width)
             .attr("y", -6);
             
         // Add y axis and title.
-        svg.append("g")
+        svg
+        .append("g")
             .attr("class", "y axis")
             .call(yAxis)
-           .append("text")
+        .append("text")
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
@@ -73,10 +75,9 @@ function sp(){
         var dots = svg.selectAll(".dot")
         dots.remove();
 
-            svg.selectAll(".dot")
+        svg.selectAll(".dot")
             .data(self.data)
             .enter()
-
             .append("circle")
             .filter(function(d){ 
 		    	var bool = true;
@@ -86,12 +87,7 @@ function sp(){
 		    	return bool; 
 	    	})
             .attr("class", "dot")
-            .attr("fill", function(d) {
-            	if(d["Country"] == "United States")
-            		return "blue";
-            	else
-            		return "red";
-            })
+            .attr("fill", "red")
             .attr("cx", function(d) {
                 return +x(d[xkey]);
             })
