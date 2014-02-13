@@ -39,9 +39,14 @@ function sp(){
     this.loadData = function (url){
         d3.csv(url+".csv", function(error, data) {
             self.data = data;
-            console.log(self.data);
+            //console.log(self.data);
             x.domain([-200, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
             y.domain([-200, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
+
+            //remove old axis otherwise they will be duplicated
+            svg.select(".x.axis").remove(xAxis);
+            svg.select(".y.axis").remove(yAxis);
+
             self.draw();
         });
 
@@ -71,11 +76,13 @@ function sp(){
             .attr("dy", ".71em");
             
         // Add the scatter dots.
-
+        //Remove current dots
         var dots = svg.selectAll(".dot")
-            .data(self.data);
+        dots.remove();
 
-            dots.enter()
+            svg.selectAll(".dot")
+            .data(self.data)
+            .enter()
             .append("circle")
             .filter(function(d){ 
 		    	var bool = true;
@@ -99,7 +106,7 @@ function sp(){
             })
             .attr("r", 3);
 
-            dots.exit().remove();
+            //dots.exit().remove();
 
         // How do you change font size? 
         svg.append("text")

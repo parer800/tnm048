@@ -13,10 +13,6 @@ var DataFile = function (datatype, url){
 
 
 var dataViewModel = {
-/*	self.availableData = [
-		{dataFile: "Oil consumption", location: 'url_oil'},
-		{dataFile: "Cole consumption", location: 'url_cole'}
-	];*/
 		//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
 		availableData : [
 		new DataFile("oil","data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
@@ -32,12 +28,12 @@ var dataViewModel = {
 dataViewModel.selectedChoice.subscribe(function (data){
 	if(typeof data !== 'undefined'){
 		console.log(data.url);
-		sp1.defineAxis();
+		
 		sp1.loadData(data.url);
 		
 	}
 });
-
+sp1.defineAxis();
 
 function analyzeChosenData(){
 
