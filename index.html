@@ -1,9 +1,17 @@
 <head>
 	<link rel="stylesheet" href="css/sp.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-
+	<div id="row">
+		<div id="menu" class=".col-md-1"></div>
+	</div>
+	<div id="row">
+		<div id="ld"></div>
+		<div id="sp"></div>
+	</div>
 	<select data-bind="options: availableData, optionsText: 'datatype', value: selectedChoice, optionsCaption: 'select data input...'"></select>
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/knockout-3.0.0.js"></script>
