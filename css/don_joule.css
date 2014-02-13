@@ -1,4 +1,6 @@
 #menu{
+    min-height: 2em;
+    display: table;
     position: relative;
     background-color: #3f4642;
     width: 100%;
@@ -12,6 +14,21 @@
 }
 #menu.open{
     height: 20em;
+
+}
+#middle{
+        display: table-cell;
+    vertical-align: middle;
+}
+#energy-sources{
+    margin-left: auto;
+    margin-right:auto;
+    border: 2px solid black;
+    width: 50%;
+    min-height: 8em;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding:15px;
 }
 
 .close{
@@ -25,3 +42,35 @@
     width: 100%;
     border: 1px solid black;
 }
+#energy-sources{
+    background-color: #454746;
+    display: block;
+}
+#energy-sources.close{
+    display: none;
+}
+#glyphs{
+    text-align:center;
+}
+
+.glyph{
+    display: inline-block;
+    width: 120px;
+    margin: 10px;
+    text-align: center;
+    vertical-align: top;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #FFFFFF;
+    cursor: pointer;
+}
+.glyph-icon{
+    padding: 10px;
+    display: block;
+    font-family: "Flaticon";
+    font-size: 64px;
+    line-height: 1;
+}
+.glyph-icon:before{
+    content: attr(data-icon);
+}
+

@@ -1,0 +1,64 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("../fonts/flaticon.eot");
+	src: url("../fonts/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../fonts/flaticon.woff") format("woff"),
+	url("../fonts/flaticon.ttf") format("truetype"),
+	url("../fonts/flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}.flaticon-barrel:before {
+	content: "\e000";
+}
+.flaticon-bio1:before {
+	content: "\e001";
+}
+.flaticon-bio3:before {
+	content: "\e002";
+}
+.flaticon-bolt1:before {
+	content: "\e003";
+}
+.flaticon-eco37:before {
+	content: "\e004";
+}
+.flaticon-eco6:before {
+	content: "\e005";
+}
+.flaticon-eco7:before {
+	content: "\e006";
+}
+.flaticon-energy2:before {
+	content: "\e007";
+}
+.flaticon-green3:before {
+	content: "\e008";
+}
+.flaticon-oil:before {
+	content: "\e009";
+}
+.flaticon-oil5:before {
+	content: "\e00a";
+}
+.flaticon-renewable:before {
+	content: "\e00b";
+}
+.flaticon-solar2:before {
+	content: "\e00c";
+}
+.flaticon-wheelbarrow1:before {
+	content: "\e00d";
+}
+.flaticon-wind17:before {
+	content: "\e00e";
+}
+.flaticon-wind2:before {
+	content: "\e00f";
+}
