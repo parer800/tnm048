@@ -1,4 +1,5 @@
 var sp1 = new sp();
+var ld = new ld();
 
 var viewModel = {
 	foo : ko.observable("observer")
@@ -23,10 +24,13 @@ var dataViewModel = {
 */
 dataViewModel.selectedChoice.subscribe(function (data){
 	if(typeof data !== 'undefined'){
-		sp1.defineAxis();
 		sp1.loadData(data.url);
+		ld.loadData(data.url);
 	}
 });
+
+sp1.defineAxis();
+ld.defineAxis();
 
 function analyzeChosenData(){
 

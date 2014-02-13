@@ -38,6 +38,11 @@ function sp(){
 
             x.domain([-200, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
             y.domain([-200, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
+
+            //remove old axis otherwise they will be duplicated
+            svg.select(".x.axis").remove(xAxis);
+            svg.select(".y.axis").remove(yAxis);
+
             self.draw();
         });
     };
@@ -58,17 +63,20 @@ function sp(){
         svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
-            .append("text")
+           .append("text")
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
             .attr("y", 6)
             .attr("dy", ".71em");
             
-        // Add the scatter dots.
+        //Remove current dots
         var dots = svg.selectAll(".dot")
-            .data(self.data, function(d) { return d["Country"]; });
+        dots.remove();
 
-        dots.enter()
+            svg.selectAll(".dot")
+            .data(self.data)
+            .enter()
+
             .append("circle")
             .filter(function(d){ 
 		    	var bool = true;
@@ -109,6 +117,6 @@ function sp(){
             .attr("y", 0)
             .text("Employment rate (%)")
             .attr("font-family", "sans-serif")
-            .attr("font-size", "11px");
+            .attr("font-size", "11px"); 
     };
 }
