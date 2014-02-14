@@ -2,9 +2,6 @@
 var sp1 = new sp();
 
 /* Knockout setup */
-var viewModel = {
-	foo : ko.observable("observer")
-};
 
 var DataFile = function (datatype, url){
 	this.datatype = datatype;
@@ -41,7 +38,7 @@ function analyzeChosenData(){
 
 
  /*----------------------------------------------------------------------- */
-ko.applyBindings(dataViewModel);
+ko.applyBindings(dataViewModel, document.getElementById('container'));
 
 
 
