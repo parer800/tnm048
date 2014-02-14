@@ -42,7 +42,7 @@ function sp(){
             //remove old axis otherwise they will be duplicated
             svg.select(".x.axis").remove(xAxis);
             svg.select(".y.axis").remove(yAxis);
-
+            
             self.draw();
         });
     };

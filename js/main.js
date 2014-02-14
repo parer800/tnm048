@@ -1,20 +1,23 @@
 var sp = new sp();
 var ld = new ld();
+var dh = new dataHandler();
+var dataTable;
 
 var viewModel = {
 	foo : ko.observable("observer")
 };
 
-var DataFile = function (datatype, url){
-	this.datatype = datatype;
+var DataFile = function (type, subtype, url){
+	this.type = type;
+	this.subtype = subtype;
 	this.url = url; 
 };
 
 var dataViewModel = {
-		//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
-		availableData : [
-		new DataFile("oil","data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
-		new DataFile("coal","data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day)")
+	//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
+	availableData : [
+		new DataFile("oil", "supply", "data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
+		new DataFile("coal", "consumption", "data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day)")
 	],
 	selectedChoice: ko.observable() // Inget valt från början
 };
@@ -22,15 +25,17 @@ var dataViewModel = {
 /*
 		Suscribe on selected data change
 */
-dataViewModel.selectedChoice.subscribe(function (data){
-	if(typeof data !== 'undefined'){
-		sp.loadData(data.url);
-		ld.loadData(data.url);
+
+dataViewModel.selectedChoice.subscribe(function (dataFile){
+	if(typeof dataFile !== 'undefined'){ 
+		sp.loadData(dataFile.url);
+		//ld.loadData(data.url);
+		dh.loadData(dataFile);
 	}
 });
 
 sp.defineAxis();
-ld.defineAxis();
+//ld.defineAxis(); 
 
 function analyzeChosenData(){
 
@@ -56,3 +61,4 @@ $(document).ready(function () {
         }
     })
 });
+
