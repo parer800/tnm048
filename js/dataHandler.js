@@ -5,8 +5,7 @@ function dataHandler(){
 	self.dataTable = {};
 	self.dataFiles = {};
 
-
-
+	///// NOT WORKING
 	this.isLoaded = function(dataFile){
 		if(self.dataTable[dataFile.type] === undefined || 
 		   self.dataTable[dataFile.type][dataFile.subtype] === undefined)
@@ -19,6 +18,8 @@ function dataHandler(){
 		if(self.isLoaded)
 			return self.dataTable[dataFile.type][dataFile.subtype];
 	}
+	////////
+
 
 	this.loadData = function(type, callback){
 	
@@ -29,7 +30,7 @@ function dataHandler(){
 
 			for(key in self.dataFiles[type]){
 				var url = self.dataFiles[type][key];
-	
+
 	        	q.defer(function(args, cb){
 	        		d3.csv(args[1], function(error, data) {
 			 			cb(error, [args[0], data]);

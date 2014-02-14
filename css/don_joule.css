@@ -51,6 +51,7 @@
 }
 #glyphs{
     text-align:center;
+    
 }
 
 .glyph{
@@ -62,6 +63,10 @@
     border-radius: 10px;
     box-shadow: 0 0 5px #FFFFFF;
     cursor: pointer;
+    color:white;
+}
+.selected{
+    color:green;
 }
 .glyph-icon{
     padding: 10px;
@@ -70,7 +75,5 @@
     font-size: 64px;
     line-height: 1;
 }
-.glyph-icon:before{
-    content: attr(data-icon);
-}
+
 

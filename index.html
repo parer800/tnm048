@@ -11,24 +11,11 @@
 		<div id="menu" class="col-md-1">
 			<div id="middle" class="row">
 		      <div id="energy-sources">
-		      <div id="glyphs">
-			      	  <div class="glyph">
-					      <div class="glyph-icon" data-icon="&#xe00a;"></div>
-					      <div class="class-name">Oil</div>
-				      </div>
-			      	  <div class="glyph">
-					      <div class="glyph-icon" data-icon="&#xe00d;"></div>
-					      <div class="class-name">Coal</div>
-				      </div>
-			      	  <div class="glyph">
-					      <div class="glyph-icon" data-icon="&#xe001;"></div>
-					      <div class="class-name">Natural Gas</div>
-				      </div>
-			      	  <div class="glyph">
-					      <div class="glyph-icon" data-icon="&#xe00b;"></div>
-					      <div class="class-name">Renewables</div>
-				      </div>
-			      </div>
+		      <div id="glyphs" data-bind="foreach: glyphs">
+		      <div class="glyph" data-bind="click: toggleActive, css : {'selected':isActive}">
+		      	<div data-bind="attr:{'class': $data.str}"></div>
+		      	<div class="class-name" data-bind="text:$data.glyphName"></div>
+		      </div>
 		      </div>
 			</div>
 			<button type="button" class="btn btn-default close">Hide</button>
@@ -40,15 +27,19 @@
 			<div id="ld" class="col-md-6"></div>
 			<div id="sp" class="col-md-6"></div>
 		</div>
+
 		<select data-bind="options: availableData, optionsText: 'type', value: selectedChoice, optionsCaption: 'select data input...'"></select>
 
 	</div>
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/knockout-3.0.0.js"></script>
 	<script src="js/d3.min.js"></script>
-	<script src="js/queue.v1.min.js"></script>
 	<script src="js/dataHandler.js"></script>
 	<script src="js/sp.js"></script>
 	<script src="js/ld.js"></script>
+	<script src="js/glyph.js"></script>
+	<script src="js/observer.js"></script>  
 	<script src="js/main.js"></script> 
+	
+
 </body>
