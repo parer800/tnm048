@@ -1,51 +1,46 @@
+var sp = new sp();
+var ld = new ld();
+var dh = new dataHandler();
+var dataTable;
 
-var sp1 = new sp();
-
-/* Knockout setup */
-
-var DataFile = function (datatype, url){
-	this.datatype = datatype;
+var DataFile = function (type, subtype, url){
+	this.type = type;
+	this.subtype = subtype;
 	this.url = url; 
 };
 
-
 var dataViewModel = {
-		//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
-		availableData : [
-		new DataFile("oil","data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
-		new DataFile("coal","data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day)")
+	//Skulle kunna vara 'observableArray' men vi behöver inte veta ifall filnamnen ändras eftersom de är statiska
+	availableData : [
+		new DataFile("oil", "supply", "data/Total_Oil_Supply_(Thousand_Barrels_Per_Day)"),
+		new DataFile("coal", "consumption", "data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day)")
 	],
 	selectedChoice: ko.observable() // Inget valt från början
-
 };
 
 /*
 		Suscribe on selected data change
 */
-dataViewModel.selectedChoice.subscribe(function (data){
-	if(typeof data !== 'undefined'){
-		console.log(data.url);
-		
-		sp1.loadData(data.url);
-		
+
+dataViewModel.selectedChoice.subscribe(function (dataFile){
+	if(typeof dataFile !== 'undefined'){ 
+		sp.loadData(dataFile.url);
+		//ld.loadData(data.url);
+		dh.loadData(dataFile);
 	}
 });
-sp1.defineAxis();
+
+sp.defineAxis();
+//ld.defineAxis(); 
 
 function analyzeChosenData(){
 
 }
 
-
  /*----------------------------------------------------------------------- */
 ko.applyBindings(dataViewModel, document.getElementById('container'));
 
-
-
-
-
 // Should probably be located in other file
-
 $(document).ready(function () {
 	$('#menu').toggleClass('open');
 	$('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
@@ -62,3 +57,4 @@ $(document).ready(function () {
         }
     })
 });
+
