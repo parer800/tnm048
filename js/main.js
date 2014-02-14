@@ -1,6 +1,7 @@
 var sp = new sp();
 var ld = new ld();
 var dh = new dataHandler();
+var observer = new observer();
 var dataTable;
 
 var DataFile = function (type, subtype, url){

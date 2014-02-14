@@ -20,10 +20,11 @@ var Glyph = function(id, str, glyphName){
 	self.toggleActive = function(data,event){
 		self.isActive(!self.isActive());
 		if(self.isActive()){
-
+			console.log(this.glyphName);
 			//loadData(this.glyphName, updateSubscription):
 			//Update data structure
 			//Notify observer
+			dh.loadData(this.glyphName, updateSubscription);
 		}
 		else{
 
@@ -54,7 +55,4 @@ var glyphViewModel = {
 
 ko.applyBindings(glyphViewModel, document.getElementById("glyphs"));
 
-glyphChangeStateArray.subscribe(function(changes){
-	console.log("INSIDE OBSERVER");
-	console.log(changes);
-});
+

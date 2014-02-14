@@ -17,7 +17,7 @@ function dataHandler(){
 			return self.dataTable[dataFile.type][dataFile.subtype];
 	}
 
-	this.loadData = function(dataFile){
+	this.loadData = function(dataFile, callback){
 	
 		if(self.dataTable[dataFile.type] === undefined)
 			self.dataTable[dataFile.type] = {};
@@ -25,6 +25,9 @@ function dataHandler(){
 		if(self.dataTable[dataFile.type][dataFile.subtype] === undefined)
 			d3.csv(dataFile.url + ".csv", function(error, data) {
 		 		self.dataTable[dataFile.type][dataFile.subtype] = data;
+		 		callback(dataFile); // Add dataFile to glyphChangeStateArray in glyph.js so the observer's subscription gets the information
         	});
+		else
+			callback(dataFile); // same as above but reuses the existing data
 	}
 }
