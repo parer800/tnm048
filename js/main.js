@@ -25,17 +25,16 @@ var dataViewModel = {
 /*
 		Suscribe on selected data change
 */
+function callback(){
+	console.log("callback");
+	console.log(dh.dataTable);
+}
 
 dataViewModel.selectedChoice.subscribe(function (dataFile){
 	if(typeof dataFile !== 'undefined'){ 
-		sp.loadData(dataFile.url);
-		//ld.loadData(data.url);
-		dh.loadData(dataFile);
+		dh.loadData(dataFile.type, callback);
 	}
 });
-
-sp.defineAxis();
-//ld.defineAxis(); 
 
 function analyzeChosenData(){
 
