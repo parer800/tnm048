@@ -1,5 +1,3 @@
-var sp = new sp();
-var ld = new ld();
 var dh = new dataHandler();
 var observer = new observer();
 
@@ -11,7 +9,7 @@ function analyzeChosenData(){
 }
 
  /*----------------------------------------------------------------------- */
-ko.applyBindings(dataViewModel, document.getElementById('container'));
+//ko.applyBindings(dataViewModel, document.getElementById('container'));
 
 // Should probably be located in other file
 $(document).ready(function () {

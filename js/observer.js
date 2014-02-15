@@ -3,8 +3,19 @@ function observer(){
 	var self = this;
 	self.model = new ViewModel(2000,2013);
 
+	self.sp = new sp();
+	self.ld = new ld();
 
+	glyphChangeStateArray.subscribe(function(type){
+		// update graphs
+		updateGraphs(type);
+	});
 
+	function spUpdate(type){
+		self.sp.data = dh.getDataSubtype(type, "");
+		self.sp.defineAxis();
+		self.sp.draw();
+	}
 
 	glyphChangeStateArray.subscribe(function(changes){
 		console.log("INSIDE OBSERVER");
@@ -12,7 +23,32 @@ function observer(){
 		self.model.setMinValue(1978);
 		ko.applyBindings(self.model, document.getElementById("slider"));
 	});
+
+
+    function ldUpdate(type){
+        self.ld.data = dh.getDataSubtype(type, "");
+        self.ld.defineAxis();
+        self.ld.draw();
+    }
+
+    function updateGraphs(type){
+        spUpdate(type);
+        ldUpdate(type);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 ko.bindingHandlers.slider = {
@@ -64,4 +100,6 @@ ViewModel = function(minyear, maxyear) {
     }
 }
 //ko.applyBindings(viewModel);
+
+
 

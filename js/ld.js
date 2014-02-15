@@ -1,7 +1,7 @@
 function ld(){
 
     var self = this;
-    self.data;
+    self.data = null;
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
@@ -15,7 +15,6 @@ function ld(){
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	function findMax() {
-		console.log(self.data);
 		return d3.max(self.data, function(d) { 
 
 	    	var max = -Infinity;
@@ -46,18 +45,6 @@ function ld(){
             .scale(y)
             .orient("left");
     }
-
-    this.loadData = function (url){
-        d3.csv(url+".csv", function(error, data) {
-            self.data = data;
-
-            // Change the coding of the x domain
-            //x.domain([2000, 2012]);
-            //y.domain([0, findMax()]);
-
-            self.draw();
-        });
-    };
 
     this.draw = function()
     { 
