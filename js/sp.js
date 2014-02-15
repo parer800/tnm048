@@ -23,6 +23,9 @@ function sp(){
         yAxis = d3.svg.axis()
             .scale(y)
             .orient("left");
+
+        x.domain([0, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
+        y.domain([0, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
     }
 
     var svg = d3.select("#sp")
@@ -32,23 +35,13 @@ function sp(){
         .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    this.loadData = function (url){
-        d3.csv(url+".csv", function(error, data) {
-            self.data = data;
-
-            x.domain([0, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
-            y.domain([0, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
-
-            //remove old axis otherwise they will be duplicated
-            svg.select(".x.axis").remove(xAxis);
-            svg.select(".y.axis").remove(yAxis);
-            
-            self.draw();
-        });
-    };
-
     this.draw = function()
     { 
+        //remove old plot
+        svg.select(".x.axis").remove(xAxis);
+        svg.select(".y.axis").remove(yAxis);
+        svg.selectAll(".dot").remove();
+
         // Add x axis and title.
         svg
         .append("g")
@@ -71,10 +64,6 @@ function sp(){
             .attr("y", 6)
             .attr("dy", ".71em");
             
-        //Remove current dots
-        var dots = svg.selectAll(".dot")
-        dots.remove();
-
         svg.selectAll(".dot")
             .data(self.data)
             .enter()

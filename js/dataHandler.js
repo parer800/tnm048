@@ -6,31 +6,68 @@ function dataHandler(){
 	self.dataFiles = {};
 
 	///// NOT WORKING
-	this.isLoaded = function(dataFile){
+	this.isLoaded = function(type){
 		if(self.dataTable[dataFile.type] === undefined || 
 		   self.dataTable[dataFile.type][dataFile.subtype] === undefined)
 			return false;
 		
 		return true;
 	}
+	////////////////
 
-	this.getData = function(dataFile){
-		if(self.isLoaded)
-			return self.dataTable[dataFile.type][dataFile.subtype];
+	this.getData = function(type){
+
+		return self.dataTable[type];
 	}
-	////////
 
+	this.getDataSubtype = function(type, subtype){
+		// Remove this
+		if(type == "oil")
+			subtype = "supply";
+		else
+			subtype = "consumption";
 
-	this.loadData = function(type, callback){
+		////////////////////////////
+		return self.dataTable[type][subtype];
+	}
+
+	this.getMinMaxYearSubtype = function(type, subtype){
+		type = "oil";
+		subtype = "consumption";
+		var min = Infinity, max = -Infinity;
+
+		for(key in self.dataTable[type][subtype][0]){
+			if(!isNaN(key)){
+				var number = +key;
+				min = Math.min(min, number);
+				max = Math.max(max, number);
+			}
+		}
+		return [min, max];
+	}
+
+	this.getMinMaxYear = function(type){
+		type = "oil";
+		var result = [Infinity, -Infinity], tmp;
+
+		for(key in self.dataTable[type]){
+			tmp = self.getMinMaxYearSubtype(type, key);
+			result[0] = Math.min(result[0], tmp[0]);
+			result[1] = Math.max(result[1], tmp[1]);
+		}
+
+		return result;
+	}
 	
+	this.loadData = function(type, callback){
+
 		if(self.dataTable[type] === undefined) {
 			self.dataTable[type] = {};
 
 			var q = queue();
-
 			for(key in self.dataFiles[type]){
 				var url = self.dataFiles[type][key];
-
+				
 	        	q.defer(function(args, cb){
 	        		d3.csv(args[1], function(error, data) {
 			 			cb(error, [args[0], data]);
@@ -40,7 +77,7 @@ function dataHandler(){
 		    q.awaitAll(function(error, result) {
 		    	for(var i=0; i<result.length; i++)
 		    		self.dataTable[type][result[i][0]] = result[i][1];
-
+		    	
     			callback(type);
     		});
 		} else {
