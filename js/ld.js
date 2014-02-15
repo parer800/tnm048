@@ -14,19 +14,8 @@ function ld(){
         .append("g")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	/*function findMax() {
-		return d3.max(self.data, function(d) { 
-
-	    	var max = -Infinity;
-	    	for(key in d)
-	    		if(key != "Country" && +d[key] > max)
-	    			max = +d[key];
-
-	    	return max;
-		})
-	}*/
-
-	var findMax = function() {
+	function findMax() {
+		console.log(self.data);
 		return d3.max(self.data, function(d) { 
 
 	    	var max = -Infinity;
