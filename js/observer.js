@@ -10,6 +10,15 @@ function observer(){
 		// update graphs
 		updateGraphs(type);
 	});
+    /* MIN YEAR SUBSCRIPTION */
+    self.model.min.subscribe(function(type){
+        console.log("Changed MIN year");
+    });
+    /* MAX YEAR SUBSCRIPTION */
+    self.model.max.subscribe(function(type){
+        console.log("Changed MAX year");
+    });
+
 
 	function spUpdate(type){
 		self.sp.data = dh.getDataSubtype(type, "");
