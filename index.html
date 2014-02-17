@@ -20,8 +20,18 @@
 		      </div>
 			</div>
 			<div id="slider" >
-<input data-bind="value: min" /><input data-bind="value: max" /><div data-bind="slider: { min: min, max: max }, sliderOptions: {min: min(), max: max(), step: 1}"></div>
-			</div>
+<div data-bind="slider: { min: min, max: max }, sliderOptions: {min: min(), max: max(), step: 1}">
+</div>
+<div id="yearSpecifier" class="btn-group" data-toggle="buttons">
+	<label class="btn btn-primary" style="z-index:1" data-bind="click : setLowerYear(min())">
+	    <input type="checkbox" ><span data-bind="text: 'Year - ' + min()"></span>
+	</label>
+	<label class="btn btn-primary" style="z-index:2"data-bind="click : setUpperYear(max())">
+	    <input class = "pull-right" type="checkbox"><span data-bind="text: 'Year - ' + max()"></span>
+	</label>
+</div>
+</div>
+
 
 			<button type="button" class="btn btn-default close">Hide</button>
 
@@ -36,6 +46,7 @@
 
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="js/knockout-3.0.0.js"></script>
 	<script src="js/d3.min.js"></script>
 	<script src="js/queue.v1.min.js"></script>
