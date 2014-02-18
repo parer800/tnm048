@@ -27,7 +27,8 @@ function dataHandler(){
 					var country = param["country"][k];
 					output[country] = {};
 					for(key in self.dataTable[type][subtype][country]){
-						if(key >= param["interval"][0] && key <= param["interval"][1])
+						var intKey = +key;
+						if(intKey >= param["interval"][0] && intKey <= param["interval"][1])
 							output[country][key] = self.dataTable[type][subtype][country][key];
 					}
 				}
@@ -52,7 +53,7 @@ function dataHandler(){
 	this.getDataInterval = function(type, subtype, interval){
 
 		var data = self.getDataSubtype(type, subtype);
-		var output = [];
+		var output = {};
 
 		for(var i=0; i<data.length; i++){
 			var value = 0;
