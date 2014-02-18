@@ -2,6 +2,7 @@ function ld(){
 
     var self = this;
     self.data = null;
+    self.interval = [0, 0];
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
@@ -34,7 +35,7 @@ function ld(){
             .range([height, 0]);
 
         // Change the coding of the x domain
-        x.domain([2000, 2012]);
+        x.domain(self.interval);
         y.domain([0, findMax()]);
 
         xAxis = d3.svg.axis()
@@ -92,7 +93,9 @@ function ld(){
   				.attr("d", function(dd) { 	
   					return line(
 		  				d3.entries(dd).filter(function(d) {
-			  				if(isNaN(d["key"]) || isNaN(d["value"]))
+		  					var val = +d["key"];
+			  				if(isNaN(val) || isNaN(d["value"]) 
+			  					|| val < self.interval[0] || val > self.interval[1])
 			  					return false;
 			  				else
 			  					return true;
@@ -105,7 +108,6 @@ function ld(){
 	  				        Math.floor(Math.random() * 254) + "," +
 	  				        Math.floor(Math.random() * 254) + ")";
 	  			})
-	  			// Maby dissable in .css
 	  			.attr("fill", "none");
     };
 }

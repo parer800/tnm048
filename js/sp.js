@@ -2,8 +2,6 @@ function sp(){
 
     var self = this;
     self.data = null;
-    var xkey = "2000";
-    var ykey = "2001";
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
@@ -24,8 +22,8 @@ function sp(){
             .scale(y)
             .orient("left");
 
-        x.domain([0, d3.max(self.data, function(data) { return +data[xkey]; })+200]);
-        y.domain([0, d3.max(self.data, function(data) { return +data[ykey]; })+200]);
+        x.domain([0, d3.max(self.data, function(data) { return +data["value"]; })]);
+        y.domain([0, d3.max(self.data, function(data) { return +data["value"]; })]);
     }
 
     var svg = d3.select("#sp")
@@ -78,10 +76,10 @@ function sp(){
             .attr("class", "dot")
             .attr("fill", "red")
             .attr("cx", function(d) {
-                return +x(d[xkey]);
+                return +x(d["value"]);
             })
             .attr("cy", function(d) {
-                return +y(d[ykey]);
+                return +y(d["value"]);
             })
             .attr("r", 3);
 

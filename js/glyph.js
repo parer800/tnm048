@@ -25,9 +25,7 @@ var Glyph = function(id, str, glyphName){
 			var index = glyphChangeStateArray.indexOf(typeName);
 			var empty = glyphChangeStateArray.splice(index,index+1);
 		}
-	};
-
-	//self.isActive.subscribe(function (value){ console.log("changed value");});		
+	};	
 }
 
 var glyphViewModel = {
