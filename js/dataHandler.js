@@ -28,10 +28,17 @@ function dataHandler(){
 		return output;
 	}
 
-	this.getDataSummedInterval = function(param){
+	this.sumInterval = function(data){
 
-		var data = self.getData(param);
 		var output = {};
+
+		for(country in data){
+			var totalSum = 0;
+			for(year in country){
+				totalSum += +data[country][year];
+			}
+			output[country] = totalSum;
+		}
 
 		return output;
 	}

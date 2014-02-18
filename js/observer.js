@@ -16,7 +16,7 @@ function observer(){
 		dataFilterVaules["interval"] = self.getYearSpan();
 
 		var data = dh.getData(dataFilterVaules);
-		//dh.getDataSummedInterval();
+		console.log(dh.sumInterval(dataFilterVaules));
 
         //Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
