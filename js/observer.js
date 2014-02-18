@@ -10,11 +10,11 @@ function observer(){
 	glyphChangeStateArray.subscribe(function(type){
 		// update graphs
 		updateGraphs(type);
-        console.log("INSIDE OBSERVER");
-        console.log(type);
-        self.slider.sliderViewModel.setMinValue(1978);
+
         //Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
+            self.setMinYear(1999);
+            self.setMaxYear(2012);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
@@ -32,19 +32,17 @@ function observer(){
 
 
         }
+        //changed min year subscription
         //self.slider.sliderViewModel.setLowerYear(self.slider.sliderViewModel.min());
-        
-        console.log("Changed MIN year");
-
     });
     /* MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
-        console.log("Changed MAX year");
+        //changed max year subscription
     });
 
     /* SPECIFIC YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.selectedYears.subscribe(function(years){
-        console.log("specific years SUBSCRIPTION" + years);
+
     });
 
 
@@ -58,6 +56,16 @@ function observer(){
     }
 
 
+    /******************* Set Functions ************************/
+    self.setMinYear = function(minyear){
+        self.slider.sliderViewModel.setMinValue(minyear);
+
+    }
+
+    self.setMaxYear = function(maxyear){
+        self.slider.sliderViewModel.setMaxValue(maxyear);
+
+    }
     /******************* UPDATE GRAPHS ************************/
 
 	function spUpdate(type){

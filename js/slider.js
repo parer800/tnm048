@@ -77,7 +77,7 @@ ko.bindingHandlers.slider = {
 	    	self.min(newMinYear);
 	    }
 	    self.setMaxValue = function(newMaxYear){
-	    	self.min(newMaxYear);
+	    	self.max(newMaxYear);
 	    }
 	    self.setLowerYear = function(first){
 	        console.log("SETLOWERYEAR");
