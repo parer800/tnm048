@@ -17,7 +17,7 @@ ko.bindingHandlers.slider = {
         var sliderValues = ko.utils.unwrapObservable(valueAccessor());
         
         if(sliderValues.min !== undefined) {
-            options.range = true;        
+            options.range = true;
         }        
         
         options.slide = function(e, ui) {
@@ -45,9 +45,6 @@ ko.bindingHandlers.slider = {
     },
     update: function (element, valueAccessor) {
         var sliderValues = ko.toJS(valueAccessor());
-        console.log("update");
-
-
 
         if(sliderValues.min !== undefined) {
             $(element).slider("values", [sliderValues.min, sliderValues.max]);
@@ -80,7 +77,6 @@ ko.bindingHandlers.slider = {
 	    	self.max(newMaxYear);
 	    }
 	    self.setLowerYear = function(first){
-	        console.log("SETLOWERYEAR");
 	        if(self.isLowerActive()){        
 	            self.selectedYears.push(first);
 	            self.selectedYears.sort();
@@ -88,7 +84,7 @@ ko.bindingHandlers.slider = {
 	        else{
 	            self.selectedYears.shift();
 	        }
-	        console.log(self.selectedYears());
+
 	        self.isLowerActive(!self.isLowerActive());
 
 	        //this.selectedYears([first,second]);
@@ -103,7 +99,6 @@ ko.bindingHandlers.slider = {
 	            self.selectedYears.pop();
 	        }
 	        self.isUpperActive(!self.isUpperActive());
-	        console.log(self.selectedYears());
 	        //this.selectedYears([first,second]);
 	    }
 
@@ -139,8 +134,7 @@ function moveUpperIndicator(){
     $(btn).css('left',pos-size);
     var obj_width = $(obj).width();
     var pos = $(obj).position().left;
-    var size = $(btn).width();
-    
+    var size = $(btn).width
     var temp_pos = Math.abs(pos+size);
     if(temp_pos<=width){
         $(btn).css('left',pos-size-obj_width);

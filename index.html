@@ -34,13 +34,15 @@
 
 
 			<button type="button" class="btn btn-default close">Hide</button>
-
 		</div>
 	</div>
 	<div id="container">
-		<div class="row">
+		<div id="row1" class="row">
 			<div id="ld" class="col-md-6"></div>
 			<div id="sp" class="col-md-6"></div>
+		</div>
+		<div id="row2" class="row">
+			<div id="pie" class="col-md-6"></div>
 		</div>
 	</div>
 
@@ -51,12 +53,48 @@
 	<script src="js/d3.min.js"></script>
 	<script src="js/queue.v1.min.js"></script>
 	<script src="js/dataHandler.js"></script>
+	<script src="js/pie.js"></script>
 	<script src="js/sp.js"></script>
 	<script src="js/ld.js"></script>
 	<script src="js/glyph.js"></script>
 	<script src="js/slider.js"></script>
 	<script src="js/observer.js"></script>  
 	<script src="js/main.js"></script> 
-	
 
+<!--This is test code for drag and drop
+	<div id="div1" style="width:350px; height:70px; border:1px solid #aaaaaa;"></div>
+
+	<img id="drag1" src="hemta.jpg" draggable="true" ondragstart="drag(event)" width="350" height="70">
+
+	<script>
+
+		function allowDrop(ev)
+		{
+			ev.preventDefault();
+		}
+
+		function drag(ev)
+		{
+			//ev.dataTransfer.setData("Text",ev.target.id);
+		}
+
+		function drop(ev)
+		{
+			ev.preventDefault();
+			observer.updateGraphs(["oil"]);
+			//var data=ev.dataTransfer.getData("Text");
+			//ev.target.appendChild(document.getElementById(data));
+		}
+
+		function test(){
+			$(".x.axis").on("dragover", allowDrop);
+			$(".x.axis").on("drop", drop);
+
+			$("#div1").on("dragover", allowDrop);
+
+			$("#div1").on("drop", drop);
+		}
+
+	</script>
+-->	
 </body>
