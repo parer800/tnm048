@@ -53,11 +53,15 @@ ko.bindingHandlers.slider = {
             $(element).slider("values", [sliderValues.min, sliderValues.max]);
         } else {
             $(element).slider("value", sliderValues.value);
-        }        
-
+        }
+       /* self.sliderViewModel.setLowerYear(sliderValues.min);
+        self.sliderViewModel.setUpperYear(sliderValues.max);         
+*/
         //Move the buttons that show the years
         moveLowerIndicator();
         moveUpperIndicator();
+
+
     }
 };
 
@@ -76,7 +80,7 @@ ko.bindingHandlers.slider = {
 	    	self.min(newMaxYear);
 	    }
 	    self.setLowerYear = function(first){
-	        
+	        console.log("SETLOWERYEAR");
 	        if(self.isLowerActive()){        
 	            self.selectedYears.push(first);
 	            self.selectedYears.sort();
@@ -104,7 +108,7 @@ ko.bindingHandlers.slider = {
 	    }
 
 	}
-	/************** ******************************************* *****************/
+	/**************************************************************************/
 
 } //*********************** END OF SLIDER CLASS ********************************/
 

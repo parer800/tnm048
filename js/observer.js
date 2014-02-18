@@ -22,6 +22,8 @@ function observer(){
         moveUpperIndicator();
 	});
 
+
+
     /**************** SUBSCRIPTIONS **************************/
 
     /* MIN YEAR SUBSCRIPTION */
@@ -30,6 +32,7 @@ function observer(){
 
 
         }
+        //self.slider.sliderViewModel.setLowerYear(self.slider.sliderViewModel.min());
         
         console.log("Changed MIN year");
 
@@ -44,6 +47,15 @@ function observer(){
         console.log("specific years SUBSCRIPTION" + years);
     });
 
+
+    /****************** RETURN FUNCTIONS***********************/
+
+    self.getSelectedYears = function(){
+        return self.slider.sliderViewModel.selectedYears();
+    }
+    self.getYearSpan = function(){
+        return [self.slider.sliderViewModel.min(), self.slider.sliderViewModel.max()];
+    }
 
 
     /******************* UPDATE GRAPHS ************************/
@@ -67,8 +79,3 @@ function observer(){
 
 
 }
-
-
-
-
-
