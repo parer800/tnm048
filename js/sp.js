@@ -1,18 +1,24 @@
 function sp(){
 
     var self = this;
-    self.data = null;
+    self.xData = null;
+    self.yData = null;
+
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
         height = 600 - margin.top - margin.bottom;
 
-    this.defineAxis = function(){
+    this.defineAxis = function() {
         x = d3.scale.linear()
-            .range([0, width]);
+            .range([0, width])
+            .domain([d3.min(self.xData, function(data) { return data["value"]; }), 
+                     d3.max(self.xData, function(data) { return data["value"]; })]);
 
         y = d3.scale.linear()
-            .range([height, 0]);
+            .range([height, 0])
+            .domain([d3.min(self.yData, function(data) { return data["value"]; }), 
+                     d3.max(self.yData, function(data) { return data["value"]; })]);
 
         xAxis = d3.svg.axis()
             .scale(x)
@@ -21,9 +27,6 @@ function sp(){
         yAxis = d3.svg.axis()
             .scale(y)
             .orient("left");
-
-        x.domain([0, d3.max(self.data, function(data) { return +data["value"]; })]);
-        y.domain([0, d3.max(self.data, function(data) { return +data["value"]; })]);
     }
 
     var svg = d3.select("#sp")
@@ -33,7 +36,11 @@ function sp(){
         .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    this.draw = function()
+    function filterTest(d){
+
+    }
+
+    this.draw = function(data)
     { 
         //remove old plot
         svg.select(".x.axis").remove(xAxis);
@@ -63,16 +70,37 @@ function sp(){
             .attr("dy", ".71em");
             
         svg.selectAll(".dot")
-            .data(self.data)
+            .data(data)
             .enter()
             .append("circle")
-            .filter(function(d){ 
+            /*.filter(function(d){ 
 		    	var bool = true;
 		    	for(key in d)
 		    		if(isNaN(d[key]) && key != "Country")
 		    			bool = false;
 		    	return bool; 
-	    	})
+	    	})*/
+            .attr("class", "dot")
+            .attr("fill", "red")
+            .attr("cx", function(d) {
+                return +x(d["value"][0]);
+            })
+            .attr("cy", function(d) {
+                return +y(d["value"][1]);
+            })
+            .attr("r", 3);
+
+      /*  svg.selectAll(".dot")
+            .data()
+            .enter()
+            .append("circle")
+            .filter(function(d){ 
+                var bool = true;
+                for(key in d)
+                    if(isNaN(d[key]) && key != "Country")
+                        bool = false;
+                return bool; 
+            })
             .attr("class", "dot")
             .attr("fill", "red")
             .attr("cx", function(d) {
@@ -81,7 +109,7 @@ function sp(){
             .attr("cy", function(d) {
                 return +y(d["value"]);
             })
-            .attr("r", 3);
+            .attr("r", 3);*/
 
         // How do you change font size? 
         svg.append("text")

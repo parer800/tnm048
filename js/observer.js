@@ -11,22 +11,23 @@ function observer(){
 	glyphChangeStateArray.subscribe(function(type){
 	
 		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							     "interval" : ["2001", "2011"], "country" : ["Sweden"]};
+							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
 
-		dataFilterVaules["interval"] = self.getYearSpan();
-
+		//dataFilterVaules["interval"] = self.getYearSpan();
+		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
+		dataFilterVaules["type"] = [type];
 		var data = dh.getData(dataFilterVaules);
-		console.log(dh.sumInterval(dataFilterVaules));
 
+/*
         //Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
         moveLowerIndicator();
-        moveUpperIndicator();
+        moveUpperIndicator();*/
 
-        //self.updateGraphs(data);
+        self.updateGraphs(data);
 	});
 
     /**************** SUBSCRIPTIONS **************************/
@@ -55,33 +56,37 @@ function observer(){
     }
 
     /******************* UPDATE GRAPHS ************************/
-	function spUpdate(type){
-		//self.sp.data = dh.getDataSubtype(type, "");
-		if(type.length == 1){
-			self.sp.data = dh.getDataInterval(type, "", [2002, 2011]);
-			self.sp.defineAxis();
-			self.sp.draw();
-		}
+	function spUpdate(data){
+		/*var xChange = true; var yChange = false;
+
+		if(xChange)
+			self.sp.xData = dh.sumInterval(data);
+		if(yChange)
+			self.sp.yData = dh.sumInterval(data);*/
+
+		self.sp.xData = dh.sumInterval(data);
+		self.sp.yData = dh.sumInterval(data);
+		self.sp.defineAxis();
+		self.sp.draw(dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData));
 	}
 
-	function ldUpdate(type){
-		if(type.length == 1){
-			self.ld.data = dh.getDataSubtype(type, "");
-			self.ld.interval = [2002, 2011];
-			self.ld.defineAxis();
-			self.ld.draw();
-		}
+	function ldUpdate(data){
+		
+		self.ld.data = data;
+		self.ld.interval = [2001, 2011];
+		self.ld.defineAxis();
+		self.ld.draw();
 	}
 
-	function pieUpdate(type){
-		//self.pie.data = dh.getDataInterval(type, "", [2002, 2011]);
-		//self.pie.draw();
+	function pieUpdate(data){
+		self.pie.data = dh.sumInterval(data);
+		self.pie.draw();
 	}
 
-	self.updateGraphs = function (type){
-		spUpdate(type);
-		ldUpdate(type);
-		pieUpdate(type);
+	self.updateGraphs = function (data){
+		spUpdate(data);
+		ldUpdate(data);
+		pieUpdate(data);
 	}
 }
 

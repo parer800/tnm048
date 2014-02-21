@@ -3,6 +3,7 @@ function ld(){
     var self = this;
     self.data = null;
     self.interval = [0, 0];
+
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
@@ -15,28 +16,30 @@ function ld(){
         .append("g")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	function findMax() {
-		return d3.max(self.data, function(d) { 
+	function findMax() { 
+		return d3.max(self.data, function(data) { 
+	    	return d3.max(data["value"], function(data) {
+	    		return data[1];
+	    	});
+		});
+	}
 
-	    	var max = -Infinity;
-	    	for(key in d)
-	    		if(key != "Country" && +d[key] > max)
-	    			max = +d[key];
-
-	    	return max;
-		})
+	function findMin() { 
+		return d3.min(self.data, function(data) { 
+	    	return d3.min(data["value"], function(data) {
+	    		return data[1];
+	    	});
+		});
 	}
 
 	this.defineAxis = function(){
         x = d3.scale.linear()
-            .range([0, width]);
+            .range([0, width])
+            .domain(self.interval);
 
         y = d3.scale.linear()
-            .range([height, 0]);
-
-        // Change the coding of the x domain
-        x.domain(self.interval);
-        y.domain([0, findMax()]);
+            .range([height, 0])
+            .domain([findMin(), findMax()]);
 
         xAxis = d3.svg.axis()
             .scale(x)
@@ -77,11 +80,11 @@ function ld(){
 	            .attr("dy", ".71em");
 			
 	    var line = d3.svg.line()
-			.x(function(d) { 
-				return x(+d["key"]); 
+			.x(function(data) { 
+				return x(data[0]); 
 			})
-			.y(function(d) { 
-				return y(+d["value"]);
+			.y(function(data) { 
+				return y(data[1]);
 			})
 
 	    svg
@@ -89,19 +92,9 @@ function ld(){
   				.data(self.data)
   				.enter()
   			.append("path")
-  				// Possible to find a better solution
-  				.attr("d", function(dd) { 	
-  					return line(
-		  				d3.entries(dd).filter(function(d) {
-		  					var val = +d["key"];
-			  				if(isNaN(val) || isNaN(d["value"]) 
-			  					|| val < self.interval[0] || val > self.interval[1])
-			  					return false;
-			  				else
-			  					return true;
-		  				}));}
-	  			)
-	  			// Temporary using random colors
+  				.attr("d", function(data) {
+  					return line(data["value"]);
+  				})
 	  			.attr("stroke", function() {
 	  				return "rgb(" + 
 	  						Math.floor(Math.random() * 254) + "," +

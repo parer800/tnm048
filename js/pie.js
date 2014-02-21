@@ -2,50 +2,38 @@ function pie(){
 	var self = this;
 	self.data = null; 
 
-	var w = 300,                        //width
-    h = 300,                            //height
-    r = 100,                            //radius
-    color = d3.scale.category20c();     //builtin range of colors
+	var w = 300,                        
+    h = 300,                           
+    r = 100,                            
+    color = d3.scale.category20c();     
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 80},
+    var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = 600 - margin.right - margin.left,
         height = 600 - margin.top - margin.bottom;
- 
-    data = [{"label":"one", "value":20}, 
-            {"label":"two", "value":50}, 
-            {"label":"three", "value":30}];
-    
-    var vis = d3.select("#pie")
-        .append("svg:svg")              //create the SVG element inside the <body>
-        .data([data])                   //associate our data with the document
-            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
-            .attr("height", h)
-        .append("svg:g")                //make a group to hold our pie chart
-            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
  
     var svg = d3.select("#pie")
 	    .append("svg")
 	        .attr("width", width + margin.left + margin.right)
 	        .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
-	        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
-    var arc = d3.svg.arc()              //this will create <path> elements for us using arc data
+    var arc = d3.svg.arc()             
         .outerRadius(r);
  
-    var pie = d3.layout.pie()           //this will create arc data for us given a list of values
-        .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
+    var pie = d3.layout.pie()           
+        .value(function(d) { return d["value"]; });    
  
  	this.draw = function(){
 
-	    var arcs = svg.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
-	        .data(pie(self.data))                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties) 
-	        .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
-	            .append("g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
-	                .attr("class", "slice")    //allow us to style things in the slices (like text)
+	    var arcs = svg.selectAll("g.slice")     
+	        .data(pie(self.data))                           
+	        .enter()                          
+	            .append("g")               
+	                .attr("class", "slice")    
 	        	.append("path")
-	                .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
-	                .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+	                .attr("fill", function(d, i) { return color(i); } ) 
+	                .attr("d", arc);                                
 	 /*
 	        arcs.append("svg:text")                                     //add a label to each slice
 	                .attr("transform", function(d) {                    //set the label's origin to the center of the arc
