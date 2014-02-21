@@ -29,3 +29,6 @@ $(document).ready(function () {
     })
 });
 
+
+window.onresize=function(){showYearSpan();}; //located in slider.js
+

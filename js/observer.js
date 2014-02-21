@@ -26,8 +26,8 @@ function observer(){
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
-        moveLowerIndicator();
-        moveUpperIndicator();
+        
+        
 
         //self.updateGraphs(data);
 	});
@@ -37,13 +37,19 @@ function observer(){
     /* MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
+            // the slider is defined
         }
+
         //changed min year subscription
         //self.slider.sliderViewModel.setLowerYear(self.slider.sliderViewModel.min());
     });
     /* MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
         //changed max year subscription
+        if($("#slider").find(".ui-slider-handle")[0] !== undefined){
+            // the slider is defined
+        }        
+        
     });
 
     /* SPECIFIC YEAR SUBSCRIPTION */
