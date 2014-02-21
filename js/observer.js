@@ -9,6 +9,7 @@ function observer(){
 	self.pie = new pie();
 
 	glyphChangeStateArray.subscribe(function(type){
+
 	
 		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
 							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
@@ -18,14 +19,13 @@ function observer(){
 		dataFilterVaules["type"] = [type];
 		var data = dh.getData(dataFilterVaules);
 
-/*
         //Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
+            self.setMinYear(1999);
+            self.setMaxYear(2012);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
-        moveLowerIndicator();
-        moveUpperIndicator();*/
 
         self.updateGraphs(data);
 	});
@@ -35,11 +35,19 @@ function observer(){
     /* MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
+            // the slider is defined
         }
+
+        //changed min year subscription
         //self.slider.sliderViewModel.setLowerYear(self.slider.sliderViewModel.min());
     });
     /* MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
+        //changed max year subscription
+        if($("#slider").find(".ui-slider-handle")[0] !== undefined){
+            // the slider is defined
+        }        
+        
     });
 
     /* SPECIFIC YEAR SUBSCRIPTION */
@@ -53,6 +61,18 @@ function observer(){
     }
     self.getYearSpan = function(){
         return [self.slider.sliderViewModel.min(), self.slider.sliderViewModel.max()];
+    }
+
+
+    /******************* Set Functions ************************/
+    self.setMinYear = function(minyear){
+        self.slider.sliderViewModel.setMinValue(minyear);
+
+    }
+
+    self.setMaxYear = function(maxyear){
+        self.slider.sliderViewModel.setMaxValue(maxyear);
+
     }
 
     /******************* UPDATE GRAPHS ************************/

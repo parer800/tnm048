@@ -17,7 +17,7 @@ ko.bindingHandlers.slider = {
         var sliderValues = ko.utils.unwrapObservable(valueAccessor());
         
         if(sliderValues.min !== undefined) {
-            options.range = true;        
+            options.range = true;
         }        
         
         options.slide = function(e, ui) {
@@ -74,7 +74,7 @@ ko.bindingHandlers.slider = {
 	    	self.min(newMinYear);
 	    }
 	    self.setMaxValue = function(newMaxYear){
-	    	self.min(newMaxYear);
+	    	self.max(newMaxYear);
 	    }
 	    self.setLowerYear = function(first){
 	        if(self.isLowerActive()){        
@@ -118,30 +118,28 @@ function moveLowerIndicator(){
     var size = $(btn).width();
     pos = Math.abs(pos-size);
     if(pos<size){
-        $(btn).css('left',0);
+        $(btn).css('left',0 + obj_width);
     }
     else
-        $(btn).css('left',pos-2*obj_width);
+        $(btn).css('left',pos-obj_width);
 
 }
 
 function moveUpperIndicator(){
     var obj = $("#slider").find(".ui-slider-handle")[1];
     var btn = $("#yearSpecifier").find(".btn-primary")[1];
-    var width = $("#slider").width();
-    var pos = $(obj).position().left;
-    var size = $(btn).width();
-    $(btn).css('left',pos-size);
-    var obj_width = $(obj).width();
-    var pos = $(obj).position().left;
-    var size = $(btn).width();
+    var width = $("body").width();
     
+    var pos = $(obj).position().left;
+    var size = $(btn).width();
+    var obj_width = $(obj).width();
     var temp_pos = Math.abs(pos+size);
-    if(temp_pos<=width){
-        $(btn).css('left',pos-size-obj_width);
+    
+    if(temp_pos>=width){
+        $(btn).css('left',pos-2*(size+obj_width));
     }
     else{
-        $(btn).css('left',width-3*size+2*obj_width);
+        $(btn).css('left',pos-size);
     }
 
 }
@@ -149,4 +147,6 @@ function moveUpperIndicator(){
 function showYearSpan(){
 
     $("#yearSpecifier").show();
+    moveUpperIndicator();
+    moveLowerIndicator();
 }
