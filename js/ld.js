@@ -43,7 +43,8 @@ function ld(){
 
         xAxis = d3.svg.axis()
             .scale(x)
-            .orient("bottom");
+            .orient("bottom")
+            .tickFormat(d3.format("d"));
 
         yAxis = d3.svg.axis()
             .scale(y)

@@ -10,22 +10,22 @@ function observer(){
 
 	glyphChangeStateArray.subscribe(function(type){
 
-	
-		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
-
-		//dataFilterVaules["interval"] = self.getYearSpan();
-		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
-		dataFilterVaules["type"] = [type];
-		var data = dh.getData(dataFilterVaules);
-
-        //Check whether the sliderDOM already is bound to a view model
+		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
-            self.setMinYear(1999);
+            self.setMinYear(2000);
             self.setMaxYear(2012);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
+
+		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
+							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
+
+		dataFilterVaules["interval"] = self.getYearSpan();
+		dataFilterVaules["type"] = [type];
+		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
+		
+		var data = dh.getData(dataFilterVaules);
 
         self.updateGraphs(data);
 	});
@@ -35,11 +35,10 @@ function observer(){
     /* MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
-            // the slider is defined
-        }
+            
 
-        //changed min year subscription
-        //self.slider.sliderViewModel.setLowerYear(self.slider.sliderViewModel.min());
+
+        }
     });
     /* MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
@@ -93,7 +92,7 @@ function observer(){
 	function ldUpdate(data){
 		
 		self.ld.data = data;
-		self.ld.interval = [2001, 2011];
+		self.ld.interval = self.getYearSpan();
 		self.ld.defineAxis();
 		self.ld.draw();
 	}
