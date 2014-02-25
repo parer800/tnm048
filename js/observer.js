@@ -19,14 +19,14 @@ function observer(){
         showYearSpan();
 
 		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
+							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada", "Norway"]};
 
 		dataFilterVaules["interval"] = self.getYearSpan();
 		dataFilterVaules["type"] = [type];
 		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
 		
 		var data = dh.getData(dataFilterVaules);
-
+		console.log(dh.getSubtypesForTypes(["oil", "coal"]));
         self.updateGraphs(data);
 	});
 
@@ -93,8 +93,8 @@ function observer(){
 		
 		self.ld.data = data;
 		self.ld.interval = self.getYearSpan();
-		self.ld.defineAxis();
-		self.ld.draw();
+		self.ld.defineAxis(self.ld.data);
+		self.ld.draw(self.ld.data);
 	}
 
 	function pieUpdate(data){
