@@ -38,7 +38,7 @@
         <div id="row1" class="row">
             <div id="ld" class="col-md-6">
             	<div id="ld-controls">
-            		<select data-bind='options: ld_subtypes, optionsText:"type",value:type'></select>
+            		<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
             		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
             	</div> 
             </div>

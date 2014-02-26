@@ -25,8 +25,9 @@ function observer(){
 		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
 		
 		var data = dh.getData(dataFilterVaules);
-		console.log(dh.getSubtypesForTypes(["oil", "coal"]));
+		//console.log(dh.getSubtypesForTypes(["oil", "coal"]));
         self.updateGraphs(data);
+        self.notifyTypeChanged(type);
 	});
 
     /**************** SUBSCRIPTIONS **************************/
@@ -116,8 +117,9 @@ function observer(){
 
     self.notifyTypeChanged = function (types){
         //Notify graphs which types that can be chosen
-
-
+        GLOBAL_TYPES = dh.getSubtypesForTypes(types);
+        if(GLOBAL_TYPES.length != 0)
+            self.ld.updateBinding();
     }
 
 

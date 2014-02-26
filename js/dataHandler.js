@@ -1,3 +1,5 @@
+var GLOBAL_TYPES = [{"subtypes":[{"subtype":null}] , "type":null}]; 
+
 function dataHandler(){
 
 	var self = this;
