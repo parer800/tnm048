@@ -37,12 +37,12 @@ function dataHandler(){
 				var subtype = param["subtype"][j];
 				if(self.dataTable[type][subtype] === undefined)
 					continue;
-
+				
 				for(var k=0; k<param["country"].length; k++){
 					var country = param["country"][k];
 					if(self.dataTable[type][subtype][country] === undefined)
 						continue;
-						
+					
 					var tmp = {};
 					tmp["country"] = country;
 					tmp["value"] = [];

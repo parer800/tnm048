@@ -5,7 +5,7 @@ function observer(){
     self.slider.setSliderViewModel(2000,2011);
 
     var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							"interval" : ["2001", "2011"], "country" : ["Sweden", "Canada", "Norway"]};
+							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"]};
 
 	self.sp = new sp();
 	self.ld = new ld();
@@ -15,7 +15,7 @@ function observer(){
 
         dataFilterVaules["type"] = type;
         //dataFilterVaules["interval"] = self.getYearSpan();
-        dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
+        dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"][0], dataFilterVaules["subtype"]);
 
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
@@ -24,7 +24,7 @@ function observer(){
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
        
-        self.updateGraphs();
+        //self.updateGraphs();
 
         showYearSpan();
         self.notifyTypeChanged(type);
@@ -54,9 +54,15 @@ function observer(){
 
 
     /* LD TYPE & SUBTYPE SUBSCRIPTION*/
+    //get type and subtype on format {type: "oil", subtype: "export"}
+    // by calling 'self.ld.typeViewModel.getSelectedType()'
     self.ld.typeViewModel.subtype.subscribe(function(){
-        //get type and subtype on format {type: "oil", subtype: "export"}
-        // by calling 'self.ld.typeViewModel.getSelectedType()'
+
+        var typeSubtype = self.ld.typeViewModel.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
+
+        ldUpdate();
     });
 
     /****************** RETURN FUNCTIONS***********************/
@@ -72,16 +78,14 @@ function observer(){
     /******************* Set Functions ************************/
     self.setMinYear = function(minyear){
         self.slider.sliderViewModel.setMinValue(minyear);
-
     }
 
     self.setMaxYear = function(maxyear){
         self.slider.sliderViewModel.setMaxValue(maxyear);
-
     }
 
     /******************* UPDATE GRAPHS ************************/
-	function spUpdate(data){
+	function spUpdate(){
 		/*var xChange = true; var yChange = false;
 
 		if(xChange)
@@ -89,6 +93,7 @@ function observer(){
 		if(yChange)
 			self.sp.yData = dh.sumInterval(data);*/
 
+		var data = dh.getData(dataFilterVaules);
 		self.sp.xData = dh.sumInterval(data);
 		self.sp.yData = dh.sumInterval(data);
 		self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
@@ -96,25 +101,27 @@ function observer(){
 		self.sp.draw(self.sp.data);
 	}
 
-	function ldUpdate(data){
+	function ldUpdate(){
 		
-		self.ld.data = data;
+		self.ld.data = dh.getData(dataFilterVaules);
 		self.ld.interval = self.getYearSpan();
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
 	}
 
-	function pieUpdate(data){
-		self.pie.data = dh.sumInterval(data);
+	function pieUpdate(){
+
+		self.pie.data = dh.getData(dataFilterVaules);
+		console.log(self.pie.data);
+		self.pie.data = dh.sumInterval(self.pie.data);
 		self.pie.draw();
 	}
 
 	self.updateGraphs = function (){
-		var data = dh.getData(dataFilterVaules);
-
-		spUpdate(data);
-		ldUpdate(data);
-		pieUpdate(data);
+		
+		spUpdate();
+		ldUpdate();
+		pieUpdate();
 	}
 
     self.notifyTypeChanged = function (types){
@@ -123,7 +130,5 @@ function observer(){
         if(GLOBAL_TYPES.length != 0)
             self.ld.updateBinding();
     }
-
-
 }
 

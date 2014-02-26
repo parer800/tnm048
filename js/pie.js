@@ -25,8 +25,8 @@ function pie(){
         .value(function(d) { return d["value"]; });    
  
  	this.draw = function(){
-
-	    var arcs = svg.selectAll("g.slice")     
+ 		
+	    var arcs = svg.selectAll("g.slice")
 	        .data(pie(self.data))                           
 	        .enter()                          
 	            .append("g")               

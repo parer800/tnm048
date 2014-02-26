@@ -8,7 +8,6 @@ function slider(){
 
 	}
 
-
 /************** KNOCKOUT JS SETUP BINDING HANDLERS AND CREATING VIEW MODEL *****************/
 
 ko.bindingHandlers.slider = {
@@ -62,7 +61,6 @@ ko.bindingHandlers.slider = {
     }
 };
 
-
 	SliderViewModel = function(minyear, maxyear) {
 	    var self = this;
 	    self.min = ko.observable(minyear);
@@ -90,8 +88,6 @@ ko.bindingHandlers.slider = {
                 if(self.maxState !== null)
                     self.setMaxValue(self.maxState);
 	            self.selectedYears.shift();
-                console.log(self.maxState)
-
 	        }
 
 	        self.isLowerActive(!self.isLowerActive());
@@ -115,12 +111,10 @@ ko.bindingHandlers.slider = {
 	        self.isUpperActive(!self.isUpperActive());
 	        //this.selectedYears([first,second]);
 	    }
-
 	}
 	/**************************************************************************/
 
 } //*********************** END OF SLIDER CLASS ********************************/
-
 
 /***************** loose gui functions in use *******************************/
 
