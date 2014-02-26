@@ -4,11 +4,18 @@ function observer(){
 	self.slider = new slider();
     self.slider.setSliderViewModel(2000,2011);
 
+    var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
+							"interval" : ["2001", "2011"], "country" : ["Sweden", "Canada", "Norway"]};
+
 	self.sp = new sp();
 	self.ld = new ld();
 	self.pie = new pie();
 
 	glyphChangeStateArray.subscribe(function(type){
+
+        dataFilterVaules["type"] = type;
+        //dataFilterVaules["interval"] = self.getYearSpan();
+        dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
 
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
@@ -16,41 +23,40 @@ function observer(){
             self.setMaxYear(2012);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
+       
+        self.updateGraphs();
+
         showYearSpan();
-
-		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada", "Norway"]};
-
-		dataFilterVaules["interval"] = self.getYearSpan();
-		dataFilterVaules["type"] = [type];
-		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
-		
-		var data = dh.getData(dataFilterVaules);
-
-        self.updateGraphs(data);
+        self.notifyTypeChanged(type);
 	});
 
     /**************** SUBSCRIPTIONS **************************/
 
-    /* MIN YEAR SUBSCRIPTION */
+    /* SLIDER MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
-            
-
-
+            dataFilterVaules["interval"] = self.getYearSpan();
+            self.updateGraphs();
         }
     });
-    /* MAX YEAR SUBSCRIPTION */
+    /* SLIDER MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
         //changed max year subscription
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
-            // the slider is defined
+            dataFilterVaules["interval"] = self.getYearSpan();
+            self.updateGraphs();
         }        
-        
     });
 
-    /* SPECIFIC YEAR SUBSCRIPTION */
+    /* SLIDER SPECIFIC YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.selectedYears.subscribe(function(years){
+    });
+
+
+    /* LD TYPE & SUBTYPE SUBSCRIPTION*/
+    self.ld.typeViewModel.subtype.subscribe(function(){
+        //get type and subtype on format {type: "oil", subtype: "export"}
+        // by calling 'self.ld.typeViewModel.getSelectedType()'
     });
 
     /****************** RETURN FUNCTIONS***********************/
@@ -103,10 +109,21 @@ function observer(){
 		self.pie.draw();
 	}
 
-	self.updateGraphs = function (data){
+	self.updateGraphs = function (){
+		var data = dh.getData(dataFilterVaules);
+
 		spUpdate(data);
 		ldUpdate(data);
 		pieUpdate(data);
 	}
+
+    self.notifyTypeChanged = function (types){
+        //Notify graphs which types that can be chosen
+        GLOBAL_TYPES = dh.getSubtypesForTypes(types);
+        if(GLOBAL_TYPES.length != 0)
+            self.ld.updateBinding();
+    }
+
+
 }
 

@@ -4,6 +4,7 @@ function ld(){
     self.data = null;
     self.zoomData = [];
     self.interval = [0, 0];
+    self.typeViewModel = null; // DEFAULT view model, will be assigned later
     var keyDown = false;
     var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
@@ -204,4 +205,33 @@ function ld(){
 			            .style("top", (d3.event.pageY) + "px");
             	});
     };
+
+    self.updateSubtypes = function(){
+
+    };
+
+    /* KNOCKOUT JS INITIALIZATION FOR CHOSING SUBTYPE */
+    self.subtypeOption = function(){
+    	var self = this;
+    	self.type = ko.observable();
+    	self.subtype = ko.observable();
+    	self.getSelectedType = function(){
+    		//get type and subtype on format [{"type":theType, "subtype":theSubtype}]
+    		return {"type": self.type().type ,"subtype":self.subtype().subtype};
+    	};
+    };
+
+    self.updateBinding = function(){
+    	var element = $('#ld-controls')[0];
+    	ko.cleanNode(element);
+    	ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
+    }
+
+    self.typeViewModel = new self.subtypeOption();
+    ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
 }
+/*	
+//Temporary 
+var ld_subtypes = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"},{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"coal"},{"subtypes":[{"subtype":"import"},{"subtype":"total consumption"}],"type":"natural gas"}];
+var ld_subtypes2 = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"}];
+*/

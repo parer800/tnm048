@@ -70,6 +70,8 @@ ko.bindingHandlers.slider = {
 	    self.selectedYears = ko.observableArray([]);
 	    self.isLowerActive = ko.observable(false); //Lower year
 	    self.isUpperActive = ko.observable(false); //Higher year
+        self.minState = null; //Select a state, used for pushing the year identifier 
+        self.maxState = null;
 	    self.setMinValue = function(newMinYear){
 	    	self.min(newMinYear);
 	    }
@@ -80,9 +82,16 @@ ko.bindingHandlers.slider = {
 	        if(self.isLowerActive()){        
 	            self.selectedYears.push(first);
 	            self.selectedYears.sort();
+
+                self.maxState = self.max();
+                self.setMaxValue(self.min());
 	        }
 	        else{
+                if(self.maxState !== null)
+                    self.setMaxValue(self.maxState);
 	            self.selectedYears.shift();
+                console.log(self.maxState)
+
 	        }
 
 	        self.isLowerActive(!self.isLowerActive());
@@ -94,8 +103,13 @@ ko.bindingHandlers.slider = {
 	        if(self.isUpperActive()){            
 	            self.selectedYears.push(second);
 	            self.selectedYears.sort();
+
+                self.minState = self.min();
+                self.setMinValue(self.max());
 	        }
 	        else{
+                if(self.minState !== null)
+                    self.setMinValue(self.minState);                
 	            self.selectedYears.pop();
 	        }
 	        self.isUpperActive(!self.isUpperActive());
