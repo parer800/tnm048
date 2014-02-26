@@ -26,7 +26,7 @@ function observer(){
 		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
 		
 		var data = dh.getData(dataFilterVaules);
-		console.log(dh.getSubtypesForTypes(["oil", "coal"]));
+
         self.updateGraphs(data);
 	});
 

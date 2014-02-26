@@ -20,10 +20,6 @@ function ld(){
 	    	.attr("id", "pathGroup")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var div = d3.select("body").append("div")   
-       .attr("class", "tooltip")               
-       .style("opacity", 0);
-
 	d3.select("#ld svg")
     	.on("mousedown", function() {
 	    	keyDown = true;
@@ -36,6 +32,9 @@ function ld(){
 	    	selectBox.start.startX = d3.event.pageX;
 	    })
 	    .on("mousemove", function() { 
+	    	console.log("svg");
+	    	console.log(d3.mouse(this)[0]);
+	    	console.log(d3.mouse(this)[1]);
 	    	if(keyDown){
 	    		$("#selected").css({ 
 					top: Math.min(selectBox.start.startY, d3.event.pageY - $("#menu").height()), 
@@ -53,9 +52,9 @@ function ld(){
 			var xValue = x.invert(d3.event.pageX),
 	  			yValue = y.invert(d3.event.pageY- $("#menu").height());
 
-	  		findZoomData(xValue, yValue);
+	  		findZoomData(d3.event.pageX, d3.event.pageY- $("#menu").height());
 			
-	        $("#selected").remove();
+	        $("#selected").remove(); 
 	        selectBox.end.endY = d3.event.pageY - $("#menu").height();
 	    	selectBox.end.endX = d3.event.pageX;
 	    	
@@ -66,6 +65,8 @@ function ld(){
 	    });
 
 	function findZoomData(xValue, yValue){ 
+		console.log($("#pathGroup").offset());
+		console.log("svg");
 		console.log(xValue);
 		console.log(yValue);
 	}
@@ -76,7 +77,7 @@ function ld(){
 	    		return data[1];
 	    	});
 		});
-	}
+	} // 1 - 97, 548 - 571 -> 96,27
 
 	function findMin(data) { 
 		return d3.min(data, function(data) { 
@@ -93,7 +94,7 @@ function ld(){
 
         y = d3.scale.linear()
             .range([height, 0])
-            .domain([findMin(data), findMax(data)]);
+            .domain([0, findMax(data)]); //findMin(data)
 
         xAxis = d3.svg.axis()
             .scale(x)
@@ -116,6 +117,7 @@ function ld(){
 	    svg
 	        .append("g")
 	            .attr("class", "x axis")
+	            .attr("id", "ldXaxis")
 	            .attr("transform", "translate(0," + height + ")")
 	            .call(xAxis)
 	        .append("text")
@@ -161,16 +163,22 @@ function ld(){
 	  			.attr("fill", "none")
 	  			.on("mouseenter", function(d) {
 	  				d3.select(this).style("stroke-width", 7);
+
+	  				d3.select("body").append("div")   
+				       .attr("class", "tooltip")               
+				       .style("opacity", 0);
 	  			})
 	  			.on("mouseout", function(d) {
 	  				d3.select(this).style("stroke-width", 1);
-	  				div
-	  					.style("opacity", 0);
+	  				d3.select(".tooltip").remove();
 	  			})
 	  			.on("mousemove", function(d) {
 	  				
 	  				var xValue = Math.round(x.invert(d3.mouse(this)[0])),
 	  					yValue = y.invert(d3.mouse(this)[1]);
+	  				console.log("Path");
+	  				console.log(d3.mouse(this)[0]);
+	  				console.log(d3.mouse(this)[1]);
 
 	  				for(var i=0; i<d.value.length; i++){
 	  					if(d.value[i][0] == xValue)
@@ -180,7 +188,7 @@ function ld(){
                		if(keyDown) 
                			self.zoomData.push(d);
 
-               		div.html(d.country + " X: " + xValue + ", Y: " + yValue)
+               		d3.select(".tooltip").html(d.country + " X: " + xValue + ", Y: " + yValue)
                			.style("opacity", .9)
 			            .style("left", (d3.event.pageX + 20) + "px")     
 			            .style("top", (d3.event.pageY) + "px");
