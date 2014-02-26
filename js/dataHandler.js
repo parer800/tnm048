@@ -5,6 +5,23 @@ function dataHandler(){
 	self.dataTable = {};
 	self.dataFiles = {};
 
+	this.getSubtypesForTypes = function(typeArr){
+
+		var output = [];
+
+		for(var i=0; i<typeArr.length; i++){
+			var tmp = {};
+			tmp["subtypes"] = [];
+			tmp["type"] = typeArr[i];
+
+			for(subtype in self.dataTable[typeArr[i]]){
+				tmp["subtypes"].push({"subtype" : subtype});
+			}
+			output.push(tmp);
+		}
+		return output;
+	}
+
 	this.getData = function(param){
 
 		var output = [];
