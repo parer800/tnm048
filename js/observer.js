@@ -85,8 +85,9 @@ function observer(){
 
 		self.sp.xData = dh.sumInterval(data);
 		self.sp.yData = dh.sumInterval(data);
-		self.sp.defineAxis();
-		self.sp.draw(dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData));
+		self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
+		self.sp.defineAxis(self.sp.data);
+		self.sp.draw(self.sp.data);
 	}
 
 	function ldUpdate(data){

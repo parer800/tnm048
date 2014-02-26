@@ -5,7 +5,7 @@ function ld(){
     self.zoomData = [];
     self.interval = [0, 0];
     var keyDown = false;
-    var selectBox  = {"start" : {"startY" : 0, "startX" : 0}, "end" : {"endY" : 0, "endX" : 0}};
+    var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
@@ -14,61 +14,77 @@ function ld(){
 
     var svg = d3.select("#ld")
     	.append("svg")
-	        //.attr("width", width + margin.left + margin.right)
-	        //.attr("height", height + margin.top + margin.bottom)
+	        .attr("width", width + margin.left + margin.right)
+	        .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
 	    	.attr("id", "pathGroup")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	d3.select("#ld svg")
     	.on("mousedown", function() {
+
 	    	keyDown = true;
 	    	d3.event.preventDefault();
 
+	    	var xValue = x.invert(d3.mouse(this)[0] - 80),
+	  			yValue = y.invert(d3.mouse(this)[1] - 20);
+	    	
+	    	selectBox.start.startX = xValue;
+	    	selectBox.start.startY = yValue;
+	    	selectBox.start.posX = d3.event.pageX;
+	    	selectBox.start.posY = d3.event.pageY - $("#menu").height();
+
 	    	self.zoomData = [];
 	    	$("#ld").append("<div id='selected'> </div>");
-	    	
-	    	selectBox.start.startY = d3.event.pageY - $("#menu").height();
-	    	selectBox.start.startX = d3.event.pageX;
 	    })
 	    .on("mousemove", function() { 
-	    	console.log("svg");
-	    	console.log(d3.mouse(this)[0]);
-	    	console.log(d3.mouse(this)[1]);
+
 	    	if(keyDown){
 	    		$("#selected").css({ 
-					top: Math.min(selectBox.start.startY, d3.event.pageY - $("#menu").height()), 
-					left: Math.min(selectBox.start.startX, d3.event.pageX), 
-					height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.startY - 5),
-					width: Math.abs(d3.event.pageX - selectBox.start.startX - 5)
+					top: Math.min(selectBox.start.posY, d3.event.pageY - $("#menu").height()), 
+					left: Math.min(selectBox.start.posX, d3.event.pageX), 
+					height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.posY - 5),
+					width: Math.abs(d3.event.pageX - selectBox.start.posX - 5)
 				});
 	    	}
 	    })
-	    .on("mouseup", function() {
+	    .on("mouseup", function() { 
 	    	
 			keyDown = false;
 			d3.event.preventDefault();
 
-			var xValue = x.invert(d3.event.pageX),
-	  			yValue = y.invert(d3.event.pageY- $("#menu").height());
+			var xValue = x.invert(d3.mouse(this)[0] - 80),
+	  			yValue = y.invert(d3.mouse(this)[1] - 20);
 
-	  		findZoomData(d3.event.pageX, d3.event.pageY- $("#menu").height());
-			
 	        $("#selected").remove(); 
-	        selectBox.end.endY = d3.event.pageY - $("#menu").height();
-	    	selectBox.end.endX = d3.event.pageX;
+	        selectBox.end.endX = xValue;
+	        selectBox.end.endY = yValue;
+
+	        findZoomData();
 	    	
-	        if(self.zoomData.length > 0){
+	        if(self.zoomData.length > 0){ 
 	     		self.defineAxis(self.zoomData);
 	        	self.draw(self.zoomData);
 	     	}
 	    });
 
-	function findZoomData(xValue, yValue){ 
-		console.log($("#pathGroup").offset());
-		console.log("svg");
-		console.log(xValue);
-		console.log(yValue);
+	function findZoomData(){ 
+		var maxX = Math.max(selectBox.start.startX, selectBox.end.endX),
+			minX = Math.min(selectBox.start.startX, selectBox.end.endX),
+			maxY = Math.max(selectBox.start.startY, selectBox.end.endY),
+			minY = Math.min(selectBox.start.startY, selectBox.end.endY);
+
+		for(var i=0; i<self.data.length; i++){
+			for(var j=0; j<self.data[i].value.length; j++){
+
+				if(self.data[i].value[j][0] >= minX && self.data[i].value[j][0] <= maxX && 
+				   self.data[i].value[j][1] >= minY && self.data[i].value[j][1] <= maxY){
+
+					self.zoomData.push(self.data[i]);
+					break;
+				}
+			}
+		}
 	}
 
 	function findMax(data) { 
@@ -77,7 +93,7 @@ function ld(){
 	    		return data[1];
 	    	});
 		});
-	} // 1 - 97, 548 - 571 -> 96,27
+	} 
 
 	function findMin(data) { 
 		return d3.min(data, function(data) { 
@@ -94,7 +110,7 @@ function ld(){
 
         y = d3.scale.linear()
             .range([height, 0])
-            .domain([0, findMax(data)]); //findMin(data)
+            .domain([findMin(data), findMax(data)]); 
 
         xAxis = d3.svg.axis()
             .scale(x)
@@ -176,17 +192,11 @@ function ld(){
 	  				
 	  				var xValue = Math.round(x.invert(d3.mouse(this)[0])),
 	  					yValue = y.invert(d3.mouse(this)[1]);
-	  				console.log("Path");
-	  				console.log(d3.mouse(this)[0]);
-	  				console.log(d3.mouse(this)[1]);
 
 	  				for(var i=0; i<d.value.length; i++){
 	  					if(d.value[i][0] == xValue)
 	  						yValue = d.value[i][1].toFixed(2);
 	  				}
-	  				   
-               		if(keyDown) 
-               			self.zoomData.push(d);
 
                		d3.select(".tooltip").html(d.country + " X: " + xValue + ", Y: " + yValue)
                			.style("opacity", .9)
@@ -195,47 +205,3 @@ function ld(){
             	});
     };
 }
-
-
-      /*
-    $("#ld")
-    	.on("mousedown", function(ev) {
-	    	keyDown = true;
-	    	ev.preventDefault();
-
-	    	self.zoomData = [];
-	    	$("#ld").append("<div id='selected'> </div>");
-	    	$("#selected").css({
-	    		'opacity': '0.6',
-	    		'position': 'absolute',
-				'border': '1px solid #89B',
-				'background': '#BCE',
-				'background-color': '#BEC',
-				'border-color': '#8B9'
-	    	});
-	    	selectBox.start.startY = ev.pageY - $("#menu").height();
-	    	selectBox.start.startX = ev.pageX;
-	    })
-	    .on("mousemove", function(ev) {
-	    	if(keyDown){
-	    		$("#selected").css({ 
-					top: Math.min(selectBox.start.startY, ev.pageY - $("#menu").height()), 
-					left: Math.min(selectBox.start.startX, ev.pageX), 
-					height: Math.abs( ev.pageY - $("#menu").height() - selectBox.start.startY ),
-					width: Math.abs( ev.pageX - selectBox.start.startX )
-				});
-	    	}
-	    })
-	    .on("mouseup", function(ev) {
-			keyDown = false;
-			ev.preventDefault();
-
-	        $("#selected").remove();
-	        selectBox.end.endY = ev.pageY - $("#menu").height();
-	    	selectBox.end.endX = ev.pageX;
-
-	        if(self.zoomData.length > 0){
-	     		self.defineAxis(self.zoomData);
-	        	self.draw(self.zoomData);
-	     	}
-	    });*/
