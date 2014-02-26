@@ -23,10 +23,10 @@
 			<div id="slider" class="col-md-12">
 				<div class ="col-md-12" data-bind="slider: { min: min, max: max }, sliderOptions: {min: min(), max: max(), step: 1}"></div>
 				<div id="yearSpecifier" class="btn-group row" data-toggle="buttons">
-					<label class="btn btn-primary" style="z-index:1" data-bind="click : setLowerYear(min())">
+					<label class="btn btn-primary"  data-bind="click : setLowerYear(min())">
 						<input type="checkbox" ><span data-bind="text: 'Year - ' + min()"></span>
 					</label>
-					<label class="btn btn-primary" style="z-index:2;"data-bind="click : setUpperYear(max())">
+					<label class="btn btn-primary"  data-bind="click : setUpperYear(max())">
 						<input class = "pull-right" type="checkbox"><span data-bind="text: 'Year - ' + max()"></span>
 					</label>
 				</div>
