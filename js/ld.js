@@ -6,7 +6,8 @@ function ld(){
     self.interval = [0, 0];
     self.typeViewModel = null; // DEFAULT view model, will be assigned later
     var keyDown = false;
-    var selectBox  = {"start" : {"startY" : 0, "startX" : 0}, "end" : {"endY" : 0, "endX" : 0}};
+    var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
+
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
         width = 600 - margin.right - margin.left,
@@ -20,54 +21,71 @@ function ld(){
 	    	.attr("id", "pathGroup")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var div = d3.select("body").append("div")   
-       .attr("class", "tooltip")               
-       .style("opacity", 0);
-
 	d3.select("#ld svg")
     	.on("mousedown", function() {
+
 	    	keyDown = true;
 	    	d3.event.preventDefault();
 
+	    	var xValue = x.invert(d3.mouse(this)[0] - 80),
+	  			yValue = y.invert(d3.mouse(this)[1] - 20);
+	    	
+	    	selectBox.start.startX = xValue;
+	    	selectBox.start.startY = yValue;
+	    	selectBox.start.posX = d3.event.pageX;
+	    	selectBox.start.posY = d3.event.pageY - $("#menu").height();
+
 	    	self.zoomData = [];
 	    	$("#ld").append("<div id='selected'> </div>");
-	    	
-	    	selectBox.start.startY = d3.event.pageY - $("#menu").height();
-	    	selectBox.start.startX = d3.event.pageX;
 	    })
 	    .on("mousemove", function() { 
+
 	    	if(keyDown){
 	    		$("#selected").css({ 
-					top: Math.min(selectBox.start.startY, d3.event.pageY - $("#menu").height()), 
-					left: Math.min(selectBox.start.startX, d3.event.pageX), 
-					height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.startY - 5),
-					width: Math.abs(d3.event.pageX - selectBox.start.startX - 5)
+					top: Math.min(selectBox.start.posY, d3.event.pageY - $("#menu").height()), 
+					left: Math.min(selectBox.start.posX, d3.event.pageX), 
+					height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.posY - 5),
+					width: Math.abs(d3.event.pageX - selectBox.start.posX - 5)
 				});
 	    	}
 	    })
-	    .on("mouseup", function() {
+	    .on("mouseup", function() { 
 	    	
 			keyDown = false;
 			d3.event.preventDefault();
 
-			var xValue = x.invert(d3.event.pageX),
-	  			yValue = y.invert(d3.event.pageY- $("#menu").height());
+			var xValue = x.invert(d3.mouse(this)[0] - 80),
+	  			yValue = y.invert(d3.mouse(this)[1] - 20);
 
-	  		findZoomData(xValue, yValue);
-			
-	        $("#selected").remove();
-	        selectBox.end.endY = d3.event.pageY - $("#menu").height();
-	    	selectBox.end.endX = d3.event.pageX;
+	        $("#selected").remove(); 
+	        selectBox.end.endX = xValue;
+	        selectBox.end.endY = yValue;
+
+	        findZoomData();
 	    	
-	        if(self.zoomData.length > 0){
+	        if(self.zoomData.length > 0){ 
 	     		self.defineAxis(self.zoomData);
 	        	self.draw(self.zoomData);
 	     	}
 	    });
 
-	function findZoomData(xValue, yValue){ 
-		console.log(xValue);
-		console.log(yValue);
+	function findZoomData(){ 
+		var maxX = Math.max(selectBox.start.startX, selectBox.end.endX),
+			minX = Math.min(selectBox.start.startX, selectBox.end.endX),
+			maxY = Math.max(selectBox.start.startY, selectBox.end.endY),
+			minY = Math.min(selectBox.start.startY, selectBox.end.endY);
+
+		for(var i=0; i<self.data.length; i++){
+			for(var j=0; j<self.data[i].value.length; j++){
+
+				if(self.data[i].value[j][0] >= minX && self.data[i].value[j][0] <= maxX && 
+				   self.data[i].value[j][1] >= minY && self.data[i].value[j][1] <= maxY){
+
+					self.zoomData.push(self.data[i]);
+					break;
+				}
+			}
+		}
 	}
 
 	function findMax(data) { 
@@ -76,7 +94,7 @@ function ld(){
 	    		return data[1];
 	    	});
 		});
-	}
+	} 
 
 	function findMin(data) { 
 		return d3.min(data, function(data) { 
@@ -93,7 +111,7 @@ function ld(){
 
         y = d3.scale.linear()
             .range([height, 0])
-            .domain([findMin(data), findMax(data)]);
+            .domain([findMin(data), findMax(data)]); 
 
         xAxis = d3.svg.axis()
             .scale(x)
@@ -116,6 +134,7 @@ function ld(){
 	    svg
 	        .append("g")
 	            .attr("class", "x axis")
+	            .attr("id", "ldXaxis")
 	            .attr("transform", "translate(0," + height + ")")
 	            .call(xAxis)
 	        .append("text")
@@ -161,11 +180,14 @@ function ld(){
 	  			.attr("fill", "none")
 	  			.on("mouseenter", function(d) {
 	  				d3.select(this).style("stroke-width", 7);
+
+	  				d3.select("body").append("div")   
+				       .attr("class", "tooltip")               
+				       .style("opacity", 0);
 	  			})
 	  			.on("mouseout", function(d) {
 	  				d3.select(this).style("stroke-width", 1);
-	  				div
-	  					.style("opacity", 0);
+	  				d3.select(".tooltip").remove();
 	  			})
 	  			.on("mousemove", function(d) {
 	  				
@@ -176,11 +198,8 @@ function ld(){
 	  					if(d.value[i][0] == xValue)
 	  						yValue = d.value[i][1].toFixed(2);
 	  				}
-	  				   
-               		if(keyDown) 
-               			self.zoomData.push(d);
 
-               		div.html(d.country + " X: " + xValue + ", Y: " + yValue)
+               		d3.select(".tooltip").html(d.country + " X: " + xValue + ", Y: " + yValue)
                			.style("opacity", .9)
 			            .style("left", (d3.event.pageX + 20) + "px")     
 			            .style("top", (d3.event.pageY) + "px");
@@ -210,61 +229,9 @@ function ld(){
 
     self.typeViewModel = new self.subtypeOption();
     ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
-
-
-
-}	
-	//Temporary 
-	var ld_subtypes = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"},{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"coal"},{"subtypes":[{"subtype":"import"},{"subtype":"total consumption"}],"type":"natural gas"}];
-	var ld_subtypes2 = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"}];
-	
-
-
-    
-
-
-
-
-      /*
-    $("#ld")
-    	.on("mousedown", function(ev) {
-	    	keyDown = true;
-	    	ev.preventDefault();
-
-	    	self.zoomData = [];
-	    	$("#ld").append("<div id='selected'> </div>");
-	    	$("#selected").css({
-	    		'opacity': '0.6',
-	    		'position': 'absolute',
-				'border': '1px solid #89B',
-				'background': '#BCE',
-				'background-color': '#BEC',
-				'border-color': '#8B9'
-	    	});
-	    	selectBox.start.startY = ev.pageY - $("#menu").height();
-	    	selectBox.start.startX = ev.pageX;
-	    })
-	    .on("mousemove", function(ev) {
-	    	if(keyDown){
-	    		$("#selected").css({ 
-					top: Math.min(selectBox.start.startY, ev.pageY - $("#menu").height()), 
-					left: Math.min(selectBox.start.startX, ev.pageX), 
-					height: Math.abs( ev.pageY - $("#menu").height() - selectBox.start.startY ),
-					width: Math.abs( ev.pageX - selectBox.start.startX )
-				});
-	    	}
-	    })
-	    .on("mouseup", function(ev) {
-			keyDown = false;
-			ev.preventDefault();
-
-	        $("#selected").remove();
-	        selectBox.end.endY = ev.pageY - $("#menu").height();
-	    	selectBox.end.endX = ev.pageX;
-
-	        if(self.zoomData.length > 0){
-	     		self.defineAxis(self.zoomData);
-	        	self.draw(self.zoomData);
-	     	}
-	    });*/
-
+}
+/*	
+//Temporary 
+var ld_subtypes = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"},{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"coal"},{"subtypes":[{"subtype":"import"},{"subtype":"total consumption"}],"type":"natural gas"}];
+var ld_subtypes2 = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"}];
+*/

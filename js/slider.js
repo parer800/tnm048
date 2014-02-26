@@ -8,7 +8,6 @@ function slider(){
 
 	}
 
-
 /************** KNOCKOUT JS SETUP BINDING HANDLERS AND CREATING VIEW MODEL *****************/
 
 ko.bindingHandlers.slider = {
@@ -58,7 +57,6 @@ ko.bindingHandlers.slider = {
 
     }
 };
-
 
 	SliderViewModel = function(minyear, maxyear) {
 	    var self = this;
@@ -121,7 +119,6 @@ ko.bindingHandlers.slider = {
 	        //this.selectedYears([first,second]);
 	    }
 
-
 	}
 
 	/************************ END OF SLIDER VIEW MODEL ******************************/
@@ -137,7 +134,6 @@ ko.bindingHandlers.slider = {
 
 
 } //*********************** END OF SLIDER CLASS ********************************/
-
 
 /***************** loose gui functions in use *******************************/
 

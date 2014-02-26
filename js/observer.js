@@ -4,11 +4,18 @@ function observer(){
 	self.slider = new slider();
     self.slider.setSliderViewModel(2000,2011);
 
+    var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
+							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"]};
+
 	self.sp = new sp();
 	self.ld = new ld();
 	self.pie = new pie();
 
 	glyphChangeStateArray.subscribe(function(type){
+
+        dataFilterVaules["type"] = type;
+        //dataFilterVaules["interval"] = self.getYearSpan();
+        dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"][0], dataFilterVaules["subtype"]);
 
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
@@ -16,17 +23,10 @@ function observer(){
             self.setMaxYear(2012);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
-        showYearSpan();
-		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada", "Norway"]};
+       
+        //self.updateGraphs();
 
-		dataFilterVaules["interval"] = self.getYearSpan();
-		dataFilterVaules["type"] = [type];
-		dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"], dataFilterVaules["subtype"]);
-		
-		var data = dh.getData(dataFilterVaules);
-		//console.log(dh.getSubtypesForTypes(["oil", "coal"]));
-        self.updateGraphs(data);
+        showYearSpan();
         self.notifyTypeChanged(type);
 	});
 
@@ -35,18 +35,17 @@ function observer(){
     /* SLIDER MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
-            
-
-
+            dataFilterVaules["interval"] = self.getYearSpan();
+            self.updateGraphs();
         }
     });
     /* SLIDER MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
         //changed max year subscription
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
-            // the slider is defined
+            dataFilterVaules["interval"] = self.getYearSpan();
+            self.updateGraphs();
         }        
-        
     });
 
     /* SLIDER SPECIFIC YEAR SUBSCRIPTION */
@@ -55,9 +54,15 @@ function observer(){
 
 
     /* LD TYPE & SUBTYPE SUBSCRIPTION*/
+    //get type and subtype on format {type: "oil", subtype: "export"}
+    // by calling 'self.ld.typeViewModel.getSelectedType()'
     self.ld.typeViewModel.subtype.subscribe(function(){
-        //get type and subtype on format {type: "oil", subtype: "export"}
-        // by calling 'self.ld.typeViewModel.getSelectedType()'
+
+        var typeSubtype = self.ld.typeViewModel.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
+
+        ldUpdate();
     });
 
     /****************** RETURN FUNCTIONS***********************/
@@ -73,12 +78,10 @@ function observer(){
     /******************* Set Functions ************************/
     self.setMinYear = function(minyear){
         self.slider.sliderViewModel.setMinValue(minyear);
-
     }
 
     self.setMaxYear = function(maxyear){
         self.slider.sliderViewModel.setMaxValue(maxyear);
-
     }
 
     self.updateYearSpan = function(){
@@ -87,7 +90,7 @@ function observer(){
 
 
     /******************* UPDATE GRAPHS ************************/
-	function spUpdate(data){
+	function spUpdate(){
 		/*var xChange = true; var yChange = false;
 
 		if(xChange)
@@ -95,29 +98,35 @@ function observer(){
 		if(yChange)
 			self.sp.yData = dh.sumInterval(data);*/
 
+		var data = dh.getData(dataFilterVaules);
 		self.sp.xData = dh.sumInterval(data);
 		self.sp.yData = dh.sumInterval(data);
-		self.sp.defineAxis();
-		self.sp.draw(dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData));
+		self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
+		self.sp.defineAxis(self.sp.data);
+		self.sp.draw(self.sp.data);
 	}
 
-	function ldUpdate(data){
+	function ldUpdate(){
 		
-		self.ld.data = data;
+		self.ld.data = dh.getData(dataFilterVaules);
 		self.ld.interval = self.getYearSpan();
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
 	}
 
-	function pieUpdate(data){
-		self.pie.data = dh.sumInterval(data);
+	function pieUpdate(){
+
+		self.pie.data = dh.getData(dataFilterVaules);
+		console.log(self.pie.data);
+		self.pie.data = dh.sumInterval(self.pie.data);
 		self.pie.draw();
 	}
 
-	self.updateGraphs = function (data){
-		spUpdate(data);
-		ldUpdate(data);
-		pieUpdate(data);
+	self.updateGraphs = function (){
+		
+		spUpdate();
+		ldUpdate();
+		pieUpdate();
 	}
 
     self.notifyTypeChanged = function (types){
@@ -127,7 +136,5 @@ function observer(){
             self.ld.updateBinding();
 
     }
-
-
 }
 
