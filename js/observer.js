@@ -17,7 +17,6 @@ function observer(){
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
         showYearSpan();
-
 		var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
 							    "interval" : ["2001", "2011"], "country" : ["Sweden", "Canada"]};
 
@@ -32,7 +31,7 @@ function observer(){
 
     /**************** SUBSCRIPTIONS **************************/
 
-    /* MIN YEAR SUBSCRIPTION */
+    /* SLIDER MIN YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.min.subscribe(function(type){
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
             
@@ -40,7 +39,7 @@ function observer(){
 
         }
     });
-    /* MAX YEAR SUBSCRIPTION */
+    /* SLIDER MAX YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.max.subscribe(function(type){
         //changed max year subscription
         if($("#slider").find(".ui-slider-handle")[0] !== undefined){
@@ -49,8 +48,15 @@ function observer(){
         
     });
 
-    /* SPECIFIC YEAR SUBSCRIPTION */
+    /* SLIDER SPECIFIC YEAR SUBSCRIPTION */
     self.slider.sliderViewModel.selectedYears.subscribe(function(years){
+    });
+
+
+    /* LD TYPE & SUBTYPE SUBSCRIPTION*/
+    self.ld.typeViewModel.subtype.subscribe(function(){
+        //get type and subtype on format {type: "oil", subtype: "export"}
+        // by calling 'self.ld.typeViewModel.getSelectedType()'
     });
 
     /****************** RETURN FUNCTIONS***********************/
@@ -107,5 +113,13 @@ function observer(){
 		ldUpdate(data);
 		pieUpdate(data);
 	}
+
+    self.notifyTypeChanged = function (types){
+        //Notify graphs which types that can be chosen
+
+
+    }
+
+
 }
 

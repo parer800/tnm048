@@ -14,7 +14,7 @@
 				<div id="glyphs" data-bind="foreach: glyphs">
 					<div class="glyph" data-bind="click: toggleActive, css : {'selected':isActive}">
 						<div data-bind="attr:{'class': $data.str}"></div>
-						<div class="class-name" data-bind="text:$data.glyphName"></div>
+						<div class="class-name" data-bind="text:$data.glyphName" data-toggle="popover"></div>
 					</div>
 				</div>
 			</div>
@@ -34,7 +34,12 @@
 	</div>
 	<div id="container" class="col-md-1">
         <div id="row1" class="row">
-            <div id="ld" class="col-md-6"></div>
+            <div id="ld" class="col-md-6">
+            	<div id="ld-controls">
+            		<select data-bind='options: ld_subtypes, optionsText:"type",value:type'></select>
+            		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
+            	</div> 
+            </div>
             <div id="sp" class="col-md-6"></div>
         </div>
         <div id="row2" class="row">
@@ -44,6 +49,7 @@
 
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 	<script src="js/knockout-3.0.0.js"></script>
 	<script src="js/d3.min.js"></script>
 	<script src="js/queue.v1.min.js"></script>

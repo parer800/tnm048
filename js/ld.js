@@ -3,6 +3,9 @@ function ld(){
     var self = this;
     self.data = null;
     self.interval = [0, 0];
+    self.subTypeData = ["Import","Export", "Total Consumption"];
+    self.subTyeDefault = 2;
+    self.typeViewModel = null;
 
     var x, y, xAxis, yAxis;
     var margin = {top: 20, right: 20, bottom: 30, left: 80},
@@ -15,6 +18,8 @@ function ld(){
 	        .attr("height", height + margin.top + margin.bottom)
         .append("g")
         	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.selectAll(".ld-filter-button").on("change", function(){console.log(this.value);})   	
 
 	function findMax() { 
 		return d3.max(self.data, function(data) { 
@@ -88,6 +93,7 @@ function ld(){
 				return y(data[1]);
 			})
 
+
 	    svg
         	.selectAll("path")
   				.data(self.data)
@@ -102,6 +108,44 @@ function ld(){
 	  				        Math.floor(Math.random() * 254) + "," +
 	  				        Math.floor(Math.random() * 254) + ")";
 	  			})
+	  			.on("mouseover",function(){
+					d3.select(this)
+						.style("stroke","#FFD700");
+					})
 	  			.attr("fill", "none");
     };
-}
+
+    self.updateSubtypes = function(){
+
+    };
+
+    /* KNOCKOUT JS INITIALIZATION FOR CHOSING SUBTYPE */
+    self.subtypeOption = function(){
+    	var self = this;
+    	self.type = ko.observable();
+    	self.subtype = ko.observable();
+    	self.getSelectedType = function(){
+    		//get type and subtype on format [{"type":theType, "subtype":theSubtype}]
+    		return {"type": self.type().type ,"subtype":self.subtype().subtype};
+    	};
+    };
+
+    self.updateBinding = function(){
+    	var element = $('#ld-controls')[0];
+    	ko.cleanNode(element);
+    	ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
+    }
+
+    self.typeViewModel = new self.subtypeOption();
+    ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
+
+
+
+}	
+	//Temporary 
+	var ld_subtypes = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"},{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"coal"},{"subtypes":[{"subtype":"import"},{"subtype":"total consumption"}],"type":"natural gas"}];
+	var ld_subtypes2 = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"}];
+	
+
+
+    
