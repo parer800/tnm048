@@ -117,7 +117,6 @@ function observer(){
 	function pieUpdate(){
 
 		self.pie.data = dh.getData(dataFilterVaules);
-		console.log(self.pie.data);
 		self.pie.data = dh.sumInterval(self.pie.data);
 		self.pie.draw();
 	}
