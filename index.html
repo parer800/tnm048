@@ -20,6 +20,8 @@
 					</div>
 				</div>
 			</div>
+			<button class="btn btn-primary" data-toggle="modal" data-target=".countries-modal">Countries</button>
+
 			<div id="slider" class="col-md-12">
 				<div class ="col-md-12" data-bind="slider: { min: min, max: max }, sliderOptions: {min: min(), max: max(), step: 1}"></div>
 				<div id="yearSpecifier" class="btn-group row" data-toggle="buttons">
@@ -34,6 +36,9 @@
 			<button type="button" class="btn btn-default close">Hide</button>
 		</div>
 	</div>
+
+
+
 	<div id="container" class="col-md-1">
         <div id="row1" class="row">
             <div id="ld" class="col-md-6">
@@ -49,6 +54,72 @@
         </div>
 	</div>
 
+
+
+	<div id="contries">
+		<div class="modal fade countries-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg" style="width:70%;">
+		    <div class="modal-content row">
+				<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Select Contries</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				</div>
+				<div class="modal-body row">
+					<div id="countries-list">
+
+						<div class="checkboxList col-md-3" data-bind="template: { name: 'teamCheckboxListItem-first', foreach: countries.slice(0,countries().length / 4) }"></div>
+
+						<div class="checkboxList col-md-3" data-bind="template: { name: 'teamCheckboxListItem-second', foreach: countries.slice(countries().length/4, countries().length / 2) }"></div>
+
+						<div class="checkboxList col-md-3" data-bind="template: { name: 'teamCheckboxListItem-third', foreach: countries.slice(countries().length / 2, 3*countries().length / 4) }"></div>
+						
+						<div class="checkboxList col-md-3" data-bind="template: { name: 'teamCheckboxListItem-fourth', foreach: countries.slice(3*countries().length / 4) }"></div>
+
+					<!-- First column of countries -->
+						<script type="text/html" id="teamCheckboxListItem-first">
+							<label>
+								<input type="checkbox" data-bind="value: name, checked:$parent.selectedChoices " />
+								<span data-bind="text: name"></span>
+							</label>
+							</br>			    	
+						</script>
+					<!-- Second column of countries -->
+						<script type="text/html" id="teamCheckboxListItem-second">
+							<label>
+								<input type="checkbox" data-bind="value: name, checked:$parent.selectedChoices " />
+								<span data-bind="text: name"></span>
+							</label>
+							</br>
+						</script>
+					<!-- Third column of countries -->
+						<script type="text/html" id="teamCheckboxListItem-third">
+							<label>
+								<input type="checkbox" data-bind="value: name, checked:$parent.selectedChoices" />
+								<span data-bind="text: name"></span>
+							</label>
+							</br>
+						</script>					
+					<!-- Fourth column of countries -->
+						<script type="text/html" id="teamCheckboxListItem-fourth">
+							<label>
+								<input type="checkbox" data-bind="value: name, checked:$parent.selectedChoices " />
+								<span data-bind="text: name"></span>
+							</label>
+							</br>
+						</script>					
+					</div>
+				</div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>		      			    
+		    </div>
+		  </div>
+		</div>	
+
+
+	</div>
+
 	<script src="js/jquery-1.11.0.min.js"></script>
 	<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -61,7 +132,8 @@
 	<script src="js/pie.js"></script>
 	<script src="js/glyph.js"></script>
 	<script src="js/slider.js"></script>
-	<script src="js/observer.js"></script>  
+	<script src="js/countries.js"></script>
+	<script src="js/observer.js"></script>
 	<script src="js/main.js"></script> 
 </body>
 
@@ -99,5 +171,4 @@
 			$("#div1").on("drop", drop);
 		}
 -->
-
 

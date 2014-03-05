@@ -10,6 +10,9 @@ function observer(){
 	self.sp = new sp();
 	self.ld = new ld();
 	self.pie = new pie();
+    self.countries = new countries();
+    self.countries.setCountriesViewModel();
+    self.countries.init();
 
 	glyphChangeStateArray.subscribe(function(type){
 
@@ -64,6 +67,18 @@ function observer(){
 
         ldUpdate();
     });
+
+
+    /* COUNTRIES SUBSCRIPTION */ 
+
+    //Call this to init countries subscription
+    
+    self.startCountriesSubscription = function(){
+        self.countries.countriesViewModel.selectedChoices.subscribe(function(){
+            // USE: self.countries.countriesViewModel.selectedChoices()
+            //      To get the selected countries
+        });
+    };
 
     /****************** RETURN FUNCTIONS***********************/
 
