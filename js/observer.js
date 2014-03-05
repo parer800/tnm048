@@ -1,15 +1,16 @@
 //observer
 function observer(){
 	var self = this;
-	self.slider = new slider();
+
+	self.slider     = new slider();
+    self.sp         = new sp();
+    self.ld         = new ld();
+    self.subtypePie = new pie();
+
     self.slider.setSliderViewModel(2000,2011);
-
     var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"]};
-
-	self.sp = new sp();
-	self.ld = new ld();
-	self.pie = new pie();
+							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"], 
+							"sum" : {"type" : false, "subtype" : false, "interval" : false, "country" : false}};
 
 	glyphChangeStateArray.subscribe(function(type){
 
@@ -20,7 +21,7 @@ function observer(){
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
             self.setMinYear(2000);
-            self.setMaxYear(2012);
+            self.setMaxYear(2011);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
        
@@ -74,7 +75,6 @@ function observer(){
         return [self.slider.sliderViewModel.min(), self.slider.sliderViewModel.max()];
     }
 
-
     /******************* Set Functions ************************/
     self.setMinYear = function(minyear){
         self.slider.sliderViewModel.setMinValue(minyear);
@@ -86,13 +86,6 @@ function observer(){
 
     /******************* UPDATE GRAPHS ************************/
 	function spUpdate(){
-		/*var xChange = true; var yChange = false;
-
-		if(xChange)
-			self.sp.xData = dh.sumInterval(data);
-		if(yChange)
-			self.sp.yData = dh.sumInterval(data);*/
-
 		var data = dh.getData(dataFilterVaules);
 		self.sp.xData = dh.sumInterval(data);
 		self.sp.yData = dh.sumInterval(data);
@@ -102,26 +95,36 @@ function observer(){
 	}
 
 	function ldUpdate(){
-		
+
 		self.ld.data = dh.getData(dataFilterVaules);
-		self.ld.interval = self.getYearSpan();
+        self.ld.interval = self.getYearSpan();
+
+        if(self.ld.data[0].value.length == 1){
+            dh.ldOneYear(self.ld.data);
+            self.ld.interval[1] = self.ld.interval[1] + 0.12;
+        }
+		
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
+
 	}
 
-	function pieUpdate(){
-
-		self.pie.data = dh.getData(dataFilterVaules);
-		console.log(self.pie.data);
-		self.pie.data = dh.sumInterval(self.pie.data);
-		self.pie.draw();
+	function subtypePieUpdate(){
+		dataFilterVaules.sum.interval = true;
+		dataFilterVaules.sum.country = true;
+		dataFilterVaules.sum.subtype = true;
+        self.subtypePie.data = dh.getData2(dataFilterVaules);
+        dataFilterVaules.sum.interval = false;
+        dataFilterVaules.sum.country = false;
+        dataFilterVaules.sum.subtype = false;
+		self.subtypePie.draw();
 	}
 
 	self.updateGraphs = function (){
 		
-		spUpdate();
+		//spUpdate();
 		ldUpdate();
-		pieUpdate();
+		subtypePieUpdate();
 	}
 
     self.notifyTypeChanged = function (types){

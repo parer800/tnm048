@@ -22,7 +22,7 @@ function pie(){
         .outerRadius(r);
  
     var pie = d3.layout.pie()           
-        .value(function(d) { return d["value"]; });    
+        .value(function(d) { return d.value[0][1]; });    
  
  	this.draw = function(){
  		
@@ -33,17 +33,34 @@ function pie(){
 	                .attr("class", "slice")    
 	        	.append("path")
 	                .attr("fill", function(d, i) { return color(i); } ) 
-	                .attr("d", arc);                                
-	 /*
-	        arcs.append("svg:text")                                     //add a label to each slice
-	                .attr("transform", function(d) {                    //set the label's origin to the center of the arc
-	                //we have to make sure to set these before calling arc.centroid
+	                .attr("d", arc)  
+	                .on("mouseenter", function(d) {
+		  				d3.select("body").append("div")   
+					       .attr("class", "tooltip") 
+					    d3.select(this).attr("d", d3.svg.arc().outerRadius(120));
+		  			})
+		  			.on("mouseout", function(d) {
+		  				d3.select(".tooltip").remove();
+		  				d3.select(this).attr("d", d3.svg.arc().outerRadius(100));
+		  			})
+		  			.on("mousemove", function(d) {
+		  				var procent = (d.endAngle - d.startAngle) / (2 * Math.PI) * 100;
+
+	               		d3.select(".tooltip").html(d.data.subtype[0] + ", " + procent.toFixed(2) + "%, " + d.value)
+				            .style("left", (d3.event.pageX + 20) + "px")     
+				            .style("top", (d3.event.pageY) + "px");
+	            	})                          
+		 
+	        arcs.append("text")                                     //add a label to each slice
+	            .attr("transform", function(d) {                    //set the label's origin to the center of the arc
 	                d.innerRadius = 0;
 	                d.outerRadius = r;
 	                return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
 	            })
-	            .attr("text-anchor", "middle")                          //center the text on it's origin
-	            .text(function(d, i) { return data[i].label; });        //get the label from our original data array
-	*/
+	            .style("fill", "White")
+      			.style("font", "bold 12px Arial")
+	            //.attr("text-anchor", "middle")                          //center the text on it's origin
+	            .text("hej");        //get the label from our original data array
+		
 	}
 }
