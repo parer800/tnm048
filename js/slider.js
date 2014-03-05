@@ -21,9 +21,6 @@ ko.bindingHandlers.slider = {
         
         options.slide = function(e, ui) {
 
-
-
-
             if(sliderValues.min) {
                 sliderValues.min(ui.values[0]);
                 sliderValues.max(ui.values[1]);   
@@ -76,6 +73,14 @@ ko.bindingHandlers.slider = {
 	    self.setMaxValue = function(newMaxYear){
 	    	self.max(newMaxYear);
 	    }
+        self.refreshSlider = function(miny, maxy){
+            self.setMinValue(miny);
+            self.setMaxValue(maxy);
+            self.minState = null;
+            self.maxState = null;
+            self.isLowerActive(false); //Lower year
+            self.isUpperActive (false); //Higher year
+        }
 	    self.setLowerYear = function(first){
 	        if(self.isLowerActive()){        
 	            self.selectedYears.push(first);
@@ -85,8 +90,9 @@ ko.bindingHandlers.slider = {
                 self.setMaxValue(self.min());
 	        }
 	        else{
-                if(self.maxState !== null)
+                if(self.maxState !== null){
                     self.setMaxValue(self.maxState);
+                }
 	            self.selectedYears.shift();
 	        }
 
@@ -104,15 +110,28 @@ ko.bindingHandlers.slider = {
                 self.setMinValue(self.max());
 	        }
 	        else{
-                if(self.minState !== null)
+                if(self.minState !== null){
                     self.setMinValue(self.minState);                
+                }
 	            self.selectedYears.pop();
 	        }
 	        self.isUpperActive(!self.isUpperActive());
 	        //this.selectedYears([first,second]);
 	    }
+
 	}
-	/**************************************************************************/
+
+	/************************ END OF SLIDER VIEW MODEL ******************************/
+
+
+    self.updateSpan = function(miny, maxy){
+        
+        var element = $('#slider')[0];
+        ko.cleanNode(element);
+        self.sliderViewModel.refreshSlider(miny, maxy);
+        ko.applyBindings(self.sliderViewModel, document.getElementById("slider"));
+    }
+
 
 } //*********************** END OF SLIDER CLASS ********************************/
 
@@ -151,6 +170,10 @@ function moveUpperIndicator(){
     }
 
 }
+
+
+
+
 
 function showYearSpan(){
 

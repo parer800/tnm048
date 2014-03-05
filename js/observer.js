@@ -84,6 +84,11 @@ function observer(){
         self.slider.sliderViewModel.setMaxValue(maxyear);
     }
 
+    self.updateYearSpan = function(){
+        //self.slider.updateYearSpan(aMinYear, aMaxYear);
+    }
+
+
     /******************* UPDATE GRAPHS ************************/
 	function spUpdate(){
 		var data = dh.getData(dataFilterVaules);
@@ -132,6 +137,7 @@ function observer(){
         GLOBAL_TYPES = dh.getSubtypesForTypes(types);
         if(GLOBAL_TYPES.length != 0)
             self.ld.updateBinding();
+
     }
 }
 
