@@ -12,6 +12,7 @@
 <body>
 	<div id="menu" class="col-md-1">
 		<div id="middle" class="row">
+		<button class="flaticon-world7 world-btn" data-toggle="modal" data-target=".countries-modal"></button>
 			<div id="energy-sources">
 				<div id="glyphs" data-bind="foreach: glyphs">
 					<div class="glyph" data-bind="click: toggleActive, css : {'selected':isActive}">
@@ -20,7 +21,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="btn btn-primary" data-toggle="modal" data-target=".countries-modal">Countries</button>
 
 			<div id="slider" class="col-md-12">
 				<div class ="col-md-12" data-bind="slider: { min: min, max: max }, sliderOptions: {min: min(), max: max(), step: 1}"></div>
@@ -47,7 +47,17 @@
             		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
             	</div> 
             </div>
-            <div id="sp" class="col-md-6"></div>
+            <div id="sp" class="col-md-6">
+            	<div id="sp-controlsY">
+            		<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
+            		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
+            	</div>
+				<div id="sp-controlsX" style="position:absolute;bottom:-20px;right:20px;">
+				<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
+				<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
+			</div>
+            </div>
+
         </div>
         <div id="row2" class="row">
             <div id="pie" class="col-md-6"></div>

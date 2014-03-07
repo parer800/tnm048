@@ -5,7 +5,8 @@ function sp(){
     self.xData = null;
     self.yData = null;
     self.data = null;
-
+    self.typeViewModel_Y = null; // DEFAULT view model, will be assigned later
+    self.typeViewModel_X = null; // DEFAULT view model, will be assigned later
     var keyDown = false;
     var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
@@ -182,46 +183,36 @@ function sp(){
             .attr("font-family", "sans-serif")
             .attr("font-size", "11px"); 
     };
+
+    self.subtypeOption = function(){
+        var self = this;
+        self.type = ko.observable();
+        self.subtype = ko.observable();
+        self.getSelectedType = function(){
+            //get type and subtype on format [{"type":theType, "subtype":theSubtype}]
+            return {"type": self.type().type ,"subtype":self.subtype().subtype};
+        };
+    };
+
+    self.updateBinding = function(initializeObserverSubscription){
+        // RESET Y AXIS
+        var element = $('#sp-controlsY')[0];
+        ko.cleanNode(element);
+        ko.applyBindings(self.typeViewModel_Y, document.getElementById("sp-controlsY"));
+        // RESET X AXIS
+        element = $('#sp-controlsX')[0];
+        ko.cleanNode(element);
+        ko.applyBindings(self.typeViewModel_X, document.getElementById("sp-controlsX")); 
+        initializeObserverSubscription();       
+    }
+
+    self.typeViewModel_Y = new self.subtypeOption();
+    self.typeViewModel_X = new self.subtypeOption();
+
+  //  ko.applyBindings(self.typeViewModel_Y, document.getElementById("sp-controlsY"));
+    self.initX = function(){
+       // ko.applyBindings(self.typeViewModel_Y, document.getElementById("sp-controlsX"));
+    }
+    
+
 }
-
-
-    /*d3.select("#sp svg")
-        .on("mousedown", function() {
-            keyDown = true;
-            d3.event.preventDefault();
-
-            //self.zoomData = [];
-            $("#ld").append("<div id='selected'> </div>");
-            
-            selectBox.start.startY = d3.event.pageY - $("#menu").height();
-            selectBox.start.startX = d3.event.pageX;
-        })
-        .on("mousemove", function() { 
-            if(keyDown){
-                $("#selected").css({ 
-                    top: Math.min(selectBox.start.startY, d3.event.pageY - $("#menu").height()), 
-                    left: Math.min(selectBox.start.startX, d3.event.pageX), 
-                    height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.startY - 5),
-                    width: Math.abs(d3.event.pageX - selectBox.start.startX - 5)
-                });
-            }
-        })
-        .on("mouseup", function() {
-            
-            keyDown = false;
-            d3.event.preventDefault();
-
-            var xValue = x.invert(d3.event.pageX),
-                yValue = y.invert(d3.event.pageY- $("#menu").height());
-
-            //findZoomData(xValue, yValue);
-            
-            $("#selected").remove();
-            selectBox.end.endY = d3.event.pageY - $("#menu").height();
-            selectBox.end.endX = d3.event.pageX;
-            
-            if(self.zoomData.length > 0){
-                self.defineAxis(self.zoomData);
-                self.draw(self.zoomData);
-            }
-        });*/
