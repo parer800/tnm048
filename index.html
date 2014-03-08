@@ -60,8 +60,17 @@
 
         </div>
         <div id="row2" class="row">
-            <div id="subPie" class="col-md-6"></div>
-            <div id="typePie" class="col-md-6"></div>
+        	<div id="typePie" class="col-md-6">
+        		<div id="pie-type-controls">
+        			<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
+        		</div>
+        	</div>
+            <div id="subPie" class="col-md-6">
+        		<div id="pie-subtype-controls">
+        			<select data-bind='options: GLOBAL_TYPES[0].subtypes, optionsText:"subtype",value:subtype'></select>
+        		</div>            	
+            </div>
+            
         </div>
 	</div>
 

@@ -8,9 +8,9 @@ function observer(){
     self.subtypePie = new pie("#subPie");
     self.typePie    = new pie("#typePie");
 
-    self.typePie.typeOfPieChart = "type";
+    self.typePie.typeOfPieChart = "subtype";
     self.typePie.divId = "#typePie";
-    self.subtypePie.typeOfPieChart = "subtype";
+    self.subtypePie.typeOfPieChart = "type";
     self.subtypePie.divId = "#subPie";
 
     self.countries = new countries();
@@ -96,6 +96,23 @@ function observer(){
         });    
         
     }
+
+    /* PIE CHART TYPE & SUBTYPE SUBSCRIPTION */
+
+        /* TYPE PIE  */
+        pieTypeViewModel.type.subscribe(function(){
+            dataFilterVaules.type = [pieTypeViewModel.type().type]; 
+            dataFilterVaules.subtype = dh.getSubtypesAsArray(pieTypeViewModel.type().type);
+            typePieUpdate()
+        });
+
+        /* SUBTYPE PIE  */
+        pieSubtypeViewModel.subtype.subscribe(function(){
+            dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype]; 
+            subtypePieUpdate()
+        });        
+
+
     
     /* COUNTRIES SUBSCRIPTION */ 
 
@@ -181,6 +198,17 @@ function observer(){
 		self.subtypePie.draw();
 	}
 
+    function typePieUpdate(){
+        dataFilterVaules.sum.interval = true;
+        dataFilterVaules.sum.country = true;
+        dataFilterVaules.sum.type = true;
+        self.typePie.data = dh.getData2(dataFilterVaules);
+        dataFilterVaules.sum.interval = false;
+        dataFilterVaules.sum.country = false;
+        dataFilterVaules.sum.type = false;
+        self.typePie.draw();
+    }
+
 	self.updateGraphs = function (){
 		if(self.countries.countriesViewModel.selectedChoices().length > 0){
     		spUpdate();
@@ -194,7 +222,7 @@ function observer(){
         GLOBAL_TYPES = dh.getSubtypesForTypes(types);
         if(GLOBAL_TYPES.length != 0){
             self.ld.updateBinding();
-            
+            updatePieBinding();
             self.sp.updateBinding(self.initSpSubscription);
 
             /* hard coded solutions, we need to initialize hte subscription after we defined BOTH of the objects in sp.updateBinding.
