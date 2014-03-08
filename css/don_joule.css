@@ -17,7 +17,7 @@
 
 }
 #middle{
-        display: table-cell;
+    display: table-cell;
     vertical-align: middle;
 }
 #energy-sources{
@@ -82,4 +82,17 @@
     line-height: 1;
 }
 
+
+.world-btn{
+    z-index: 100;
+    background: none;
+    border:none;
+    color:#FFF;
+}
+
+.world-btn:hover{
+    background: none;
+    color:#FFF3CD;
+    
+}
 

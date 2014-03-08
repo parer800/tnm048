@@ -1,6 +1,8 @@
-function pie(){
+function pie(div){
 	var self = this;
-	self.data = null; 
+	self.data = null;
+	self.typeOfPieChart = "type";
+	self.divId = div;
 
 	var w = 300,                        
     h = 300,                           
@@ -11,7 +13,7 @@ function pie(){
         width = 600 - margin.right - margin.left,
         height = 600 - margin.top - margin.bottom;
  
-    var svg = d3.select("#pie")
+    var svg = d3.select(self.divId)
 	    .append("svg")
 	        .attr("width", width + margin.left + margin.right)
 	        .attr("height", height + margin.top + margin.bottom)
@@ -45,8 +47,14 @@ function pie(){
 		  			})
 		  			.on("mousemove", function(d) {
 		  				var procent = (d.endAngle - d.startAngle) / (2 * Math.PI) * 100;
+		  				var label;
+		  				if(self.typeOfPieChart == "type"){
+		  					label = d.data.type[0];
+		  				} else {
+		  					label = d.data.subtype[0];
+		  				}
 
-	               		d3.select(".tooltip").html(d.data.subtype[0] + ", " + procent.toFixed(2) + "%, " + d.value)
+	               		d3.select(".tooltip").html(label + ", " + procent.toFixed(2) + "%, " + d.value)
 				            .style("left", (d3.event.pageX + 20) + "px")     
 				            .style("top", (d3.event.pageY) + "px");
 	            	})                          

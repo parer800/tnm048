@@ -417,24 +417,24 @@ function dataHandler() {
 	}
 
 	this.normalizeData = function(data){
-		/*for(var i=0; i<data.length; i++){
+		for(var i=0; i<data.length; i++){
 			for(var j=0; j<data[i].value.length; j++){
 				var totalPopulation = 0;
 
 				if(data[i].country instanceof Array){
-					for(var j=0; j<data[i].country.length; j++){
-						
+					for(var k=0; k<data[i].country.length; k++){
+						totalPopulation += self.dataTable["indicators"]["population"][data[i].country[k]][data[i].value[j][0]];
 					}
 				} else {
-
-
+					if(self.dataTable["indicators"]["population"][data[i].country] !== undefined){ 
+						totalPopulation += self.dataTable["indicators"]["population"][data[i].country][data[i].value[j][0]];
+					}
 				}
 				if(totalPopulation != 0){
-					data[i].value[j][1] /= totalPopulation;
+					data[i].value[j][1] /= (totalPopulation * 1000000);
 				}
-
-				}
-		}*/
+			}
+		}
 	}
 
 	this.getDataMiningData = function(){

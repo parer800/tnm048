@@ -1,24 +1,31 @@
 //observer
-var dataMining = new dataMining();
-
 function observer(){
 	var self = this;
 
 	self.slider     = new slider();
     self.sp         = new sp();
     self.ld         = new ld();
-    self.subtypePie = new pie();
+    self.subtypePie = new pie("#subPie");
+    self.typePie    = new pie("#typePie");
+
+    self.typePie.typeOfPieChart = "type";
+    self.typePie.divId = "#typePie";
+    self.subtypePie.typeOfPieChart = "subtype";
+    self.subtypePie.divId = "#subPie";
+
+    self.countries = new countries();
+    self.countries.setCountriesViewModel();
     
     self.slider.setSliderViewModel(2000,2011);
     var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"], 
+							"interval" : ["2000", "2012"], "country" : self.countries.getSelectedCountries(), 
 							"sum" : {"type" : false, "subtype" : false, "interval" : false, "country" : false}};
 
 	glyphChangeStateArray.subscribe(function(type){
 
         dataFilterVaules["type"] = type;
         //dataFilterVaules["interval"] = self.getYearSpan();
-        dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"][0], dataFilterVaules["subtype"]);
+        //dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"][0], dataFilterVaules["subtype"]);
 
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
@@ -30,6 +37,7 @@ function observer(){
         //self.updateGraphs();
 
         showYearSpan();
+        self.startCountriesSubscription();
         self.notifyTypeChanged(type);
 	});
 
@@ -68,6 +76,41 @@ function observer(){
         ldUpdate();
     });
 
+
+    /* SP TYPE & SUBTYPE SUBSCRIPTION*/
+
+   self.initSpSubscription =  function(){
+    /*  Y AXIS */
+        self.sp.typeViewModel_Y.subtype.subscribe(function(){
+            //get type and subtype on format {type: "oil", subtype: "export"}
+            // by calling 'self.sp.typeViewModel_Y.getSelectedType()'
+            spUpdate();
+        });
+
+    /*  X AXIS */
+
+        self.sp.typeViewModel_X.subtype.subscribe(function(){
+            //get type and subtype on format {type: "oil", subtype: "export"}
+            // by calling 'self.sp.typeViewModel.getSelectedType()'
+            spUpdate();
+        });    
+        
+    }
+    
+    /* COUNTRIES SUBSCRIPTION */ 
+
+    //Call this to init countries subscription
+    
+    self.startCountriesSubscription = function(){
+        self.countries.countriesViewModel.selectedChoices.subscribe(function(){
+            // USE: self.countries.countriesViewModel.selectedChoices()
+            //      To get the selected countries
+            dataFilterVaules.country = self.countries.countriesViewModel.selectedChoices();
+            self.updateGraphs();
+
+        });
+    };
+
     /****************** RETURN FUNCTIONS***********************/
 
     self.getSelectedYears = function(){
@@ -93,10 +136,23 @@ function observer(){
 
     /******************* UPDATE GRAPHS ************************/
 	function spUpdate(){
-		var data = dh.getData(dataFilterVaules);
+		
+        //Get data by y axis
+        var typeSubtype = self.sp.typeViewModel_Y.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
+        var data = dh.getData(dataFilterVaules);
+        self.sp.yData = dh.sumInterval(data);
+
+        //Get data by x axis
+        typeSubtype = self.sp.typeViewModel_X.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
+        data = dh.getData(dataFilterVaules);
 		self.sp.xData = dh.sumInterval(data);
-		self.sp.yData = dh.sumInterval(data);
-		self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
+		
+		//self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
+        self.sp.data = dh.slowSafeMergeData(self.sp.xData, self.sp.yData);
 		self.sp.defineAxis(self.sp.data);
 		self.sp.draw(self.sp.data);
 	}
@@ -105,11 +161,10 @@ function observer(){
 
 		self.ld.data = dh.getData(dataFilterVaules);
         self.ld.interval = self.getYearSpan();
-
         if(self.ld.data[0].value.length == 1){
             dh.ldOneYear(self.ld.data);
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
-        }   
+        }
 
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
@@ -127,18 +182,29 @@ function observer(){
 	}
 
 	self.updateGraphs = function (){
-		
-		//spUpdate();
-		ldUpdate();
-		subtypePieUpdate();
+		if(self.countries.countriesViewModel.selectedChoices().length > 0){
+    		spUpdate();
+    		ldUpdate();
+    		subtypePieUpdate();
+        }
 	}
 
     self.notifyTypeChanged = function (types){
         //Notify graphs which types that can be chosen
         GLOBAL_TYPES = dh.getSubtypesForTypes(types);
-        if(GLOBAL_TYPES.length != 0)
+        if(GLOBAL_TYPES.length != 0){
             self.ld.updateBinding();
+            
+            self.sp.updateBinding(self.initSpSubscription);
+
+            /* hard coded solutions, we need to initialize hte subscription after we defined BOTH of the objects in sp.updateBinding.
+                otherwise it will try to update the graph before the last object is defined */
+            
+            spUpdate();
+        }
 
     }
+
+    self.countries.init();
 }
 
