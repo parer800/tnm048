@@ -359,45 +359,6 @@ function dataHandler() {
 		return output;
 	}
 
-	this.test = function(){
-		var d1 = self.dataTable["oil"]["supply"];
-		var d2 = self.dataTable["oil"]["consumption"];
-		var d3 = self.dataTable["coal"]["supply"];
-		var d4 = self.dataTable["coal"]["consumption"];
-
-		var sum = 0;
-		for(country in d1)
-			for(year in d1[country])
-				sum += +d1[country][year];
-
-		console.log("** Total oil supply **");
-		console.log(sum);
-
-		sum = 0;
-		for(country in d2)
-			for(year in d2[country])
-				sum += +d2[country][year];
-
-		console.log("** Total oil consumption **");
-		console.log(sum);
-
-		sum = 0;
-		for(country in d3)
-			for(year in d3[country])
-				sum += +d3[country][year];
-
-		console.log("** Total coal supply **");
-		console.log(sum);
-
-		sum = 0;
-		for(country in d4)
-			for(year in d4[country])
-				sum += +d4[country][year];
-
-		console.log("** Total coal consumption **");
-		console.log(sum);
-	}
-
 	function insert(container, type, subtype, newData){
 
 		container[type] = container[type] || {};
@@ -427,7 +388,7 @@ function dataHandler() {
 			for(key in self.dataFiles[type]){
 				var url = self.dataFiles[type][key];
 				
-	        	q.defer(function(args, cb){
+	        	q.defer(function(args, cb){ 
 	        		d3.csv(args[1], function(error, data) {
 			 			cb(error, [args[0], data]);
 	        		});
@@ -455,11 +416,33 @@ function dataHandler() {
 		return true;
 	}
 
+	this.normalizeData = function(data){
+		/*for(var i=0; i<data.length; i++){
+			for(var j=0; j<data[i].value.length; j++){
+				var totalPopulation = 0;
+
+				if(data[i].country instanceof Array){
+					for(var j=0; j<data[i].country.length; j++){
+						
+					}
+				} else {
+
+
+				}
+				if(totalPopulation != 0){
+					data[i].value[j][1] /= totalPopulation;
+				}
+
+				}
+		}*/
+	}
+
 	this.getDataMiningData = function(){
 		var output = [];
 		var tmp = {};
+		var types = {"oil": 0, "coal": 1};
 
-		for(type in self.dataTable){
+		for(type in types){
 			for(subtype in self.dataTable[type]){
 				for(country in self.dataTable[type][subtype]){
 					if(tmp[country] === undefined){
@@ -505,23 +488,9 @@ function dataHandler() {
 		return output;
 	}
 
-	/*
-	// OIL 
-	self.dataFiles["oil"] = {};
-	self.dataFiles["oil"]["supply"] = "data/old/Total_Oil_Supply_(Thousand_Barrels_Per_Day).csv";
-	self.dataFiles["oil"]["consumption"] = "data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv";
-
-	// COAL 
-	self.dataFiles["coal"] = {};
-	self.dataFiles["coal"]["supply"] = "data/old/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv";
-	self.dataFiles["coal"]["consumption"] = "data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv";
-
-	// NATURAL GAS
-	self.dataFiles["natural gas"] = {};
-
-	// RENEWABLES
-	self.dataFiles["renewables"] = {};*/
-
+	this.loadFiles = function(){
+		self.loadData("indicators", function(type) {});
+	}
 
 	// OIL
 	self.dataFiles["oil"        ] = {};
@@ -549,7 +518,7 @@ function dataHandler() {
 	self.dataFiles["electricity"]["export"      ] = "data/Total_Electricity_Exports_(Billion_Kilowatthours).csv";
 	self.dataFiles["electricity"]["import"      ] = "data/Total_Electricity_Imports_(Billion_Kilowatthours).csv";
 	self.dataFiles["electricity"]["production"  ] = "data/Total_Primary_Energy_Production_(Quadrillion_Btu).csv";
-	self.dataFiles["electricity"]["consumption "] = "data/Total_Electricity_Net_Consumption_(Billion_Kilowatthours).csv";
+	self.dataFiles["electricity"]["consumption" ] = "data/Total_Electricity_Net_Consumption_(Billion_Kilowatthours).csv";
 	self.dataFiles["electricity"]["capacity"    ] = "data/Total_Electricity_Installed_Capacity_(Million_Kilowatts).csv";
 	self.dataFiles["electricity"]["carbonDioxid"] = "data/Total_Carbon_Dioxide_Emissions_from_the_Consumption_of_Energy_(Million_Metric_Tons).csv";
 	
@@ -563,5 +532,6 @@ function dataHandler() {
 	// RENEWABLE
 	self.dataFiles["renewable"  ] = {};
 	self.dataFiles["renewable"  ]["consumption" ] = "data/Total_Renewable_Electricity_Net_Consumption_(Billion_Kilowatthours).csv";
-	
+
+	self.loadFiles();
 }
