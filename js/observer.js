@@ -9,9 +9,7 @@ function observer(){
     self.typePie    = new pie("#typePie");
 
     self.typePie.typeOfPieChart = "type";
-    self.typePie.divId = "#typePie";
     self.subtypePie.typeOfPieChart = "subtype";
-    self.subtypePie.divId = "#subPie";
 
     self.countries = new countries();
     self.countries.setCountriesViewModel();

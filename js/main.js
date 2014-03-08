@@ -2,13 +2,6 @@ var dh = new dataHandler();
 var dataMiner = new dataMining();
 var observer = new observer();
 
-function test(){
-    dataMiner.data = dh.getDataMiningData();
-    dh.normalizeData(dataMiner.data);
-    dataMiner.calculateClusters();
-    console.log(dataMiner.getCountryClusters());
-}
-
 // Should probably be located in other file
 $(document).ready(function () {
 	$('#menu').toggleClass('open');

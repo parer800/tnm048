@@ -49,6 +49,11 @@ function ld(){
 				});
 	    	}
 	    })
+	    .on("dblclick", function() {
+            self.defineAxis(self.data);
+            self.draw(self.data);
+                        
+        })
 	    .on("mouseup", function() { 
 	    	
 			keyDown = false;
@@ -179,6 +184,7 @@ function ld(){
 	  					return "rgb(0, 255, 0)";
 	  				else 
 	  					return "rgb(0, 0, 255)";*/
+
 	  				return "rgb(" + 
 	  						Math.floor(Math.random() * 254) + "," +
 	  				        Math.floor(Math.random() * 254) + "," +

@@ -45,7 +45,6 @@ function sp(){
 
     d3.select("#sp svg")
         .on("mousedown", function() {
-
             keyDown = true;
             d3.event.preventDefault();
 
@@ -71,6 +70,10 @@ function sp(){
                 });
             }
         })
+        .on("dblclick", function() {
+            self.defineAxis(self.data);
+            self.draw(self.data);            
+        })
         .on("mouseup", function() { 
             
             keyDown = false;
@@ -88,7 +91,7 @@ function sp(){
             if(self.zoomData.length > 0){ 
                 self.defineAxis(self.zoomData);
                 self.draw(self.zoomData);
-            }
+            }    
         });
 
     function findZoomData(){ 
