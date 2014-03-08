@@ -158,12 +158,10 @@ function observer(){
 
 		self.ld.data = dh.getData(dataFilterVaules);
         self.ld.interval = self.getYearSpan();
-
         if(self.ld.data[0].value.length == 1){
             dh.ldOneYear(self.ld.data);
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
         }
-		
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
 
@@ -181,10 +179,11 @@ function observer(){
 	}
 
 	self.updateGraphs = function (){
-		
-		spUpdate();
-		ldUpdate();
-		subtypePieUpdate();
+		if(self.countries.countriesViewModel.selectedChoices().length > 0){
+    		spUpdate();
+    		ldUpdate();
+    		subtypePieUpdate();
+        }
 	}
 
     self.notifyTypeChanged = function (types){

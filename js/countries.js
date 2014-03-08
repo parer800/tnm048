@@ -12,14 +12,35 @@ function countries(){
 	    for(var i=0; i<c.length;i++){
 	    	self.countriesViewModel.selectedChoices.push(c[i]);
 	        self.countriesViewModel.countries.push({ name: c[i], id: self.countriesViewModel.countries().length+1, isChecked: true });
-
 	    }
-	    ko.applyBindings(self.countriesViewModel, document.getElementById("countries-list"));
+	    ko.applyBindings(self.countriesViewModel, document.getElementById("countries"));
 	};
 
 	countriesViewModel = function(){
 	    this.countries = ko.observableArray([]);
 	    this.selectedChoices = ko.observableArray([]);
+	    this.selectAll = ko.observable(true);
+	    this.optionText = ko.computed(function(){
+	    	if(!this.selectAll()){
+	    		return "Select all countries";
+	    	}
+	    	else{
+	    		return "Deselect all countries";
+	    	}
+	    }, this);
+	    this.toggleActive = function(){
+	    	this.selectAll(!this.selectAll());
+	    	if(!this.selectAll()){
+	    		//Deselect all countries
+	    		this.selectedChoices([]);
+	    	}
+	    	else{
+	    		//Select all countries
+	    		this.selectedChoices(self.country_list);
+	    	}	
+	    	
+	    }
+
 	};
 	self.getSelectedCountries = function (){
 		return self.countriesViewModel.selectedChoices();
