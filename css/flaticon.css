@@ -18,8 +18,7 @@
 	font-style: normal;
 	line-height: 1;
 
-}
-.flaticon-barrel:before {
+}.flaticon-barrel:before {
 	content: "\e000";
 }
 .flaticon-bio1:before {
@@ -31,48 +30,51 @@
 .flaticon-bolt1:before {
 	content: "\e003";
 }
-.flaticon-earth16:before {
+.flaticon-cowboy5:before {
 	content: "\e004";
 }
-.flaticon-eco37:before {
+.flaticon-earth16:before {
 	content: "\e005";
 }
-.flaticon-eco6:before {
+.flaticon-eco37:before {
 	content: "\e006";
 }
-.flaticon-eco7:before {
+.flaticon-eco6:before {
 	content: "\e007";
 }
-.flaticon-energy2:before {
+.flaticon-eco7:before {
 	content: "\e008";
 }
-.flaticon-green3:before {
+.flaticon-energy2:before {
 	content: "\e009";
 }
-.flaticon-oil:before {
+.flaticon-green3:before {
 	content: "\e00a";
 }
-.flaticon-oil5:before {
+.flaticon-oil:before {
 	content: "\e00b";
 }
-.flaticon-renewable:before {
+.flaticon-oil5:before {
 	content: "\e00c";
 }
-.flaticon-solar2:before {
+.flaticon-renewable:before {
 	content: "\e00d";
 }
-.flaticon-wheelbarrow1:before {
+.flaticon-solar2:before {
 	content: "\e00e";
 }
-.flaticon-wind17:before {
+.flaticon-wheelbarrow1:before {
 	content: "\e00f";
 }
-.flaticon-wind2:before {
+.flaticon-wind17:before {
 	content: "\e010";
 }
-.flaticon-world7:before {
+.flaticon-wind2:before {
 	content: "\e011";
 }
-.flaticon-world8:before {
+.flaticon-world7:before {
 	content: "\e012";
+}
+.flaticon-world8:before {
+	content: "\e013";
 }
