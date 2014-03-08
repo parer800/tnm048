@@ -455,6 +455,56 @@ function dataHandler() {
 		return true;
 	}
 
+	this.getDataMiningData = function(){
+		var output = [];
+		var tmp = {};
+
+		for(type in self.dataTable){
+			for(subtype in self.dataTable[type]){
+				for(country in self.dataTable[type][subtype]){
+					if(tmp[country] === undefined){
+						tmp[country] = [];
+					}
+					
+					for(year in self.dataTable[type][subtype][country]){
+						if(self.dataTable[type][subtype][country][year] != ""){
+							var value = +self.dataTable[type][subtype][country][year];
+							tmp[country].push([+year, value]);
+						}
+					}
+				}
+			}
+		}
+
+		for(country in tmp){
+			output.push({"country": country, "value": tmp[country]})
+		}
+
+		var length = {};
+		for(var i=0; i<output.length; i++){
+			if(length[output[i].value.length] === undefined){
+				length[output[i].value.length] = 1;
+			} else {
+				length[output[i].value.length] += 1;
+			}
+		}
+		var maxLength = -Infinity;
+
+		for(key in length){
+			if(length[key] > maxLength){
+				maxLength = +key;
+			}
+		}
+
+		for(var i=0; i<output.length; i++){
+			if(output[i].value.length < maxLength){
+				output.splice(i,1);
+			}
+		}
+
+		return output;
+	}
+
 	/*
 	// OIL 
 	self.dataFiles["oil"] = {};

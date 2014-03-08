@@ -171,7 +171,14 @@ function ld(){
   				.attr("d", function(data) {
   					return line(data["value"]);
   				})
-	  			.attr("stroke", function() {
+	  			.attr("stroke", function(d, i) {
+	  				
+	  				/*if(dataMining.clusters[i] == 0)
+	  					return "rgb(255, 0, 0)";
+	  				else if(dataMining.clusters[i] == 1)
+	  					return "rgb(0, 255, 0)";
+	  				else 
+	  					return "rgb(0, 0, 255)";*/
 	  				return "rgb(" + 
 	  						Math.floor(Math.random() * 254) + "," +
 	  				        Math.floor(Math.random() * 254) + "," +

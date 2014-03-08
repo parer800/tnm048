@@ -1,4 +1,6 @@
 //observer
+var dataMining = new dataMining();
+
 function observer(){
 	var self = this;
 
@@ -6,7 +8,7 @@ function observer(){
     self.sp         = new sp();
     self.ld         = new ld();
     self.subtypePie = new pie();
-
+    
     self.slider.setSliderViewModel(2000,2011);
     var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
 							"interval" : ["2000", "2012"], "country" : ["Sweden", "Canada", "Norway"], 
@@ -107,11 +109,10 @@ function observer(){
         if(self.ld.data[0].value.length == 1){
             dh.ldOneYear(self.ld.data);
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
-        }
-		
+        }   
+
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
-
 	}
 
 	function subtypePieUpdate(){
