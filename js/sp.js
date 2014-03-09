@@ -4,6 +4,7 @@ function sp(){
     self.zoomData = null;
     self.xData = null;
     self.yData = null;
+    self.labels = {"x": "DEFAULT", "y": "DEFAULT"};
     self.data = null;
     self.typeViewModel_Y = null; // DEFAULT view model, will be assigned later
     self.typeViewModel_X = null; // DEFAULT view model, will be assigned later
@@ -48,27 +49,34 @@ function sp(){
             keyDown = true;
             d3.event.preventDefault();
 
-            var xValue = x.invert(d3.mouse(this)[0] - 80),
-                yValue = y.invert(d3.mouse(this)[1] - 20);
+            var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                yValue = y.invert(d3.mouse(this)[1] - margin.top);
             
             selectBox.start.startX = xValue;
             selectBox.start.startY = yValue;
-            selectBox.start.posX   = d3.mouse(this)[0]  + 15;
-            selectBox.start.posY   = d3.mouse(this)[1];
+            selectBox.start.posX   = d3.mouse(this)[0] - margin.left;
+            selectBox.start.posY   = d3.mouse(this)[1] - margin.top;
 
             self.zoomData = [];
-            $("#sp-content").append("<div id='selected'> </div>");
+
+            svg.append("rect")
+                .attr("id", "selected");
         })
         .on("mousemove", function() { 
-
-            if(keyDown){
-                $("#selected").css({ 
-                    top:    Math.min(selectBox.start.posY, d3.mouse(this)[1]), 
-                    left:   Math.min(selectBox.start.posX, d3.mouse(this)[0] + 15 - 5), 
-                    height: Math.abs(d3.mouse(this)[1] - selectBox.start.posY),
-                    width:  Math.abs(d3.mouse(this)[0] + 15 - 5 - selectBox.start.posX)
+ 
+            d3.select("#selected")
+                .attr("x", function() {
+                    return  Math.min(selectBox.start.posX, d3.mouse(this)[0]);
+                })
+                .attr("y", function() {
+                    return  Math.min(selectBox.start.posY, d3.mouse(this)[1]);
+                })
+                .attr("width", function() {
+                    return Math.abs(d3.mouse(this)[0] - selectBox.start.posX);
+                })
+                .attr("height", function() {
+                    return Math.abs(d3.mouse(this)[1] - selectBox.start.posY);
                 });
-            }
         })
         .on("dblclick", function() {
             self.defineAxis(self.data);
@@ -79,10 +87,11 @@ function sp(){
             keyDown = false;
             d3.event.preventDefault();
 
-            var xValue = x.invert(d3.mouse(this)[0] - 80),
-                yValue = y.invert(d3.mouse(this)[1] - 20);
+            var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                yValue = y.invert(d3.mouse(this)[1] - margin.top);
 
-            $("#selected").remove(); 
+            d3.select("#selected").remove();
+
             selectBox.end.endX = xValue;
             selectBox.end.endY = yValue;
 
@@ -170,6 +179,7 @@ function sp(){
         //remove old plot
         svg.select(".x.axis").remove(xAxis);
         svg.select(".y.axis").remove(yAxis);
+        svg.selectAll(".label").remove();
         svg.selectAll(".dot").remove();
 
         // Add x axis and title.
@@ -249,6 +259,28 @@ function sp(){
                     }
                     toggleClick(d.country);
                 });
+
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "start")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(function() {
+                return self.labels.x;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");
+
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "start")
+            .attr("x", - margin.left)
+            .attr("y", -8)
+            .text(function() {
+                return self.labels.y;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");
     };
 
     self.subtypeOption = function(){

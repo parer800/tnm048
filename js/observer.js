@@ -159,6 +159,7 @@ function observer(){
         dataFilterVaules.subtype = [typeSubtype.subtype];
         var data = dh.getData(dataFilterVaules);
         self.sp.yData = dh.sumInterval(data);
+        self.sp.labels.y = dh.units[typeSubtype.type][typeSubtype.subtype];
 
         //Get data by x axis
         typeSubtype = self.sp.typeViewModel_X.getSelectedType();
@@ -166,6 +167,7 @@ function observer(){
         dataFilterVaules.subtype = [typeSubtype.subtype];
         data = dh.getData(dataFilterVaules);
 		self.sp.xData = dh.sumInterval(data);
+        self.sp.labels.x = dh.units[typeSubtype.type][typeSubtype.subtype];
 		
 		//self.sp.data = dh.fastUnsafeMergeData(self.sp.xData, self.sp.yData);
         self.sp.data = dh.slowSafeMergeData(self.sp.xData, self.sp.yData);
@@ -182,6 +184,7 @@ function observer(){
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
         }
 
+        self.ld.labels.y = dh.units[dataFilterVaules.type[0]][dataFilterVaules.subtype[0]];
 		self.ld.defineAxis(self.ld.data);
 		self.ld.draw(self.ld.data);
 	}
