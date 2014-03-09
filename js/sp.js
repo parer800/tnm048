@@ -4,6 +4,7 @@ function sp(){
     self.zoomData = null;
     self.xData = null;
     self.yData = null;
+    self.labels = {"x": "DEFAULT", "y": "DEFAULT"};
     self.data = null;
     self.typeViewModel_Y = null; // DEFAULT view model, will be assigned later
     self.typeViewModel_X = null; // DEFAULT view model, will be assigned later
@@ -90,7 +91,7 @@ function sp(){
                 yValue = y.invert(d3.mouse(this)[1] - margin.top);
 
             d3.select("#selected").remove();
-            
+
             selectBox.end.endX = xValue;
             selectBox.end.endY = yValue;
 
@@ -178,6 +179,7 @@ function sp(){
         //remove old plot
         svg.select(".x.axis").remove(xAxis);
         svg.select(".y.axis").remove(yAxis);
+        svg.selectAll(".label").remove();
         svg.selectAll(".dot").remove();
 
         // Add x axis and title.
@@ -257,6 +259,28 @@ function sp(){
                     }
                     toggleClick(d.country);
                 });
+
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "start")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(function() {
+                return self.labels.x;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");
+
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "start")
+            .attr("x", - margin.left)
+            .attr("y", -8)
+            .text(function() {
+                return self.labels.y;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");
     };
 
     self.subtypeOption = function(){

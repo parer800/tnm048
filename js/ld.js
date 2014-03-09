@@ -4,6 +4,7 @@ function ld(){
     self.data = null;
     self.zoomData = [];
     self.interval = [0, 0];
+    self.labels = {"x": "Years", "y": "DEFAULT"};
     self.typeViewModel = null; // DEFAULT view model, will be assigned later
     var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
@@ -191,11 +192,24 @@ function ld(){
             .style("stroke-width", 1);
     }
 
+    function measureTextLength(string){
+    	
+    	/*$("body").append("<span id='rule'>" + string + "</span>");
+    	//span.css("white-space", "nowrap");
+    	var rule = document.getElementById("#rule");
+	    var length = rule.offsetWidth;
+	    console.log(length);
+
+	    rule.remove();
+	    return length;*/
+    }
+
     this.draw = function(drawData)
-    { 
+    { 	measureTextLength("hej");
 	    //remove old stuff so it is not duplicated
 	    svg.select(".x.axis").remove(xAxis);
 	    svg.select(".y.axis").remove(yAxis);
+	    svg.selectAll(".label").remove();
 		svg.selectAll(".ldpath").remove();
 			 
 	    // Add x axis and title.
@@ -288,6 +302,28 @@ function ld(){
 			            .style("left", (d3.event.pageX + 20) + "px")     
 			            .style("top", (d3.event.pageY) + "px");
             	});
+
+        /*svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "start")
+            .attr("x", width)
+            .attr("y", height - 6)
+            .text(function() {
+                return self.labels.x;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");*/
+
+        svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "start")
+            .attr("x", - margin.left)
+            .attr("y", -8)
+            .text(function() {
+                return self.labels.y;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px");
     };
 
     self.updateSubtypes = function(){
