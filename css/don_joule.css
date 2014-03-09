@@ -4,6 +4,7 @@
     position: relative;
     background-color: #3f4642;
     width: 100%;
+    padding-bottom: 30px;
     color:white;
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
@@ -25,6 +26,11 @@
     text-align: center;
     display: table;
 }
+#header-title{
+    font-family: Condiment, cvby,arial;
+    font-size: 50px;
+    letter-spacing: 7px;
+}
 #logo{
     position:relative;
     margin-left:auto;
@@ -38,6 +44,7 @@
 #energy-sources{
     margin-left: auto;
     margin-right:auto;
+    margin-bottom: 10px;
     border: 2px solid black;
     width: 50%;
     min-height: 8em;
@@ -51,14 +58,22 @@
     padding-top: 20px;
     width:100%;
 }
+#intro-box{
+    width:80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
 .header-component{
     display:inline-block;
 }
 
 .close{
+    text-shadow: none;
     position: absolute;
     bottom:0px;
     right:0px;
+    color: #FFF;
+    opacity: 0.2;
     position-bottom:0px;
 }
 
@@ -123,23 +138,55 @@
     padding:5px;
     border-bottom: 7px solid #3f4642;
 }
+#row2{
+    padding:5px;
+    border-bottom: 24px solid #3f4642;
+}
 
 #ld{
     border: 2px solid #3f4642;
     padding-bottom: 40px;
     padding-top: 20px;
     background: rgba(63,70,66,0.1);
+    width:49.5%;
+    margin-right: 1%;
 }
 #sp{
     border: 2px solid #3f4642;
     padding-bottom: 40px;
     padding-top: 20px;
     background: rgba(63,70,66,0.1);
+    width: 49.5%;
  
 }
 #sp-controlsX{
     position:absolute;
     bottom:5;
     right:5;
+}
+
+#typePie{
+    border: 2px solid #3f4642;
+    padding-bottom: 40px;
+    padding-top: 20px;
+    background: rgba(63,70,66,0.1);
+    width:49.5%;
+    margin-right: 1%;
+}
+
+#subPie{
+    border: 2px solid #3f4642;
+    padding-bottom: 40px;
+    padding-top: 20px;
+    background: rgba(63,70,66,0.1);
+    width: 49.5%;
+ 
+}
+
+
+
+#intro-box td{
+    position: relative;
+    vertical-align: middle;
 }
 

@@ -33,6 +33,8 @@ function observer(){
         showYearSpan();
         self.startCountriesSubscription();
         self.notifyTypeChanged(type);
+
+        $("#container").show(); // Show the container, is hidden at page load. (this call will be dine multiple times mabye unecessary)
 	});
 
     /**************** SUBSCRIPTIONS **************************/

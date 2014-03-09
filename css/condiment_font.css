@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Condiment';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Condiment'), local('Condiment-Regular'), url(../fonts/condiment.woff) format('woff');
+}
+
+
+@font-face {
+	font-family: 'cvby';
+	src: url(../fonts/CoveredByYourGrace.ttf)  format('truetype');
+	}

@@ -1,4 +1,6 @@
 <head>
+	<link rel="stylesheet" href="css/condiment_font.css">
+
 	<link rel="stylesheet" href="css/sp.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
@@ -18,7 +20,7 @@
 				<th><button class="world-btn header-component" data-toggle="modal" data-target=".countries-modal"><span class="flaticon-world7"></span>Select Countries</button></th>
 				<th>
 
-				<div id="logo" class="header-component"><span class="flaticon-bolt1"></span><h1>Don Joule</h1></div>
+				<div id="logo" class="header-component"><span class="flaticon-bolt1"></span><h1 id="header-title">Don Joule</h1></div>
 					
 				</th>
 				<th>
@@ -55,7 +57,7 @@
 					</label>
 				</div>
 			</div>
-			<button type="button" class="btn btn-default close">Hide</button>
+			<button type="button" class="close btn btn-default">Hide</button>
 		</div>
 	</div>
 
@@ -96,7 +98,70 @@
             
         </div>
 	</div>
+	<div id="intro-box" class="row">
+		
+		<table class="table table-striped ">
+			<tbody>
+			<h2> Don Joule's information guide</h2>
+				<tr>
+					<td>
+						1.
+					</td>
+					<td>
+						<span class="flaticon-oil5"></span>
+					</td>
+					<td>
+						- Select a data set to start the visualization.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						2.
+					</td>
+					<td>
+						<span class="flaticon-world7"></span>
+					</td>
+					<td>
+						- Select which country to visualize.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						3.
+					</td>
+					<td>
+						<span class="flaticon-group44"></span>
+					</td>
+					<td>
+						- Select whether if you want values divided by capita.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						4.
+					</td>
+					<td style="text-align: center;">
+						<strong>(hint)</strong>
+					</td>
+					<td>
+						- Use the slider to change the year span. If one year is pressed it's year is selected (only one year is visualized). Press it again to return to the latter year state! 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						5.
+					</td>
+					<td style="text-align:center;">
+						<button type="button" class="disabled btn btn-default">Hide<span class="glyphicon glyphicon-resize-small"></span></button>
+					</td>
+					<td>
+						- Toggle the menu to hide and show visualization options.
+					</td>
+				</tr>				
 
+			</tbody>
+		</table>
+	</div>
 
 
 	<div id="countries">
