@@ -27,6 +27,8 @@ function pie(div){
         .value(function(d) { return d.value[0][1]; });
  
  	this.draw = function(){
+
+        svg.selectAll(".slice").remove();
  		
 	    var arcs = svg.selectAll("g.slice")
 	        .data(pie(self.data))                           
@@ -71,3 +73,41 @@ function pie(div){
 	            .text("hej");        //get the label from our original data array
 	}
 }
+
+/* KNOCKOUT JS INITIALIZATION FOR CHOSING SUBTYPE */
+var pieTypeOption = function(){
+	var self = this;
+	self.type = ko.observable();
+	self.getSelectedType = function(){
+		//get type and subtype on format [{"type":theType, "subtype":theSubtype}]
+		return {"type": self.type()};
+	};
+};
+
+var pieSubtypeOption = function(){
+	var self = this;
+	self.subtype = ko.observable();
+	self.getSelectedType = function(){
+		//get type and subtype on format [{"type":theType, "subtype":theSubtype}]
+		return {"subtype":self.subtype().subtype};
+	};
+}
+
+var updatePieBinding = function(){
+	var element = $('#pie-type-controls')[0];
+	ko.cleanNode(element);
+	ko.applyBindings(pieTypeViewModel, document.getElementById("pie-type-controls"));
+
+	
+	element = $('#pie-subtype-controls')[0];
+	ko.cleanNode(element);
+	ko.applyBindings(pieSubtypeViewModel, document.getElementById("pie-subtype-controls"));
+
+}
+
+var pieTypeViewModel = new pieTypeOption();
+var pieSubtypeViewModel = new pieSubtypeOption();
+function initpiething(){
+	ko.applyBindings(pieTypeViewModel, document.getElementById("pie-type-controls"));
+}
+

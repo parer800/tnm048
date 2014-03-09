@@ -23,6 +23,24 @@ function dataHandler() {
 		}
 		return output;
 	}
+
+	this.getSubtypesAsArray = function(type){
+		var output = [];
+		for(subtype in self.dataTable[type]){
+			output.push(subtype);
+		}
+		return output;
+	}
+
+	this.getTypesAsArray = function(){
+		var output = [];
+		for(type in self.dataTable){
+			if(type != "indicators"){
+				output.push(type);
+			}
+		}
+		return output;
+	}
 	
 	this.getData = function(param){
 

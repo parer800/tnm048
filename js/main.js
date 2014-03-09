@@ -1,5 +1,6 @@
 var dh = new dataHandler();
 var dataMiner = new dataMining();
+var countries = new countries();
 var observer = new observer();
 
 // Should probably be located in other file
@@ -20,7 +21,6 @@ $(document).ready(function () {
     });
 
 });
-
 
 window.onresize=function(){showYearSpan();}; //located in slider.js
 

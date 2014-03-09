@@ -47,26 +47,35 @@ function countries(){
 	}
 
 	this.generateColors = function() {
-		var length = self.country_list.length;
-		var deltaColor = Math.floor(255/(length/3));
-		
-		for(var i=0; i<length; i++){
-			var color;
-			if(i<length/3){
-				color = "rgb(" + (i*deltaColor) + ", 0, 0)";
-			}
-			else if(i<2*length/3){
-				color = "rgb(255, " + ((i-Math.round(length/3))*deltaColor) + ", 0)";
-			} else {
-				color = "rgb(255, 255, " + ((i-Math.round(2*length/3))*deltaColor) + ")";
-			}
-			self.colors.push(color);
+		var colorBrewColors = ["rgb(166,206,227)",
+							   "rgb(31,120,180)",
+							   "rgb(178,223,138)",
+							   "rgb(51,160,44)",
+							   "rgb(251,154,153)",
+							   "rgb(227,26,28)",
+							   "rgb(253,191,111)",
+							   "rgb(255,127,0)",
+							   "rgb(202,178,214)",
+						       "rgb(106,61,154)",
+							   "rgb(255,255,153)",
+							   "rgb(177,89,40)"];
+
+		for(var i=0; i<self.country_list.length; i++){
+			self.colors.push(colorBrewColors[(i % colorBrewColors.length)]);
+		}
+	}
+
+	this.initClicked = function() {
+		for(var i=0; i<self.country_list.length; i++){
+			self.clicked[i] = false;
 		}
 	}
 	
 	// countries gotten from http://www.hscripts.com/scripts/JavaScript/option/world-countries.php
 	self.country_list = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
-	self.colors = [];
+	self.colors  = [];
+	self.clicked = [];
 
 	self.generateColors();
+	self.initClicked();
 }

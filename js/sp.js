@@ -88,7 +88,8 @@ function sp(){
 
             findZoomData();
             
-            if(self.zoomData.length > 0){ 
+            if(self.zoomData.length > 0){
+                unhighlightAll();
                 self.defineAxis(self.zoomData);
                 self.draw(self.zoomData);
             }    
@@ -105,6 +106,63 @@ function sp(){
                 self.zoomData.push(self.data[i]);
             }
         }
+    }
+
+    function highlight(element){
+
+        var selection = d3.select(element);
+        
+        selection
+            .attr("r", 7);
+
+          d3.selectAll(".ldpath")
+            .filter(function(pathData) { 
+                if(pathData.country == selection.data()[0].country){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .style("stroke-width", 7);
+    }
+
+    function unhighlight(element){
+
+        var selection = d3.select(element);
+        
+        selection
+            .attr("r", 3);
+
+          d3.selectAll(".ldpath")
+            .filter(function(pathData) { 
+                if(pathData.country == selection.data()[0].country){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .style("stroke-width", 1);
+    }
+
+    function unhighlightAll(){
+
+        var selection = d3.selectAll(".dot");
+        
+        selection
+            .attr("r", 3);
+
+        selection = d3.selectAll(".ldpath");
+
+        selection
+            .style("stroke-width", 1);
+    }
+
+    function clicked(country){
+        return countries.clicked[countries.country_list.indexOf(country)];
+    }
+
+    function toggleClick(country){
+        countries.clicked[countries.country_list.indexOf(country)] = !countries.clicked[countries.country_list.indexOf(country)];
     }
 
     this.draw = function(data)
@@ -141,7 +199,16 @@ function sp(){
             .enter()
             .append("circle")
             .attr("class", "dot")
-            .attr("fill", "red")
+            .attr("fill", function(d) {
+
+                var index = countries.country_list.indexOf(d.country);
+
+                if(index == -1){
+                    return "rgb(255, 0, 0)";
+                } else {
+                    return countries.colors[index];
+                } 
+            })
             .attr("cx", function(d) {
                 return +x(d["value"][0]);
             })
@@ -150,14 +217,21 @@ function sp(){
             })
             .attr("r", 3)
             .on("mouseenter", function(d) {
-                    d3.select(this).attr("r", 7);
 
+                    if(!clicked(d.country)){
+                        highlight(this);
+                    } 
+                    
                     d3.select("body").append("div")   
                        .attr("class", "tooltip")               
                        .style("opacity", 0);
                 })
                 .on("mouseout", function(d) {
-                    d3.select(this).attr("r", 3);
+                    
+                    if(!clicked(d.country)){
+                        unhighlight(this);
+                    }
+                   
                     d3.select(".tooltip").remove();
                 })
                 .on("mousemove", function(d) {
@@ -165,26 +239,16 @@ function sp(){
                         .style("opacity", .9)
                         .style("left", (d3.event.pageX + 20) + "px")     
                         .style("top", (d3.event.pageY) + "px");
+                })
+                .on("click", function(d) {
+
+                    if(clicked(d.country)){
+                        unhighlight(this);
+                    } else {
+                        highlight(this);
+                    }
+                    toggleClick(d.country);
                 });
-
-        // How do you change font size? 
-        /*svg.append("text")
-            .attr("class", "x label")
-            .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height - 6)
-            .text("income per capita (kr)")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "11px");
-
-        svg.append("text")
-            .attr("class", "y label")
-            .attr("text-anchor", "end")
-            .attr("x", 40)
-            .attr("y", -8)
-            .text("Employment rate (%)")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "11px");*/
     };
 
     self.subtypeOption = function(){
@@ -216,6 +280,4 @@ function sp(){
     self.initX = function(){
        // ko.applyBindings(self.typeViewModel_Y, document.getElementById("sp-controlsX"));
     }
-    
-
 }
