@@ -6,6 +6,7 @@ function dataHandler() {
 
 	self.dataTable = {};
 	self.dataFiles = {};
+	self.units = {};
 
 	this.getSubtypesForTypes = function(typeArr){
 
@@ -509,6 +510,50 @@ function dataHandler() {
 	this.loadFiles = function(){
 		self.loadData("indicators", function(type) {});
 	}
+
+	// UNITS ------------------------------------------------------------------
+
+	self.units["oil"        ] = {};
+	self.units["oil"        ]["supply"      ] = "Thousand Barrels Per Day";
+	self.units["oil"        ]["export"      ] = "Thousand Barrels Per Day";
+	self.units["oil"        ]["import"      ] = "Thousand Short Tons";
+	self.units["oil"        ]["consumption" ] = "Thousand Barrels Per Day";
+	self.units["oil"        ]["reserves"    ] = "Billion Barrels";
+	self.units["oil"        ]["production"  ] = "Thousand Barrels Per Day";
+
+	// NATURAL GAS
+	self.units["naturalgas" ] = {};
+	self.units["naturalgas" ]["production"  ] = "Billion Cubic Feet";
+	self.units["naturalgas" ]["export"      ] = "Billion Cubic Feet";
+	self.units["naturalgas" ]["import"      ] = "Billion Cubic Feet";
+	self.units["naturalgas" ]["consumption" ] = "Billion Cubic Feet";
+	self.units["naturalgas" ]["reserves"    ] = "Trillion Cubic Feet";
+
+	// INDICATORS
+	self.units["indicators" ] = {};
+	self.units["indicators" ]["population"  ] = "Millions";
+	
+	// ELECTRICITY
+	self.units["electricity"] = {};
+	self.units["electricity"]["export"      ] = "Billion Kilowatthours";
+	self.units["electricity"]["import"      ] = "Billion Kilowatthours";
+	self.units["electricity"]["production"  ] = "Quadrillion Btu";
+	self.units["electricity"]["consumption" ] = "Billion Kilowatthours";
+	self.units["electricity"]["capacity"    ] = "Million Kilowatts";
+	self.units["electricity"]["carbonDioxid"] = "Million Metric Tons";
+	
+	// COAL
+	self.units["coal"       ] = {};
+	self.units["coal"       ]["export"      ] = "Thousand Short Tons";
+	self.units["coal"       ]["import"      ] = "Thousand Short Tons";
+	self.units["coal"       ]["consumption" ] = "Thousand Short Tons";
+	self.units["coal"       ]["production"  ] = "Thousand Short Tons";
+	
+	// RENEWABLE
+	self.units["renewable"  ] = {};
+	self.units["renewable"  ]["consumption" ] = "Billion Kilowatthours";
+
+	// DATAFILES ------------------------------------------------------------------
 
 	// OIL
 	self.dataFiles["oil"        ] = {};

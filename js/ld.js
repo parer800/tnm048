@@ -5,7 +5,6 @@ function ld(){
     self.zoomData = [];
     self.interval = [0, 0];
     self.typeViewModel = null; // DEFAULT view model, will be assigned later
-    var keyDown = false;
     var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
     var x, y, xAxis, yAxis;
@@ -23,46 +22,52 @@ function ld(){
 
 	d3.select("#ld svg")
     	.on("mousedown", function() {
-
-	    	keyDown = true;
 	    	d3.event.preventDefault();
 
-	    	var xValue = x.invert(d3.mouse(this)[0] - 80),
-	  			yValue = y.invert(d3.mouse(this)[1] - 20);
+	    	var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+	  			yValue = y.invert(d3.mouse(this)[1] - margin.top);
 	    	
 	    	selectBox.start.startX = xValue;
 	    	selectBox.start.startY = yValue;
-	    	selectBox.start.posX = d3.event.pageX;
-	    	selectBox.start.posY = d3.event.pageY - $("#menu").height();
+	    	selectBox.start.posX   = d3.mouse(this)[0] - margin.left;
+            selectBox.start.posY   = d3.mouse(this)[1] - margin.top;
 
 	    	self.zoomData = [];
-	    	$("#ld").append("<div id='selected'> </div>");
+
+	    	svg.append("rect")
+                .attr("id", "selected");
 	    })
 	    .on("mousemove", function() { 
-
-	    	if(keyDown){
-	    		$("#selected").css({ 
-					top: Math.min(selectBox.start.posY, d3.event.pageY - $("#menu").height()), 
-					left: Math.min(selectBox.start.posX, d3.event.pageX), 
-					height: Math.abs(d3.event.pageY - $("#menu").height() - selectBox.start.posY - 5),
-					width: Math.abs(d3.event.pageX - selectBox.start.posX - 5)
-				});
-	    	}
+	    	d3.select("#selected")
+                .attr("x", function() {
+                    return  Math.min(selectBox.start.posX, d3.mouse(this)[0]);
+                })
+                .attr("y", function() {
+                    return  Math.min(selectBox.start.posY, d3.mouse(this)[1]);
+                })
+                .attr("width", function() {
+                    return Math.abs(d3.mouse(this)[0] - selectBox.start.posX);
+                })
+                .attr("height", function() {
+                    return Math.abs(d3.mouse(this)[1] - selectBox.start.posY);
+                });
 	    })
 	    .on("dblclick", function() {
             self.defineAxis(self.data);
             self.draw(self.data);
                         
         })
-	    .on("mouseup", function() { 
-	    	
-			keyDown = false;
+        .on("mouseout", function() {
+
+        })
+	    .on("mouseup", function() {
 			d3.event.preventDefault();
 
-			var xValue = x.invert(d3.mouse(this)[0] - 80),
-	  			yValue = y.invert(d3.mouse(this)[1] - 20);
+			var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+	  			yValue = y.invert(d3.mouse(this)[1] - margin.top);
 
-	        $("#selected").remove(); 
+	  		d3.select("#selected").remove();
+
 	        selectBox.end.endX = xValue;
 	        selectBox.end.endY = yValue;
 
