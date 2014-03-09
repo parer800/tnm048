@@ -112,7 +112,10 @@ function observer(){
             subtypePieUpdate()
         });        
 
-
+    /* Per Capita Subscription */
+    perCapitaFlag.subscribe(function(){
+        // perCapitaFlag() for false or true
+    })
     
     /* COUNTRIES SUBSCRIPTION */ 
 

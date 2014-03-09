@@ -51,30 +51,33 @@
 .flaticon-green3:before {
 	content: "\e00a";
 }
-.flaticon-oil:before {
+.flaticon-group44:before {
 	content: "\e00b";
 }
-.flaticon-oil5:before {
+.flaticon-oil:before {
 	content: "\e00c";
 }
-.flaticon-renewable:before {
+.flaticon-oil5:before {
 	content: "\e00d";
 }
-.flaticon-solar2:before {
+.flaticon-renewable:before {
 	content: "\e00e";
 }
-.flaticon-wheelbarrow1:before {
+.flaticon-solar2:before {
 	content: "\e00f";
 }
-.flaticon-wind17:before {
+.flaticon-wheelbarrow1:before {
 	content: "\e010";
 }
-.flaticon-wind2:before {
+.flaticon-wind17:before {
 	content: "\e011";
 }
-.flaticon-world7:before {
+.flaticon-wind2:before {
 	content: "\e012";
 }
-.flaticon-world8:before {
+.flaticon-world7:before {
 	content: "\e013";
+}
+.flaticon-world8:before {
+	content: "\e014";
 }

@@ -20,6 +20,21 @@
     display: table-cell;
     vertical-align: middle;
 }
+#header{
+    width:100%;
+    text-align: center;
+    display: table;
+}
+#logo{
+    position:relative;
+    margin-left:auto;
+    margin-right:auto;
+    display: inline-flex;
+}
+#per-capita{
+    float:right;
+    box-shadow: none;
+}
 #energy-sources{
     margin-left: auto;
     margin-right:auto;
@@ -35,6 +50,9 @@
     display:none;
     padding-top: 20px;
     width:100%;
+}
+.header-component{
+    display:inline-block;
 }
 
 .close{
@@ -71,6 +89,9 @@
     cursor: pointer;
     color:white;
 }
+.per-capita-glyph{
+    box-shadow: none;
+}
 .selected{
     color:green;
 }
@@ -88,11 +109,37 @@
     background: none;
     border:none;
     color:#FFF;
+    float: left;
 }
 
 .world-btn:hover{
     background: none;
     color:#FFF3CD;
     
+}
+
+
+#row1{
+    padding:5px;
+    border-bottom: 7px solid #3f4642;
+}
+
+#ld{
+    border: 2px solid #3f4642;
+    padding-bottom: 40px;
+    padding-top: 20px;
+    background: rgba(63,70,66,0.1);
+}
+#sp{
+    border: 2px solid #3f4642;
+    padding-bottom: 40px;
+    padding-top: 20px;
+    background: rgba(63,70,66,0.1);
+ 
+}
+#sp-controlsX{
+    position:absolute;
+    bottom:5;
+    right:5;
 }
 

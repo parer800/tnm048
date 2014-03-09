@@ -36,14 +36,14 @@ function sp(){
             .orient("left");
     }
 
-    var svg = d3.select("#sp")
+    var svg = d3.select("#sp-content")
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
         .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.select("#sp svg")
+    d3.select("#sp-content svg")
         .on("mousedown", function() {
 
             keyDown = true;
@@ -58,7 +58,7 @@ function sp(){
             selectBox.start.posY   = d3.mouse(this)[1];
 
             self.zoomData = [];
-            $("#sp").append("<div id='selected'> </div>");
+            $("#sp-content").append("<div id='selected'> </div>");
         })
         .on("mousemove", function() { 
 

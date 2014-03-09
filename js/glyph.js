@@ -37,6 +37,27 @@ var glyphViewModel = {
 	]
 };
 
-ko.applyBindings(glyphViewModel, document.getElementById("glyphs"));
 
+var perCapitaFlag = ko.observable(false);
+var PerCapitaGlyph = function(id, str, glyphName){
+	var self = this;
+	self.id = id;
+	self.str = str;
+	self.glyphName = glyphName;
+	self.isActive = ko.observable(false);
+	self.toggleActive = function(data,event){
+		self.isActive(!self.isActive());
+		var typeName = this.glyphName.toLowerCase();
+		perCapitaFlag(self.isActive());
+	};	
+}
+
+
+
+var perCapitaViewModel = {
+	glyphs:[new PerCapitaGlyph(1,"flaticon-group44", "Per Capita")]
+};
+
+ko.applyBindings(glyphViewModel, document.getElementById("glyphs"));
+ko.applyBindings(perCapitaViewModel, document.getElementById("per-capita"));
 

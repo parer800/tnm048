@@ -12,7 +12,29 @@
 <body>
 	<div id="menu" class="col-md-1">
 		<div id="middle" class="row">
-			<button class="world-btn" data-toggle="modal" data-target=".countries-modal"><span class="flaticon-world7"></span></button>
+			<div id="header">
+			<thead>
+				<tr>
+				<th><button class="world-btn header-component" data-toggle="modal" data-target=".countries-modal"><span class="flaticon-world7"></span>Select Countries</button></th>
+				<th>
+
+				<div id="logo" class="header-component"><span class="flaticon-bolt1"></span><h1>Don Joule</h1></div>
+					
+				</th>
+				<th>
+					<div id="per-capita" class="header-component" data-bind="foreach: glyphs">
+						<div class="glyph per-capita-glyph" data-bind="click: toggleActive, css : {'selected':isActive}">
+							<div data-bind="attr:{'class': $data.str}"></div>
+							<div class="class-name" data-bind="text:$data.glyphName" data-toggle="popover"></div>
+						</div>
+					</div>
+				</th>
+
+				</tr>
+			</thead>
+				
+				
+			</div>
 			<div id="energy-sources">
 				<div id="glyphs" data-bind="foreach: glyphs">
 					<div class="glyph" data-bind="click: toggleActive, css : {'selected':isActive}">
@@ -52,10 +74,11 @@
             		<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
             		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
             	</div>
-				<div id="sp-controlsX" style="position:absolute;bottom:-20px;right:20px;">
-				<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
-				<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
-			</div>
+            	<div id="sp-content"></div>
+				<div id="sp-controlsX">
+					<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
+					<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
+				</div>
             </div>
 
         </div>
