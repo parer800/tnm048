@@ -9,23 +9,19 @@ function observer(){
     self.typePie    = new pie("#typePie");
 
     self.typePie.typeOfPieChart = "subtype";
-    self.typePie.divId = "#typePie";
     self.subtypePie.typeOfPieChart = "type";
-    self.subtypePie.divId = "#subPie";
 
-    self.countries = new countries();
-    self.countries.setCountriesViewModel();
+   
+    countries.setCountriesViewModel();
     
     self.slider.setSliderViewModel(2000,2011);
     var dataFilterVaules = {"type" : ["oil"], "subtype" : ["supply"], 
-							"interval" : ["2000", "2012"], "country" : self.countries.getSelectedCountries(), 
+							"interval" : ["2000", "2012"], "country" : countries.getSelectedCountries(), 
 							"sum" : {"type" : false, "subtype" : false, "interval" : false, "country" : false}};
 
 	glyphChangeStateArray.subscribe(function(type){
 
         dataFilterVaules["type"] = type;
-        //dataFilterVaules["interval"] = self.getYearSpan();
-        //dataFilterVaules["country"] = dh.getCountryList(dataFilterVaules["type"][0], dataFilterVaules["subtype"]);
 
 		//Check whether the sliderDOM already is bound to a view model
         if(ko.dataFor(document.getElementById("slider")) === undefined){
@@ -34,8 +30,6 @@ function observer(){
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
        
-        //self.updateGraphs();
-
         showYearSpan();
         self.startCountriesSubscription();
         self.notifyTypeChanged(type);
@@ -108,31 +102,32 @@ function observer(){
 
         /* SUBTYPE PIE  */
         pieSubtypeViewModel.subtype.subscribe(function(){
-            dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype]; 
+            dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype];
+            dataFilterVaules.type = dh.getTypesAsArray(); 
             subtypePieUpdate()
         });        
+
 
     /* Per Capita Subscription */
     perCapitaFlag.subscribe(function(){
         // perCapitaFlag() for false or true
     })
     
+
     /* COUNTRIES SUBSCRIPTION */ 
 
     //Call this to init countries subscription
-    
     self.startCountriesSubscription = function(){
-        self.countries.countriesViewModel.selectedChoices.subscribe(function(){
+        countries.countriesViewModel.selectedChoices.subscribe(function(){
             // USE: self.countries.countriesViewModel.selectedChoices()
             //      To get the selected countries
-            dataFilterVaules.country = self.countries.countriesViewModel.selectedChoices();
+            dataFilterVaules.country =countries.countriesViewModel.selectedChoices();
             self.updateGraphs();
 
         });
     };
 
     /****************** RETURN FUNCTIONS***********************/
-
     self.getSelectedYears = function(){
         return self.slider.sliderViewModel.selectedYears();
     }
@@ -152,7 +147,6 @@ function observer(){
     self.updateYearSpan = function(){
         //self.slider.updateYearSpan(aMinYear, aMaxYear);
     }
-
 
     /******************* UPDATE GRAPHS ************************/
 	function spUpdate(){
@@ -193,30 +187,27 @@ function observer(){
 	function subtypePieUpdate(){
 		dataFilterVaules.sum.interval = true;
 		dataFilterVaules.sum.country = true;
-		dataFilterVaules.sum.subtype = true;
         self.subtypePie.data = dh.getData2(dataFilterVaules);
         dataFilterVaules.sum.interval = false;
         dataFilterVaules.sum.country = false;
-        dataFilterVaules.sum.subtype = false;
 		self.subtypePie.draw();
 	}
 
     function typePieUpdate(){
         dataFilterVaules.sum.interval = true;
         dataFilterVaules.sum.country = true;
-        dataFilterVaules.sum.type = true;
         self.typePie.data = dh.getData2(dataFilterVaules);
         dataFilterVaules.sum.interval = false;
         dataFilterVaules.sum.country = false;
-        dataFilterVaules.sum.type = false;
         self.typePie.draw();
     }
 
 	self.updateGraphs = function (){
-		if(self.countries.countriesViewModel.selectedChoices().length > 0){
+		if(countries.countriesViewModel.selectedChoices().length > 0){
     		spUpdate();
     		ldUpdate();
     		subtypePieUpdate();
+            typePieUpdate();
         }
 	}
 
@@ -233,9 +224,8 @@ function observer(){
             
             spUpdate();
         }
-
     }
 
-    self.countries.init();
+    countries.init();
 }
 

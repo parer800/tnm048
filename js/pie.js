@@ -24,9 +24,11 @@ function pie(div){
         .outerRadius(r);
  
     var pie = d3.layout.pie()           
-        .value(function(d) { return d.value[0][1]; });    
+        .value(function(d) { return d.value[0][1]; });
  
  	this.draw = function(){
+
+        svg.selectAll(".slice").remove();
  		
 	    var arcs = svg.selectAll("g.slice")
 	        .data(pie(self.data))                           
@@ -68,10 +70,8 @@ function pie(div){
 	            .style("fill", "White")
       			.style("font", "bold 12px Arial")
 	            //.attr("text-anchor", "middle")                          //center the text on it's origin
-	            .text("hej");        //get the label from our original data array	
+	            .text("hej");        //get the label from our original data array
 	}
-
-
 }
 
 /* KNOCKOUT JS INITIALIZATION FOR CHOSING SUBTYPE */

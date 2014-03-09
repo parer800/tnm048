@@ -31,6 +31,16 @@ function dataHandler() {
 		}
 		return output;
 	}
+
+	this.getTypesAsArray = function(){
+		var output = [];
+		for(type in self.dataTable){
+			if(type != "indicators"){
+				output.push(type);
+			}
+		}
+		return output;
+	}
 	
 	this.getData = function(param){
 

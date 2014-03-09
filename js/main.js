@@ -1,13 +1,7 @@
 var dh = new dataHandler();
 var dataMiner = new dataMining();
+var countries = new countries();
 var observer = new observer();
-
-function test(){
-    dataMiner.data = dh.getDataMiningData();
-    dh.normalizeData(dataMiner.data);
-    dataMiner.calculateClusters();
-    console.log(dataMiner.getCountryClusters());
-}
 
 // Should probably be located in other file
 $(document).ready(function () {
@@ -27,7 +21,6 @@ $(document).ready(function () {
     });
 
 });
-
 
 window.onresize=function(){showYearSpan();}; //located in slider.js
 

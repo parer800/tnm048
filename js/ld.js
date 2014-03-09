@@ -49,6 +49,11 @@ function ld(){
 				});
 	    	}
 	    })
+	    .on("dblclick", function() {
+            self.defineAxis(self.data);
+            self.draw(self.data);
+                        
+        })
 	    .on("mouseup", function() { 
 	    	
 			keyDown = false;
@@ -63,7 +68,8 @@ function ld(){
 
 	        findZoomData();
 	    	
-	        if(self.zoomData.length > 0){ 
+	        if(self.zoomData.length > 0){
+	        	unhighlightAll();
 	     		self.defineAxis(self.zoomData);
 	        	self.draw(self.zoomData);
 	     	}
@@ -123,6 +129,63 @@ function ld(){
             .orient("left");
     }
 
+    function highlight(element){
+
+        var selection = d3.select(element);
+        
+        selection
+            .style("stroke-width", 7);
+
+        d3.selectAll(".dot")
+            .filter(function(pathData) { 
+                if(pathData.country == selection.data()[0].country){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .attr("r", 7);
+    }
+
+    function unhighlight(element){
+
+        var selection = d3.select(element);
+        
+        selection
+            .style("stroke-width", 1);
+
+          d3.selectAll(".dot")
+            .filter(function(pathData) { 
+                if(pathData.country == selection.data()[0].country){
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .attr("r", 3);
+    }
+
+    function clicked(country){
+        return countries.clicked[countries.country_list.indexOf(country)];
+    }
+
+    function toggleClick(country){
+        countries.clicked[countries.country_list.indexOf(country)] = !countries.clicked[countries.country_list.indexOf(country)];
+    }
+
+    function unhighlightAll(){
+
+        var selection = d3.selectAll(".dot");
+        
+        selection
+            .attr("r", 3);
+
+        selection = d3.selectAll(".ldpath");
+
+        selection
+            .style("stroke-width", 1);
+    }
+
     this.draw = function(drawData)
     { 
 	    //remove old stuff so it is not duplicated
@@ -171,30 +234,39 @@ function ld(){
   				.attr("d", function(data) {
   					return line(data["value"]);
   				})
-	  			.attr("stroke", function(d, i) {
-	  				
-	  				/*if(dataMining.clusters[i] == 0)
-	  					return "rgb(255, 0, 0)";
-	  				else if(dataMining.clusters[i] == 1)
-	  					return "rgb(0, 255, 0)";
-	  				else 
-	  					return "rgb(0, 0, 255)";*/
-	  				return "rgb(" + 
-	  						Math.floor(Math.random() * 254) + "," +
-	  				        Math.floor(Math.random() * 254) + "," +
-	  				        Math.floor(Math.random() * 254) + ")";
+	  			.attr("stroke", function(d) {
+	  				var index = countries.country_list.indexOf(d.country);
+
+	                if(index == -1){
+	                    return "rgb(255, 0, 0)";
+	                } else {
+	                    return countries.colors[index];
+	                } 
 	  			})
 	  			.attr("fill", "none")
 	  			.on("mouseenter", function(d) {
-	  				d3.select(this).style("stroke-width", 7);
-
+	  				if(!clicked(d.country)){
+	  					highlight(this);
+	  				}
+	  				
 	  				d3.select("body").append("div")   
 				       .attr("class", "tooltip")               
 				       .style("opacity", 0);
 	  			})
 	  			.on("mouseout", function(d) {
-	  				d3.select(this).style("stroke-width", 1);
+	  				if(!clicked(d.country)){
+	  					unhighlight(this);
+	  				}
+	  				
 	  				d3.select(".tooltip").remove();
+	  			})
+	  			.on("click", function(d) {
+	  				if(clicked(d.country)){
+	  					unhighlight(this);
+	  				} else {
+	  					highlight(this);
+	  				}
+	  				toggleClick(d.country);
 	  			})
 	  			.on("mousemove", function(d) {
 	  				
@@ -237,8 +309,3 @@ function ld(){
     self.typeViewModel = new self.subtypeOption();
     ko.applyBindings(self.typeViewModel, document.getElementById("ld-controls"));
 }
-/*	
-//Temporary 
-var ld_subtypes = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"},{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"coal"},{"subtypes":[{"subtype":"import"},{"subtype":"total consumption"}],"type":"natural gas"}];
-var ld_subtypes2 = [{"subtypes":[{"subtype":"import"},{"subtype":"export"},{"subtype":"total consumption"}],"type":"oil"}];
-*/
