@@ -251,8 +251,12 @@ function sp(){
 
                 if(index == -1){
                     return "rgb(255, 0, 0)";
-                } else {
-                    return countries.colors[index];
+                } else { 
+                    if(dataMiner.drawClusters){
+                        return countries.colors[dataMiner.clusters[index]];
+                    } else { 
+                        return countries.colors[index];
+                    }
                 } 
             })
             .attr("cx", function(d) {

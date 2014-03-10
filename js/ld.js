@@ -277,7 +277,11 @@ function ld(){
 	                if(index == -1){
 	                    return "rgb(255, 0, 0)";
 	                } else {
-	                    return countries.colors[index];
+	                    if(dataMiner.drawClusters){
+                            return countries.colors[dataMiner.clusters[index]];
+                        } else { 
+                            return countries.colors[index];
+                        }
 	                } 
 	  			})
 	  			.attr("fill", "none")

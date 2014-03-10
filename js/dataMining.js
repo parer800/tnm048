@@ -4,8 +4,9 @@ function dataMining() {
 	// Data to be clustered
 	self.data = null;
 	// Default value for number of clusters
-	self.numberOfClusters = 5;
+	self.numberOfClusters = 3;
 	self.clusters;
+	self.drawClusters = false;
 	// Centroids
 	self.centroids;
 

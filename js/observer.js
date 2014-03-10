@@ -223,6 +223,7 @@ function observer(){
     }
 
 	self.updateGraphs = function (){
+        
 		if(countries.countriesViewModel.selectedChoices().length > 0){
     		spUpdate();
     		ldUpdate();
