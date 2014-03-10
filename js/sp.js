@@ -98,7 +98,6 @@ function sp(){
             findZoomData();
             
             if(self.zoomData.length > 0){
-                unhighlightAll();
                 self.defineAxis(self.zoomData);
                 self.draw(self.zoomData);
             }    
@@ -135,7 +134,7 @@ function sp(){
             .style("stroke-width", 7);
     }
 
-    function unhighlight(element){
+   function  unhighlight(element) {
 
         var selection = d3.select(element);
         
@@ -153,7 +152,7 @@ function sp(){
             .style("stroke-width", 1);
     }
 
-    function unhighlightAll(){
+     function unhighlightAll() {
 
         var selection = d3.selectAll(".dot");
         
@@ -164,6 +163,10 @@ function sp(){
 
         selection
             .style("stroke-width", 1);
+
+        for(var i=0; i<countries.clicked.length; i++){
+            countries.clicked[i] = false;
+        }
     }
 
     function clicked(country){
@@ -174,8 +177,19 @@ function sp(){
         countries.clicked[countries.country_list.indexOf(country)] = !countries.clicked[countries.country_list.indexOf(country)];
     }
 
+    function measureTextLength(string){
+        
+        $("body").append("<span id='rule'>" + string + "</span>");
+        var length = $("#rule").width();
+        $("#rule").remove();
+
+        return length;
+    }
+
     this.draw = function(data)
     { 
+        unhighlightAll();
+
         //remove old plot
         svg.select(".x.axis").remove(xAxis);
         svg.select(".y.axis").remove(yAxis);
@@ -263,7 +277,7 @@ function sp(){
         svg.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "start")
-            .attr("x", width)
+            .attr("x", (width - measureTextLength(self.labels.x) + /* Random padding */ 20))
             .attr("y", height - 6)
             .text(function() {
                 return self.labels.x;
