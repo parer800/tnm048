@@ -442,13 +442,16 @@ function dataHandler() {
 
 				if(data[i].country instanceof Array){
 					for(var k=0; k<data[i].country.length; k++){
-						totalPopulation += self.dataTable["indicators"]["population"][data[i].country[k]][data[i].value[j][0]];
+						if(self.dataTable["indicators"]["population"][data[i].country[k]] !== undefined){
+							totalPopulation += +self.dataTable["indicators"]["population"][data[i].country[k]]["2000"];
+						}
 					}
 				} else {
 					if(self.dataTable["indicators"]["population"][data[i].country] !== undefined){ 
-						totalPopulation += self.dataTable["indicators"]["population"][data[i].country][data[i].value[j][0]];
+						totalPopulation += +self.dataTable["indicators"]["population"][data[i].country][data[i].value[j][0]];
 					}
 				}
+
 				if(totalPopulation != 0){
 					data[i].value[j][1] /= (totalPopulation * 1000000);
 				}

@@ -96,15 +96,11 @@ function observer(){
 
         /* TYPE PIE  */
         pieTypeViewModel.type.subscribe(function(){
-            dataFilterVaules.type = [pieTypeViewModel.type().type]; 
-            dataFilterVaules.subtype = dh.getSubtypesAsArray(pieTypeViewModel.type().type);
             typePieUpdate()
         });
 
         /* SUBTYPE PIE  */
         pieSubtypeViewModel.subtype.subscribe(function(){
-            dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype];
-            dataFilterVaules.type = dh.getTypesAsArray(); 
             subtypePieUpdate()
         });        
 
@@ -112,14 +108,7 @@ function observer(){
     /* Per Capita Subscription */
     perCapitaFlag.subscribe(function(){
         // perCapitaFlag() for false or true
-        if(perCapitaFlag()){
-            dh.normalizeData();
-            dh.normalizeData();
-            dh.normalizeData();
-            dh.normalizeData();
-        } else {
-            updateGraphs();
-        }
+        self.updateGraphs();
     })
     
     /* COUNTRIES SUBSCRIPTION */ 
@@ -164,6 +153,9 @@ function observer(){
         dataFilterVaules.type = [typeSubtype.type];
         dataFilterVaules.subtype = [typeSubtype.subtype];
         var data = dh.getData(dataFilterVaules);
+        if(perCapitaFlag()){
+            dh.normalizeData(data);
+        }
         self.sp.yData = dh.sumInterval(data);
         self.sp.labels.y = dh.units[typeSubtype.type][typeSubtype.subtype];
 
@@ -172,6 +164,9 @@ function observer(){
         dataFilterVaules.type = [typeSubtype.type];
         dataFilterVaules.subtype = [typeSubtype.subtype];
         data = dh.getData(dataFilterVaules);
+        if(perCapitaFlag()){
+            dh.normalizeData(data);
+        }
 		self.sp.xData = dh.sumInterval(data);
         self.sp.labels.x = dh.units[typeSubtype.type][typeSubtype.subtype];
 		
@@ -190,6 +185,9 @@ function observer(){
             dh.ldOneYear(self.ld.data);
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
         }
+        if(perCapitaFlag()){
+            dh.normalizeData(self.ld.data);
+        }
 
         self.ld.labels.y = dh.units[dataFilterVaules.type[0]][dataFilterVaules.subtype[0]];
 		self.ld.defineAxis(self.ld.data);
@@ -199,7 +197,12 @@ function observer(){
 	function subtypePieUpdate(){
 		dataFilterVaules.sum.interval = true;
 		dataFilterVaules.sum.country = true;
+        dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype];
+        dataFilterVaules.type = dh.getTypesAsArray(); 
         self.subtypePie.data = dh.getData2(dataFilterVaules);
+        if(perCapitaFlag()){
+            dh.normalizeData(self.subtypePie.data);
+        }
         dataFilterVaules.sum.interval = false;
         dataFilterVaules.sum.country = false;
 		self.subtypePie.draw();
@@ -208,7 +211,12 @@ function observer(){
     function typePieUpdate(){
         dataFilterVaules.sum.interval = true;
         dataFilterVaules.sum.country = true;
+        dataFilterVaules.type = [pieTypeViewModel.type().type]; 
+        dataFilterVaules.subtype = dh.getSubtypesAsArray(pieTypeViewModel.type().type);
         self.typePie.data = dh.getData2(dataFilterVaules);
+        if(perCapitaFlag()){
+            dh.normalizeData(self.typePie.data);
+        }
         dataFilterVaules.sum.interval = false;
         dataFilterVaules.sum.country = false;
         self.typePie.draw();
