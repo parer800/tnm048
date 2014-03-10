@@ -177,7 +177,8 @@ function observer(){
 
 		self.ld.data = dh.getData(dataFilterVaules);
         self.ld.interval = self.getYearSpan();
-        if(self.ld.data[0].value.length == 1){
+
+        if(self.ld.data.length > 0 && self.ld.data[0].value.length == 1){
             dh.ldOneYear(self.ld.data);
             self.ld.interval[1] = self.ld.interval[1] + 0.12;
         }

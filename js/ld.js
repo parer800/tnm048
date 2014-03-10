@@ -194,14 +194,14 @@ function ld(){
 
     function measureTextLength(string){
     	
-    	/*$("body").append("<span id='rule'>" + string + "</span>");
+    	$("body").append("<span id='rule'>" + string + "</span>");
     	//span.css("white-space", "nowrap");
     	var rule = document.getElementById("#rule");
 	    var length = rule.offsetWidth;
 	    console.log(length);
 
 	    rule.remove();
-	    return length;*/
+	    return length;
     }
 
     this.draw = function(drawData)
