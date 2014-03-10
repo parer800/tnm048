@@ -559,7 +559,7 @@ function dataHandler() {
 	self.dataFiles["oil"        ] = {};
 	self.dataFiles["oil"        ]["supply"      ] = "data/Total_Oil_Supply_(Thousand_Barrels_Per_Day).csv";
 	self.dataFiles["oil"        ]["export"      ] = "data/Total_Exports_of_Refined_Petroleum_Products_(Thousand_Barrels_Per_Day).csv";
-	self.dataFiles["oil"        ]["import"      ] = "data/Total_Coal_Imports_(Thousand_Short_Tons).csv";
+	self.dataFiles["oil"        ]["import"      ] = "data/Total_Imports_of_Refined_Petroleum_Products_(Thousand_Barrels_Per_Day).csv";
 	self.dataFiles["oil"        ]["consumption" ] = "data/Total_Petroleum_Consumption_(Thousand_Barrels_Per_Day).csv";
 	self.dataFiles["oil"        ]["reserves"    ] = "data/Crude_Oil_Proved_Reserves_(Billion_Barrels).csv";
 	self.dataFiles["oil"        ]["production"  ] = "data/Total_Oil_Production_(Thousand_Barrels_Per_Day).csv";
