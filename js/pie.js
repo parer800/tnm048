@@ -10,13 +10,14 @@ function pie(div){
     color = d3.scale.category20c();     
 
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = 600 - margin.right - margin.left,
-        height = 600 - margin.top - margin.bottom;
+        width = 400 - margin.right - margin.left,
+        height = 400 - margin.top - margin.bottom;
  
     var svg = d3.select(self.divId)
 	    .append("svg")
 	        .attr("width", width + margin.left + margin.right)
 	        .attr("height", height + margin.top + margin.bottom)
+	        .attr("class","pie-svg") // Used in don_joule.css
 	    .append("g")
 	        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
