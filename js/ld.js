@@ -5,6 +5,7 @@ function ld(){
     self.zoomData = [];
     self.interval = [0, 0];
     self.labels = {"x": "Years", "y": "DEFAULT"};
+    var keyDown = false;
     self.typeViewModel = null; // DEFAULT view model, will be assigned later
     var selectBox  = {"start" : {"startY" : 0, "startX" : 0, "posX" : 0, "posY" : 0}, "end" : {"endY" : 0, "endX" : 0}};
 
@@ -23,6 +24,7 @@ function ld(){
 
 	d3.select("#ld svg")
     	.on("mousedown", function() {
+            keyDown = true;
 	    	d3.event.preventDefault();
 
 	    	var xValue = x.invert(d3.mouse(this)[0] - margin.left),
@@ -58,27 +60,49 @@ function ld(){
             self.draw(self.data);
                         
         })
-        .on("mouseout", function() {
+        .on("mouseleave", function() {
+            if(keyDown){
+                keyDown = false;
+                d3.event.preventDefault();
 
+                var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                    yValue = y.invert(d3.mouse(this)[1] - margin.top);
+
+                d3.select("#selected").remove();
+
+                selectBox.end.endX = xValue;
+                selectBox.end.endY = yValue;
+
+                findZoomData();
+                
+                if(self.zoomData.length > 0){
+                    unhighlightAll();
+                    self.defineAxis(self.zoomData);
+                    self.draw(self.zoomData);
+                }
+            }
         })
 	    .on("mouseup", function() {
-			d3.event.preventDefault();
+            if(keyDown){
+                keyDown = false;
+                d3.event.preventDefault();
 
-			var xValue = x.invert(d3.mouse(this)[0] - margin.left),
-	  			yValue = y.invert(d3.mouse(this)[1] - margin.top);
+                var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                    yValue = y.invert(d3.mouse(this)[1] - margin.top);
 
-	  		d3.select("#selected").remove();
+                d3.select("#selected").remove();
 
-	        selectBox.end.endX = xValue;
-	        selectBox.end.endY = yValue;
+                selectBox.end.endX = xValue;
+                selectBox.end.endY = yValue;
 
-	        findZoomData();
-	    	
-	        if(self.zoomData.length > 0){
-	        	unhighlightAll();
-	     		self.defineAxis(self.zoomData);
-	        	self.draw(self.zoomData);
-	     	}
+                findZoomData();
+                
+                if(self.zoomData.length > 0){
+                    unhighlightAll();
+                    self.defineAxis(self.zoomData);
+                    self.draw(self.zoomData);
+                }
+            }
 	    });
 
 	function findZoomData(){ 
