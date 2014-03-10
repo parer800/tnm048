@@ -1,0 +1,7 @@
+* dynamiska enheter på axlarna
+
+* reset highlight on every zoom
+
+* Select oil -> deselect all countries -> slect lichtenstein and luxembourg -> error in pie draw
+
+* Measure text length -> position unit label on scatter plot

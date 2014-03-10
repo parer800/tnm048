@@ -3,8 +3,15 @@ var dataMiner = new dataMining();
 var countries = new countries();
 var observer = new observer();
 
+
+
+$("#container").hide(); // Hide the container at startup
+
+
+
 // Should probably be located in other file
 $(document).ready(function () {
+    
 	$('#menu').toggleClass('open');
 	$('#menu .close').html("Hide <span class='glyphicon glyphicon-resize-small'></span>");
     $('.menu, .close').click(function () {
