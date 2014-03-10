@@ -112,9 +112,16 @@ function observer(){
     /* Per Capita Subscription */
     perCapitaFlag.subscribe(function(){
         // perCapitaFlag() for false or true
+        if(perCapitaFlag()){
+            dh.normalizeData();
+            dh.normalizeData();
+            dh.normalizeData();
+            dh.normalizeData();
+        } else {
+            updateGraphs();
+        }
     })
     
-
     /* COUNTRIES SUBSCRIPTION */ 
 
     //Call this to init countries subscription
