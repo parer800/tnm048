@@ -82,25 +82,47 @@ function sp(){
             self.defineAxis(self.data);
             self.draw(self.data);            
         })
+        .on("mouseleave", function() {
+            if(keyDown){
+                keyDown = false;
+                 d3.event.preventDefault();
+
+                var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                    yValue = y.invert(d3.mouse(this)[1] - margin.top);
+
+                d3.select("#selected").remove();
+
+                selectBox.end.endX = xValue;
+                selectBox.end.endY = yValue;
+
+                findZoomData();
+                
+                if(self.zoomData.length > 0){
+                    self.defineAxis(self.zoomData);
+                    self.draw(self.zoomData);
+                } 
+            }
+        })
         .on("mouseup", function() { 
-            
-            keyDown = false;
-            d3.event.preventDefault();
+            if(keyDown){
+                keyDown = false;
+                d3.event.preventDefault();
 
-            var xValue = x.invert(d3.mouse(this)[0] - margin.left),
-                yValue = y.invert(d3.mouse(this)[1] - margin.top);
+                var xValue = x.invert(d3.mouse(this)[0] - margin.left),
+                    yValue = y.invert(d3.mouse(this)[1] - margin.top);
 
-            d3.select("#selected").remove();
+                d3.select("#selected").remove();
 
-            selectBox.end.endX = xValue;
-            selectBox.end.endY = yValue;
+                selectBox.end.endX = xValue;
+                selectBox.end.endY = yValue;
 
-            findZoomData();
-            
-            if(self.zoomData.length > 0){
-                self.defineAxis(self.zoomData);
-                self.draw(self.zoomData);
-            }    
+                findZoomData();
+                
+                if(self.zoomData.length > 0){
+                    self.defineAxis(self.zoomData);
+                    self.draw(self.zoomData);
+                } 
+            }
         });
 
     function findZoomData(){ 
