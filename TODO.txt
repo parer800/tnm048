@@ -1,7 +1,3 @@
-* dynamiska enheter på axlarna
-
-* reset highlight on every zoom
+* dynamiska enheter på axlarna (not defined by days or years on scatterplot x axis with oil-> import % oil->reserves)
 
 * Select oil -> deselect all countries -> slect lichtenstein and luxembourg -> error in pie draw
-
-* Measure text length -> position unit label on scatter plot
