@@ -63,11 +63,6 @@ function observer(){
     //get type and subtype on format {type: "oil", subtype: "export"}
     // by calling 'self.ld.typeViewModel.getSelectedType()'
     self.ld.typeViewModel.subtype.subscribe(function(){
-
-        var typeSubtype = self.ld.typeViewModel.getSelectedType();
-        dataFilterVaules.type = [typeSubtype.type];
-        dataFilterVaules.subtype = [typeSubtype.subtype];
-
         ldUpdate();
     });
 
@@ -178,6 +173,10 @@ function observer(){
 
 	function ldUpdate(){
 
+        var typeSubtype = self.ld.typeViewModel.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
+
 		self.ld.data = dh.getData(dataFilterVaules);
         self.ld.interval = self.getYearSpan();
 
@@ -197,8 +196,7 @@ function observer(){
 	function subtypePieUpdate(){
 		dataFilterVaules.sum.interval = true;
 		dataFilterVaules.sum.country = true;
-        dataFilterVaules.subtype = [pieSubtypeViewModel.subtype().subtype];
-        dataFilterVaules.type = dh.getTypesAsArray(); 
+
         self.subtypePie.data = dh.getData2(dataFilterVaules);
         if(perCapitaFlag()){
             dh.normalizeData(self.subtypePie.data);
@@ -223,7 +221,7 @@ function observer(){
     }
 
 	self.updateGraphs = function (){
-        
+
 		if(countries.countriesViewModel.selectedChoices().length > 0){
     		spUpdate();
     		ldUpdate();
