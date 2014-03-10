@@ -174,6 +174,15 @@ function sp(){
         countries.clicked[countries.country_list.indexOf(country)] = !countries.clicked[countries.country_list.indexOf(country)];
     }
 
+    function measureTextLength(string){
+        
+        $("body").append("<span id='rule'>" + string + "</span>");
+        var length = $("#rule").width();
+        $("#rule").remove();
+
+        return length;
+    }
+
     this.draw = function(data)
     { 
         //remove old plot
@@ -263,7 +272,7 @@ function sp(){
         svg.append("text")
             .attr("class", "x label")
             .attr("text-anchor", "start")
-            .attr("x", width)
+            .attr("x", (width - measureTextLength(self.labels.x) + /* Random padding */ 20))
             .attr("y", height - 6)
             .text(function() {
                 return self.labels.x;

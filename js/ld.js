@@ -192,20 +192,8 @@ function ld(){
             .style("stroke-width", 1);
     }
 
-    function measureTextLength(string){
-    	
-    	$("body").append("<span id='rule'>" + string + "</span>");
-    	//span.css("white-space", "nowrap");
-    	var rule = document.getElementById("#rule");
-	    var length = rule.offsetWidth;
-	    console.log(length);
-
-	    rule.remove();
-	    return length;
-    }
-
     this.draw = function(drawData)
-    { 	measureTextLength("hej");
+    { 	
 	    //remove old stuff so it is not duplicated
 	    svg.select(".x.axis").remove(xAxis);
 	    svg.select(".y.axis").remove(yAxis);
