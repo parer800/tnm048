@@ -190,10 +190,16 @@ function ld(){
 
         selection
             .style("stroke-width", 1);
+
+        for(var i=0; i<countries.clicked.length; i++){
+            countries.clicked[i] = false;
+        }
     }
 
     this.draw = function(drawData)
     { 	
+    	unhighlightAll();
+
 	    //remove old stuff so it is not duplicated
 	    svg.select(".x.axis").remove(xAxis);
 	    svg.select(".y.axis").remove(yAxis);
