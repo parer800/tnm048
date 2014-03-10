@@ -20,7 +20,9 @@
 				<th><button class="world-btn header-component" data-toggle="modal" data-target=".countries-modal"><span class="flaticon-world7"></span>Select Countries</button></th>
 				<th>
 
-				<div id="logo" class="header-component"><span class="flaticon-bolt1"></span><h1 id="header-title">Don Joule</h1></div>
+				<div id="logo" class="header-component"><span id="logo-glyph" class="flaticon-bolt1"></span><h1 id="header-title">Don Joule</h1>
+					<b id="logo-description">- an energy visualization tool</b>
+				</div>
 					
 				</th>
 				<th>
@@ -66,12 +68,14 @@
 	<div id="container" class="col-md-1">
         <div id="row1" class="row">
             <div id="ld" class="col-md-6">
+            	<div class="graph-title"><h2>Line diagram<h2></div>
             	<div id="ld-controls">
             		<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
             		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
             	</div> 
             </div>
             <div id="sp" class="col-md-6">
+            	<div class="graph-title"><h2>Scatter Plot<h2></div>
             	<div id="sp-controlsY">
             		<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
             		<span data-bind='with:type'><select data-bind='options: subtypes, optionsText:"subtype", value:$parent.subtype'></select></span>
@@ -86,11 +90,13 @@
         </div>
         <div id="row2" class="row">
         	<div id="typePie" class="col-md-6">
+        		<div class="graph-title"><h2>Shows total portion of chosen type<h2></div>
         		<div id="pie-type-controls">
         			<select data-bind='options: GLOBAL_TYPES, optionsText:"type",value:type'></select>
         		</div>
         	</div>
             <div id="subPie" class="col-md-6">
+            	<div class="graph-title"><h2>Shows total portion of chosen subtype<h2></div>
         		<div id="pie-subtype-controls">
         			<select data-bind='options: GLOBAL_TYPES[0].subtypes, optionsText:"subtype",value:subtype'></select>
         		</div>            	

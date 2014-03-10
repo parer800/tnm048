@@ -29,14 +29,11 @@ function observer(){
             self.setMaxYear(2011);
             ko.applyBindings(self.slider.sliderViewModel, document.getElementById("slider"));
         }
-
         $("#container").show(); // Show the container, is hidden at page load. (this call will be dine multiple times mabye unecessary)
-
         showYearSpan();
         self.startCountriesSubscription();
         self.notifyTypeChanged(type);
 
-        
 	});
 
     /**************** SUBSCRIPTIONS **************************/
