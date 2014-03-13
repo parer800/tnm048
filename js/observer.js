@@ -64,9 +64,7 @@ function observer(){
     // by calling 'self.ld.typeViewModel.getSelectedType()'
     self.ld.typeViewModel.subtype.subscribe(function(){
 
-        var typeSubtype = self.ld.typeViewModel.getSelectedType();
-        dataFilterVaules.type = [typeSubtype.type];
-        dataFilterVaules.subtype = [typeSubtype.subtype];
+
 
         ldUpdate();
     });
@@ -177,6 +175,9 @@ function observer(){
 	}
 
 	function ldUpdate(){
+        var typeSubtype = self.ld.typeViewModel.getSelectedType();
+        dataFilterVaules.type = [typeSubtype.type];
+        dataFilterVaules.subtype = [typeSubtype.subtype];
 
 		self.ld.data = dh.getData(dataFilterVaules);
         self.ld.interval = self.getYearSpan();
